@@ -12,6 +12,7 @@ EcaLogic::EcaLogic(int NI, int ruleI, int initialConditionI, EcaBoundary ecaBoun
 EcaLogic::EcaLogic(int NI, int ruleI, string initialConditionI, EcaBoundary ecaBoundary) {
 	init(NI, ruleI, initialConditionI, ecaBoundary);
 }
+
 void EcaLogic::init(int NI, int ruleI, string initialConditionI, EcaBoundary ecaBoundary) {
 	N = NI;
 	ruleNumber = ruleI;

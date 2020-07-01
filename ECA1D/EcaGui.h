@@ -21,6 +21,7 @@ public:
 	void OnKeyDown(wxKeyEvent& event);
 };
 
+
 class DrawPane : public wxPanel {
 public:
 	EcaLogic* eca = nullptr;
@@ -34,6 +35,7 @@ public:
 
 	DECLARE_EVENT_TABLE()
 };
+
 
 class EcaGui : public wxApp {
 

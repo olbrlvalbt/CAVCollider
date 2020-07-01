@@ -17,7 +17,7 @@ bool EcaGui::OnInit() {
 	frame->SetSizer(sizer);
 	frame->SetAutoLayout(true);
 	frame->Show();
-	//frame->ShowFullScreen(true, wxFULLSCREEN_NOSTATUSBAR);
+
 	return true;
 }
 
