@@ -19,11 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EcaGui.h" />
+    <ClInclude Include="DrawPanel.h" />
+    <ClInclude Include="EcaApp.h" />
+    <ClInclude Include="EcaFrame.h" />
     <ClInclude Include="EcaLogic.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EcaGui.cpp" />
+    <ClCompile Include="DrawPanel.cpp" />
+    <ClCompile Include="EcaApp.cpp" />
+    <ClCompile Include="EcaFrame.cpp" />
     <ClCompile Include="EcaLogic.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

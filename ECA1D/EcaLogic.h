@@ -4,7 +4,6 @@
 
 using namespace std;
 
-
 enum EcaBoundary {ECABOUNDARY_PERIODIC, ECABOUNDARY_CLOSED};
 
 class EcaLogic {

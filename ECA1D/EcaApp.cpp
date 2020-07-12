@@ -1,31 +1,11 @@
-#include "EcaGui.h"
+#include "EcaApp.h"
 
-wxIMPLEMENT_APP(EcaGui);
+wxIMPLEMENT_APP(EcaApp);
 
-bool EcaGui::OnInit() {
+bool EcaApp::OnInit() {
 	mainFrame = new MainFrame();
 	mainFrame->SetAutoLayout(true);
 	mainFrame->Show();
-
-
-	/*EcaLogic* ecaLogic = new EcaLogic(NUMCELLS, RULE, INITIALCONDITION, ECABOUNDARY_PERIODIC);
-
-	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-	int numCells = NUMCELLS;
-	int cellSize = CELLSIZE;
-	int numIterations = NUMITERATIONS;
-	int textOffset = TEXTOFFSET;
-	frame = new EcaFrame(numCells * cellSize, numIterations * cellSize + textOffset);
-
-	drawPane = new DrawPane(frame, ecaLogic, numIterations, cellSize, textOffset);
-
-	drawPane->Bind(wxEVT_CHAR_HOOK, &EcaFrame::OnKeyDown, frame);
-	drawPane->SetSize(wxSize(numCells * cellSize, numIterations * cellSize + textOffset));
-	sizer->Add(drawPane, 1, wxEXPAND);
-
-	frame->SetSizer(sizer);
-	frame->SetAutoLayout(true);
-	frame->Show();*/
 
 	return true;
 }
@@ -108,12 +88,12 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->Add(cellSizeCtrl);
 
 	deadCellColorText = new wxStaticText(mainPanel, wxID_ANY, wxT("Dead cell (0) color:"));
-	deadCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColor(115, 35, 15));
+	deadCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(115, 35, 15));
 	fgs->Add(deadCellColorText);
 	fgs->Add(deadCellColorCtrl);
 
 	aliveCellColorText = new wxStaticText(mainPanel, wxID_ANY, wxT("Alive cell (1) color:"));
-	aliveCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColor(220, 170, 15));
+	aliveCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(220, 170, 15));
 	fgs->Add(aliveCellColorText);
 	fgs->Add(aliveCellColorCtrl);
 
@@ -243,120 +223,23 @@ void MainFrame::setNewNumCellsAfterEther() {
 }
 
 void MainFrame::CreateEcaEvent(wxCommandEvent& event) {
+	/*EcaLogic* ecaLogic = new EcaLogic(NUMCELLS, RULE, INITIALCONDITION, ECABOUNDARY_PERIODIC);
 
-}
+	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
+	int numCells = NUMCELLS;
+	int cellSize = CELLSIZE;
+	int numIterations = NUMITERATIONS;
+	int textOffset = TEXTOFFSET;
+	frame = new EcaFrame(numCells * cellSize, numIterations * cellSize + textOffset);
 
-EcaFrame::EcaFrame(int width, int height)
-		: wxFrame(nullptr, -1, wxT("ECA1D"), wxPoint(0, 0), wxSize(width, height)) {
+	drawPane = new DrawPane(frame, ecaLogic, numIterations, cellSize, textOffset);
 
-}
+	drawPane->Bind(wxEVT_CHAR_HOOK, &EcaFrame::OnKeyDown, frame);
+	drawPane->SetSize(wxSize(numCells * cellSize, numIterations * cellSize + textOffset));
+	sizer->Add(drawPane, 1, wxEXPAND);
 
-void EcaFrame::OnKeyDown(wxKeyEvent& event) {
-	switch ((int)event.GetKeyCode()) {
-		case 'n':
-		case 'N':
-			if (wxMessageBox("Create new random initial condition?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
-				((DrawPane*)drawPane)->eca->initialCondition = ((DrawPane*)drawPane)->eca->createRandomInitialCondition(((DrawPane*)drawPane)->eca->N);
-				((DrawPane*)drawPane)->eca->currentState = ((DrawPane*)drawPane)->eca->initialCondition;
-				((DrawPane*)drawPane)->currentShowingIteration = 1;
-				((DrawPane*)drawPane)->shouldRedraw = true;
-				drawPane->Refresh();
-			}
-			break;
-		case WXK_SPACE:
-			((DrawPane*)drawPane)->currentShowingIteration++;
-			((DrawPane*)drawPane)->shouldRedraw = true;
-			drawPane->Refresh();
-			break;
-		case 'r':
-		case 'R':
-			((DrawPane*)drawPane)->eca->currentState = ((DrawPane*)drawPane)->eca->initialCondition;
-			((DrawPane*)drawPane)->currentShowingIteration = 1;
-			((DrawPane*)drawPane)->shouldRedraw = true;
-			drawPane->Refresh();
-			break;
-		case 's':
-		case 'S':
-			((DrawPane*)drawPane)->saveToImage();
-			break;
-	}
-	event.Skip();
-}
+	frame->SetSizer(sizer);
+	frame->SetAutoLayout(true);
+	frame->Show();*/
 
-BEGIN_EVENT_TABLE(DrawPane, wxPanel)
-	EVT_PAINT(DrawPane::paintEvent)
-END_EVENT_TABLE()
-
-
-DrawPane::DrawPane(EcaFrame* parent, EcaLogic* ecaLogic, int numIterationsI, int cellSizeI, int textOffsetI = 30)
-		: wxPanel(parent) {
-	parent->drawPane = this;
-	eca = ecaLogic;
-	numIterations = numIterationsI;
-	cellSize = cellSizeI;
-	textOffset = textOffsetI;
-	wxInitAllImageHandlers();
-}
-
-void DrawPane::paintEvent(wxPaintEvent & evt) {
-	if(shouldRedraw) {
-		dc = new wxPaintDC(this);
-		render();
-	}
-}
-
-void DrawPane::render() {
-	//wxBrush* whiteBrush = new wxBrush(wxColor(200, 200, 200), wxBRUSHSTYLE_TRANSPARENT);
-	//wxBrush* blackBrush = new wxBrush(wxColor(0, 0, 0), wxBRUSHSTYLE_TRANSPARENT);
-	wxBrush* whiteBrush = new wxBrush(wxColor(220, 170, 15));
-	wxBrush* blackBrush = new wxBrush(wxColor(115, 35, 15));
-
-	dc->DrawText(wxT("Rule " + to_string(eca->ruleNumber)), 10, 10);
-	dc->DrawText(wxT("N = " + to_string(eca->N)), 100, 10);
-	dc->DrawText(wxT("Iterations " + to_string((currentShowingIteration - 1) * numIterations)
-					+ " through " + to_string((currentShowingIteration) * numIterations)), 200, 10);
-
-	dc->DrawText(wxT("" + to_string(currentShowingIteration)), 500, 10);
-
-	dc->SetPen(wxPen(wxColor(0, 0, 0), 1, wxPENSTYLE_TRANSPARENT));
-	
-	for (int j = 0; j < numIterations; j++) {
-
-		for (int i = 0; i < eca->N; i++) {
-			if(eca->currentState.at(i) == '1') {
-				dc->SetBrush(*blackBrush);
-			}
-			else {
-				dc->SetBrush(*whiteBrush);
-			}
-			dc->DrawRectangle(i * cellSize, j * cellSize + textOffset, cellSize, cellSize);
-		}
-
-		eca->applyRule();
-		//wxMilliSleep(1);
-	}
-	shouldRedraw = false;
-
-	saveToImage();
-}
-
-bool DrawPane::saveToImage() {
-	wxBitmap *screenshot = new wxBitmap(eca->N * cellSize, numIterations * cellSize + textOffset);
-
-	wxMemoryDC memDC;
-
-	memDC.SelectObject(*screenshot);
-	memDC.Blit(0, //Copy to this X coordinate
-		0, //Copy to this Y coordinate
-		eca->N * cellSize, //Copy this width
-		numIterations * cellSize + textOffset, //Copy this height
-		dc, //From where do we copy?
-		0, //What's the X offset in the original DC?
-		0  //What's the Y offset in the original DC?
-	);
-	memDC.SelectObject(wxNullBitmap);
-
-	screenshot->SaveFile("screenshot.jpg", wxBITMAP_TYPE_JPEG);
-	delete screenshot;
-	return true;
 }

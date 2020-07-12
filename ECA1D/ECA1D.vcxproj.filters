@@ -15,10 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EcaGui.h">
+    <ClInclude Include="EcaLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EcaLogic.h">
+    <ClInclude Include="EcaApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EcaFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -26,7 +32,13 @@
     <ClCompile Include="EcaLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EcaGui.cpp">
+    <ClCompile Include="EcaApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EcaFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
