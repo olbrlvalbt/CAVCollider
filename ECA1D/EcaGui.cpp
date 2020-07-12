@@ -34,13 +34,13 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	mainPanel = new wxPanel(this, wxID_ANY);
 
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-	wxFlexGridSizer* fgs = new wxFlexGridSizer(11, 2, 10, 20);
+	wxFlexGridSizer* fgs = new wxFlexGridSizer(14, 2, 10, 20);
 
 
 	ruleText = new wxStaticText(mainPanel, wxID_ANY, wxT("Rule:"));
-	ruleCtrl = new wxTextCtrl(mainPanel, wxID_ANY, to_string(RULE));
+	ruleCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("110"), wxDefaultPosition, wxSize(60, -1));
 	fgs->Add(ruleText);
-	fgs->Add(ruleCtrl, 1, wxEXPAND);
+	fgs->Add(ruleCtrl);
 
 	setRandomInitialConditionText = new wxStaticText(mainPanel, wxID_ANY, wxT("Set random initial condition:"));
 	setRandomInitialConditionBox = new wxCheckBox(mainPanel, wxID_ANY, "");
@@ -61,13 +61,13 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->Add(adjustNumCellsToInitialConditionBox);
 
 	numCellsText = new wxStaticText(mainPanel, wxID_ANY, wxT("N:"));
-	numCellsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("100"));
+	numCellsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("500"), wxDefaultPosition, wxSize(60, -1));
 	Connect(numCellsCtrl->GetId(), wxEVT_TEXT, wxCommandEventHandler(MainFrame::SetNewNumCellsAfterEtherEvent));
 	fgs->Add(numCellsText);
 	fgs->Add(numCellsCtrl);
 
 	numIterationsText = new wxStaticText(mainPanel, wxID_ANY, wxT("Iterations:"));
-	numIterationsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("300"));
+	numIterationsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("300"), wxDefaultPosition, wxSize(60, -1));
 	fgs->Add(numIterationsText);
 	fgs->Add(numIterationsCtrl);
 
@@ -76,11 +76,6 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->Add(setClosedBoundaryText);
 	fgs->Add(setClosedBoundaryBox);
 
-	cellSizeText = new wxStaticText(mainPanel, wxID_ANY, wxT("Cell size (px):"));
-	cellSizeCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("3"));
-	fgs->Add(cellSizeText);
-	fgs->Add(cellSizeCtrl);
-
 	fillEdgesWithRule110EtherText = new wxStaticText(mainPanel, wxID_ANY, wxT("Fill edges with rule 110 ether:"));
 	fillEdgesWithRule110EtherBox = new wxCheckBox(mainPanel, wxID_ANY, "");
 	Connect(fillEdgesWithRule110EtherBox->GetId(), wxEVT_CHECKBOX, wxCommandEventHandler(MainFrame::FillEdgesWithRule110EtherBoxEvent));
@@ -88,7 +83,7 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->Add(fillEdgesWithRule110EtherBox);
 
 	numEtherRule110ForEdgesText = new wxStaticText(mainPanel, wxID_ANY, wxT("Number of ether:"));
-	numEtherRule110ForEdgesCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, "1");
+	numEtherRule110ForEdgesCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(60, -1));
 	numEtherRule110ForEdgesText->Enable(false);
 	numEtherRule110ForEdgesCtrl->Enable(false);
 	Connect(numEtherRule110ForEdgesCtrl->GetId(), wxEVT_TEXT, wxCommandEventHandler(MainFrame::SetNewNumCellsAfterEtherEvent));
@@ -102,10 +97,28 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->Add(newNumCellsAfterEtherText);
 	fgs->Add(newNumCellsAfterEtherResult);
 
+	dummyText = new wxStaticText(mainPanel, wxID_ANY, wxT(" "));
+	dummyText->Enable(false);
+	fgs->Add(dummyText);
+	fgs->AddSpacer(0);
+
+	cellSizeText = new wxStaticText(mainPanel, wxID_ANY, wxT("Cell size (px):"));
+	cellSizeCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("3"), wxDefaultPosition, wxSize(60, -1));
+	fgs->Add(cellSizeText);
+	fgs->Add(cellSizeCtrl);
+
+	deadCellColorText = new wxStaticText(mainPanel, wxID_ANY, wxT("Dead cell (0) color:"));
+	deadCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColor(115, 35, 15));
+	fgs->Add(deadCellColorText);
+	fgs->Add(deadCellColorCtrl);
+
+	aliveCellColorText = new wxStaticText(mainPanel, wxID_ANY, wxT("Alive cell (1) color:"));
+	aliveCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColor(220, 170, 15));
+	fgs->Add(aliveCellColorText);
+	fgs->Add(aliveCellColorCtrl);
+
 	createEcaButton = new wxButton(mainPanel, wxID_ANY, wxT("Create ECA"));
-	Connect(createEcaButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MainFrame::CreateEca));
-
-
+	Connect(createEcaButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MainFrame::CreateEcaEvent));
 
 
 	fgs->AddGrowableCol(1, 1);
@@ -113,8 +126,9 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	vbox->Add(createEcaButton, 0, wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 30);
 
 	mainPanel->SetSizer(vbox);
-
 	Centre();
+	initialConditionCtrl->SetFocus();
+	initialConditionCtrl->SelectAll();
 }
 
 void MainFrame::SetRandomInitialConditionBoxEvent(wxCommandEvent& event) {
@@ -210,19 +224,25 @@ void MainFrame::setNewNumCellsAfterEther() {
 
 			newNumCells = initialConditionLength + (requiredEther * 14 * 2);
 			newNumCellsAfterEtherResult->SetLabel(to_string(newNumCells) + " (" + to_string(requiredEther) + "e added to fit N)");
-			
+
+			numEtherRule110ForEdgesText->Enable(false);
+			numEtherRule110ForEdgesCtrl->Enable(false);
 		}
 		else {
+			numEtherRule110ForEdgesText->Enable(true);
+			numEtherRule110ForEdgesCtrl->Enable(true);
+
 			int numEtherRule110ForEdges = numEtherRule110ForEdgesCtrl->GetValue();
 			newNumCells = initialConditionLength + (numEtherRule110ForEdges * 14 * 2);
 			newNumCellsAfterEtherResult->SetLabel(to_string(newNumCells));
+
 		}
 
 
 	}
 }
 
-void MainFrame::CreateEca(wxCommandEvent& event) {
+void MainFrame::CreateEcaEvent(wxCommandEvent& event) {
 
 }
 

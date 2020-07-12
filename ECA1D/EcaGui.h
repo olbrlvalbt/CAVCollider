@@ -1,18 +1,20 @@
 #pragma once
 #include "wx/wx.h"
 #include "wx/spinctrl.h"
+#include "wx/clrpicker.h"
 #include "wx/sizer.h"
 #include "EcaLogic.h"
 
+/*
 #define RULE 110
 #define INITIALCONDITION "1111100001000111110101111100010011011111000100110111110000101100100110111110001110110010110111110001000110011000111110001001101111100010011011111011111101111101011111000100110111110001001101111100001000111110101111100010011011111000100110011000111111000100110111110001001101111100010011011111000101101000011011111001111101110011011101110011000010011011111000100110111110001001101110001110110001001101111100010011011111000100110011000111111000100110"
 #define NUMCELLS sizeof(INITIALCONDITION) - 1
 #define NUMITERATIONS 200
 #define CELLSIZE 3
-//#define NUMCELLS 1300
-//#define NUMITERATIONS 700
-//#define CELLSIZE 1
-#define TEXTOFFSET 30
+#define NUMCELLS 1300
+#define NUMITERATIONS 700
+#define CELLSIZE 1
+#define TEXTOFFSET 30*/
 
 class EcaFrame : public wxFrame {
 public:
@@ -46,7 +48,7 @@ public:
 	wxPanel* mainPanel;
 
 	wxStaticText* ruleText;
-	wxTextCtrl* ruleCtrl;
+	wxSpinCtrl* ruleCtrl;
 
 	wxStaticText* setRandomInitialConditionText;
 	wxCheckBox* setRandomInitialConditionBox;
@@ -56,9 +58,6 @@ public:
 
 	wxStaticText* adjustNumCellsToInitialConditionText;
 	wxCheckBox* adjustNumCellsToInitialConditionBox;
-
-	wxStaticText* numCellsText;
-	wxSpinCtrl* numCellsCtrl;
 
 	wxStaticText* numIterationsText;
 	wxSpinCtrl* numIterationsCtrl;
@@ -78,6 +77,17 @@ public:
 	wxStaticText* newNumCellsAfterEtherText;
 	wxStaticText* newNumCellsAfterEtherResult;
 
+	wxStaticText* dummyText;
+
+	wxStaticText* numCellsText;
+	wxSpinCtrl* numCellsCtrl;
+
+	wxStaticText* deadCellColorText;
+	wxColourPickerCtrl* deadCellColorCtrl;
+
+	wxStaticText* aliveCellColorText;
+	wxColourPickerCtrl* aliveCellColorCtrl;
+
 	wxButton* createEcaButton;
 
 	MainFrame();
@@ -86,7 +96,7 @@ public:
 	void AdjustNumCellsToInitialConditionBoxEvent(wxCommandEvent& event);
 	void FillEdgesWithRule110EtherBoxEvent(wxCommandEvent& event);
 	void SetNewNumCellsAfterEtherEvent(wxCommandEvent& event);
-	void CreateEca(wxCommandEvent& event);
+	void CreateEcaEvent(wxCommandEvent& event);
 
 	void setNewNumCellsAfterEther();
 };
