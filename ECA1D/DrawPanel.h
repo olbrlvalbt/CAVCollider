@@ -3,6 +3,7 @@
 #include <wx/wx.h>
 #include <wx/sizer.h>
 #include <wx/dcbuffer.h>
+#include <wx/progdlg.h>
 
 #include "EcaLogic.h"
 

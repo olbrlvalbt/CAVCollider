@@ -10,7 +10,8 @@ bool EcaApp::OnInit() {
 	return true;
 }
 
-MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition, wxSize(500, 700)) {
+MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition, wxSize(500, 700),
+								 wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
 	mainPanel = new wxPanel(this, wxID_ANY);
 
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);

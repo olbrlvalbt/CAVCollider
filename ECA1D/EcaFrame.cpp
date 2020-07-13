@@ -3,7 +3,8 @@
 EcaFrame::EcaFrame(EcaLogic* ecaLogic, int numIterations, int cellSize = 1,
 				   wxColour deadCellColor = wxColour(220, 170, 15),
 				   wxColour aliveCellColor = wxColour(115, 35, 15))
-		: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(ecaLogic->ruleNumber) + " - N: " + to_string(ecaLogic->N))) {
+		: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(ecaLogic->ruleNumber) + " - N: " + to_string(ecaLogic->N)),
+				  wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
 	initEcaFrame(ecaLogic, numIterations, cellSize, deadCellColor, aliveCellColor);
 }
 

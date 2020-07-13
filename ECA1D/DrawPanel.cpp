@@ -28,6 +28,8 @@ void DrawPanel::paintEvent(wxPaintEvent & evt) {
 }
 
 void DrawPanel::render(wxDC& dc) {
+	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", numIterations, GetParent(), wxPD_AUTO_HIDE);
+	
 	dc.DrawText(wxT("Rule " + to_string(eca->ruleNumber)), 10, 10);
 	dc.DrawText(wxT("N = " + to_string(eca->N)), 100, 10);
 	dc.DrawText(wxT("Iterations " + to_string((currentShowingIteration - 1) * numIterations)
@@ -38,6 +40,7 @@ void DrawPanel::render(wxDC& dc) {
 	dc.SetPen(wxPen(wxColor(0, 0, 0), 1, wxPENSTYLE_TRANSPARENT));
 
 	for (int j = 0; j < numIterations; j++) {
+		progress->Update(j);
 
 		for (int i = 0; i < eca->N; i++) {
 			if (eca->currentState.at(i) == '1') {
@@ -55,6 +58,7 @@ void DrawPanel::render(wxDC& dc) {
 	shouldRedraw = false;
 
 	saveToImage(dc);
+	progress->Update(numIterations);
 }
 
 bool DrawPanel::saveToImage(wxDC& dc) {
