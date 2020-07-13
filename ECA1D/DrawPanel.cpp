@@ -30,12 +30,12 @@ void DrawPanel::paintEvent(wxPaintEvent & evt) {
 void DrawPanel::render(wxDC& dc) {
 	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", numIterations, GetParent(), wxPD_AUTO_HIDE);
 	
-	dc.DrawText(wxT("Rule " + to_string(eca->ruleNumber)), 10, 10);
+	/*dc.DrawText(wxT("Rule " + to_string(eca->ruleNumber)), 10, 10);
 	dc.DrawText(wxT("N = " + to_string(eca->N)), 100, 10);
 	dc.DrawText(wxT("Iterations " + to_string((currentShowingIteration - 1) * numIterations)
 		+ " through " + to_string((currentShowingIteration)* numIterations)), 200, 10);
 
-	dc.DrawText(wxT("" + to_string(currentShowingIteration)), 500, 10);
+	dc.DrawText(wxT("" + to_string(currentShowingIteration)), 500, 10);*/
 
 	dc.SetPen(wxPen(wxColor(0, 0, 0), 1, wxPENSTYLE_TRANSPARENT));
 
@@ -55,9 +55,16 @@ void DrawPanel::render(wxDC& dc) {
 		eca->applyRule();
 		//wxMilliSleep(1);
 	}
+
+	GetParent()->SetLabel("ECA R" + to_string(eca->ruleNumber) + ", N: " + to_string(eca->N)
+						  + ", Iterations " + to_string((currentShowingIteration - 1) * numIterations)
+						  + "-" + to_string(currentShowingIteration * numIterations - 1)
+						  + " (" + to_string(currentShowingIteration) + ")");
+
 	shouldRedraw = false;
 
 	saveToImage(dc);
+
 	progress->Update(numIterations);
 }
 
