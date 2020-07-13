@@ -47,7 +47,7 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->Add(numCellsCtrl);
 
 	numIterationsText = new wxStaticText(mainPanel, wxID_ANY, wxT("Iterations:"));
-	numIterationsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("300"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 100000);
+	numIterationsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("200"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 100000);
 	fgs->Add(numIterationsText);
 	fgs->Add(numIterationsCtrl);
 

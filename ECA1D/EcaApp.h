@@ -1,8 +1,10 @@
 #pragma once
-#include "wx/wx.h"
-#include "wx/spinctrl.h"
-#include "wx/clrpicker.h"
-#include "wx/sizer.h"
+
+#include <wx/wx.h>
+#include <wx/sizer.h>
+#include <wx/spinctrl.h>
+#include <wx/clrpicker.h>
+
 #include "EcaLogic.h"
 #include "EcaFrame.h"
 
