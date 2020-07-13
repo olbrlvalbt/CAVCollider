@@ -36,6 +36,7 @@ void EcaLogic::init(int _N, int _rule, string _initialCondition, int numEtherRul
 
 	int initialConditionLength = _initialCondition.length();
 
+	initialCondition = _initialCondition;
 	if (numEtherRule110ForEdges > 0) {
 		if (initialConditionLength < _N) {
 			int requiredEther = ((_N - initialConditionLength) / 2) / 14;
@@ -54,8 +55,6 @@ void EcaLogic::init(int _N, int _rule, string _initialCondition, int numEtherRul
 		}
 	}
 	else {
-		initialCondition = _initialCondition;
-
 		if (initialConditionLength < _N) {
 			N = _N;
 
