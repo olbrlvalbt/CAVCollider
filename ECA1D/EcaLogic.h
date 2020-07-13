@@ -9,20 +9,22 @@ enum EcaBoundary {ECABOUNDARY_PERIODIC, ECABOUNDARY_CLOSED};
 class EcaLogic {
 public:
 	int N = 100;
-	int ruleNumber = 0;
+	int ruleNumber = 110;
 	string rule = "";
 	string initialCondition = "";
 	string currentState = "";
 	EcaBoundary boundaryType = ECABOUNDARY_PERIODIC;
 
+	const string Rule110Ether = "11111000100110";
+
 private:
 	string auxState;
-	void init(int NI, int ruleI, string initialConditionI, EcaBoundary boundaryType = ECABOUNDARY_PERIODIC);
+	void init(int _N, int _rule, string _initialCondition, int numEtherRule110ForEdges, EcaBoundary boundaryType);
 
 public:
-	EcaLogic(int NI, int ruleI, int initialConditionI, EcaBoundary boundaryType = ECABOUNDARY_PERIODIC);
-	EcaLogic(int NI, int ruleI, string initialConditionI, EcaBoundary boundaryType = ECABOUNDARY_PERIODIC);
-	~EcaLogic();
+	EcaLogic(int _N, int _rule, EcaBoundary boundaryType);
+	EcaLogic(int _N, int _rule, int _initialCondition, int numEtherRule110ForEdges, EcaBoundary boundaryType);
+	EcaLogic(int _N, int _rule, string _initialCondition, int numEtherRule110ForEdges, EcaBoundary boundaryType);
 	
 	string createRandomInitialCondition(int N);
 	string applyRule();

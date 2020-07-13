@@ -1,36 +1,75 @@
 #include "EcaLogic.h"
 
-EcaLogic::EcaLogic(int NI, int ruleI, int initialConditionI, EcaBoundary ecaBoundary) {
-	if (initialConditionI == -1) {
-		init(NI, ruleI, createRandomInitialCondition(NI), ecaBoundary);
+EcaLogic::EcaLogic(int _N, int _rule, EcaBoundary ecaBoundary = ECABOUNDARY_PERIODIC) {
+	if (_N < 3) {
+		_N = 3;
+	}
+	init(_N, _rule, createRandomInitialCondition(_N), 0, ecaBoundary);
+}
+
+EcaLogic::EcaLogic(int _N, int _rule, int _initialCondition, int numEtherRule110ForEdges = 0, EcaBoundary ecaBoundary = ECABOUNDARY_PERIODIC) {
+	if (_N < 3 && numEtherRule110ForEdges == 0) {
+		_N = 3;
+	}
+	if (_initialCondition == -1) {
+		init(_N, _rule, createRandomInitialCondition(_N), numEtherRule110ForEdges, ecaBoundary);
 	}
 	else {
-		init(NI, ruleI, toBinary(initialConditionI), ecaBoundary);
+		init(_N, _rule, toBinary(_initialCondition), numEtherRule110ForEdges, ecaBoundary);
 	}
 }
 
-EcaLogic::EcaLogic(int NI, int ruleI, string initialConditionI, EcaBoundary ecaBoundary) {
-	init(NI, ruleI, initialConditionI, ecaBoundary);
+EcaLogic::EcaLogic(int _N, int _rule, string _initialCondition, int numEtherRule110ForEdges = 0, EcaBoundary ecaBoundary = ECABOUNDARY_PERIODIC) {
+	if (_N < 3 && numEtherRule110ForEdges == 0) {
+		_N = 3;
+	}
+	init(_N, _rule, _initialCondition, numEtherRule110ForEdges, ecaBoundary);
 }
 
-void EcaLogic::init(int NI, int ruleI, string initialConditionI, EcaBoundary ecaBoundary) {
-	N = NI;
-	ruleNumber = ruleI;
-	rule = toBinary(ruleI);
+void EcaLogic::init(int _N, int _rule, string _initialCondition, int numEtherRule110ForEdges = 0, EcaBoundary ecaBoundary = ECABOUNDARY_PERIODIC) {
+	ruleNumber = _rule;
+	rule = toBinary(_rule);
 	for (int i = rule.length(); i < 8; i++) {
 		rule = "0" + rule;
 	}
-	initialCondition = initialConditionI;
-	for (int i = initialCondition.length(); i < N; i++) {
-		initialCondition = "0" + initialCondition;
+	boundaryType = ecaBoundary;
+
+	int initialConditionLength = _initialCondition.length();
+
+	if (numEtherRule110ForEdges > 0) {
+		if (initialConditionLength < _N) {
+			int requiredEther = ((_N - initialConditionLength) / 2) / 14;
+			requiredEther++;
+
+			N = initialConditionLength + (requiredEther * 14 * 2);
+			for (int i = 0; i < requiredEther; i++) {
+				initialCondition = Rule110Ether + initialCondition + Rule110Ether;
+			}
+		}
+		else {
+			N = initialConditionLength + (numEtherRule110ForEdges * 14 * 2);
+			for (int i = 0; i < numEtherRule110ForEdges; i++) {
+				initialCondition = Rule110Ether + initialCondition + Rule110Ether;
+			}
+		}
 	}
+	else {
+		initialCondition = _initialCondition;
+
+		if (initialConditionLength < _N) {
+			N = _N;
+
+			for (int i = initialConditionLength; i < N; i++) {
+				initialCondition = "0" + initialCondition;
+			}
+		}
+		else {
+			N = initialConditionLength;
+		}
+	}
+
 	currentState = initialCondition;
 	auxState = currentState;
-
-	boundaryType = ecaBoundary;
-}
-
-EcaLogic::~EcaLogic() {
 }
 
 string EcaLogic::createRandomInitialCondition(int N) {
@@ -43,15 +82,78 @@ string EcaLogic::createRandomInitialCondition(int N) {
 }
 
 string EcaLogic::applyRule() {
+	/*char prev;
+	char cur;
+	char next;
+
+	int boundaryInterval;
+	switch (boundaryType) {
+		case ECABOUNDARY_CLOSED:
+			currentState.at(0) = '0';
+			currentState.at(N - 1) = '0';
+			boundaryInterval = 1;
+			break;
+		case ECABOUNDARY_PERIODIC:
+		default:
+			boundaryInterval = -1;
+	}
+
+	prev = currentState.at(0);
+	cur = currentState.at(1);
+	for (int i = boundaryInterval; i < N - boundaryInterval; i++) {
+		next = currentState.at((i + 1 + N) % N);
+
+		if (prev == '1') {
+			if (cur == '1') {
+				if (next == '1') { // 111
+					auxState.at((i + N) % N) = rule.at(0);
+				}
+				else { // 110
+					auxState.at((i + N) % N) = rule.at(1);
+				}
+			}
+			else {
+				if (next == '1') { // 101
+					auxState.at((i + N) % N) = rule.at(2);
+				}
+				else { // 100
+					auxState.at((i + N) % N) = rule.at(3);
+				}
+			}
+		}
+		else {
+			if (cur == '1') {
+				if (next == '1') { // 011
+					auxState.at((i + N) % N) = rule.at(4);
+				}
+				else { // 010
+					auxState.at((i + N) % N) = rule.at(5);
+				}
+			}
+			else {
+				if (next == '1') { // 001
+					auxState.at((i + N) % N) = rule.at(6);
+				}
+				else { // 000
+					auxState.at((i + N) % N) = rule.at(7);
+				}
+			}
+		}
+		prev = cur;
+		cur = next;
+	}
+
+	currentState = auxState;
+	return auxState;*/
+	char prev, cur, next;
 	for (int i = 0; i < N; i++) {
-		char prev, cur, next;
 		if (i == 0) {
 			switch (boundaryType) {
-				case ECABOUNDARY_CLOSED:
-					prev = '0';
-					break;
-				default:
-					prev = currentState.at(N - 1);
+			case ECABOUNDARY_CLOSED:
+				prev = '0';
+				break;
+			default:
+				prev = currentState.at(N - 1);
 			}
 		}
 		else {
@@ -87,7 +189,7 @@ string EcaLogic::applyRule() {
 				else { // 100
 					auxState.at(i) = rule.at(3);
 				}
-			
+
 			}
 		}
 		else {

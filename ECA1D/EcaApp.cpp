@@ -18,7 +18,7 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 
 
 	ruleText = new wxStaticText(mainPanel, wxID_ANY, wxT("Rule:"));
-	ruleCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("110"), wxDefaultPosition, wxSize(60, -1));
+	ruleCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("110"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 0, 255);
 	fgs->Add(ruleText);
 	fgs->Add(ruleCtrl);
 
@@ -41,13 +41,13 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->Add(adjustNumCellsToInitialConditionBox);
 
 	numCellsText = new wxStaticText(mainPanel, wxID_ANY, wxT("N:"));
-	numCellsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("500"), wxDefaultPosition, wxSize(60, -1));
+	numCellsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("500"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 3, 100000);
 	Connect(numCellsCtrl->GetId(), wxEVT_TEXT, wxCommandEventHandler(MainFrame::SetNewNumCellsAfterEtherEvent));
 	fgs->Add(numCellsText);
 	fgs->Add(numCellsCtrl);
 
 	numIterationsText = new wxStaticText(mainPanel, wxID_ANY, wxT("Iterations:"));
-	numIterationsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("300"), wxDefaultPosition, wxSize(60, -1));
+	numIterationsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("300"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 100000);
 	fgs->Add(numIterationsText);
 	fgs->Add(numIterationsCtrl);
 
@@ -63,7 +63,7 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->Add(fillEdgesWithRule110EtherBox);
 
 	numEtherRule110ForEdgesText = new wxStaticText(mainPanel, wxID_ANY, wxT("Number of ether:"));
-	numEtherRule110ForEdgesCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(60, -1));
+	numEtherRule110ForEdgesCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("2"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 0, 10000);
 	numEtherRule110ForEdgesText->Enable(false);
 	numEtherRule110ForEdgesCtrl->Enable(false);
 	Connect(numEtherRule110ForEdgesCtrl->GetId(), wxEVT_TEXT, wxCommandEventHandler(MainFrame::SetNewNumCellsAfterEtherEvent));
@@ -83,17 +83,17 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->AddSpacer(0);
 
 	cellSizeText = new wxStaticText(mainPanel, wxID_ANY, wxT("Cell size (px):"));
-	cellSizeCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("3"), wxDefaultPosition, wxSize(60, -1));
+	cellSizeCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("3"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 100);
 	fgs->Add(cellSizeText);
 	fgs->Add(cellSizeCtrl);
 
 	deadCellColorText = new wxStaticText(mainPanel, wxID_ANY, wxT("Dead cell (0) color:"));
-	deadCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(115, 35, 15));
+	deadCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(220, 170, 15));
 	fgs->Add(deadCellColorText);
 	fgs->Add(deadCellColorCtrl);
 
 	aliveCellColorText = new wxStaticText(mainPanel, wxID_ANY, wxT("Alive cell (1) color:"));
-	aliveCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(220, 170, 15));
+	aliveCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(115, 35, 15));
 	fgs->Add(aliveCellColorText);
 	fgs->Add(aliveCellColorCtrl);
 
@@ -217,12 +217,61 @@ void MainFrame::setNewNumCellsAfterEther() {
 			newNumCellsAfterEtherResult->SetLabel(to_string(newNumCells));
 
 		}
-
-
 	}
 }
 
 void MainFrame::CreateEcaEvent(wxCommandEvent& event) {
+	EcaLogic* eca;
+
+	int rule = ruleCtrl->GetValue();
+	int numIterations = numIterationsCtrl->GetValue();
+	bool setClosedBoundary = setClosedBoundaryBox->GetValue();
+
+	int cellSize = cellSizeCtrl->GetValue();
+	wxColour deadCellColor = deadCellColorCtrl->GetColour();
+	wxColour aliveCellColor = aliveCellColorCtrl->GetColour();
+
+	int N;
+	string initialCondition;
+	int numEtherRule110ForEdges = 0;
+
+	if (setRandomInitialConditionBox->GetValue()) {
+		N = numCellsCtrl->GetValue();
+
+		eca = new EcaLogic(N, rule, setClosedBoundary ? ECABOUNDARY_CLOSED : ECABOUNDARY_PERIODIC);
+	}
+	else {
+		initialCondition =  initialConditionCtrl->GetValue().ToStdString();
+
+		//Validar
+
+		if (adjustNumCellsToInitialConditionBox->GetValue()) {
+			N = initialCondition.length();
+			if (fillEdgesWithRule110EtherBox->GetValue()) {
+				numEtherRule110ForEdges = numEtherRule110ForEdgesCtrl->GetValue();
+			}
+		}
+		else {
+			N = numCellsCtrl->GetValue();
+			if (fillEdgesWithRule110EtherBox->GetValue()) {
+				if (initialCondition.length() < N) {
+					numEtherRule110ForEdges = 1;
+				}
+				else {
+					numEtherRule110ForEdges = numEtherRule110ForEdgesCtrl->GetValue();
+
+				}
+			}
+		}
+
+		eca = new EcaLogic(N, rule, initialCondition, numEtherRule110ForEdges, setClosedBoundary ? ECABOUNDARY_CLOSED : ECABOUNDARY_PERIODIC);
+	}
+	 
+	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
+	EcaFrame* ecaFrame = new EcaFrame(eca, numIterations, cellSize, deadCellColor, aliveCellColor);
+
+	ecaFrame->Show();
+
 	/*EcaLogic* ecaLogic = new EcaLogic(NUMCELLS, RULE, INITIALCONDITION, ECABOUNDARY_PERIODIC);
 
 	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
