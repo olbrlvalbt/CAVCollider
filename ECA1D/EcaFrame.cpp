@@ -17,7 +17,7 @@ void EcaFrame::initEcaFrame(EcaLogic* ecaLogic, int numIterations, int cellSize,
 	SetClientSize(drawPanel->GetSize());
 	Center();
 
-	/*SetSize(1300, 700);
+	/*SetSize(700, 500);
 	wxBoxSizer* frameSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	drawPanel = new DrawPanel(this, ecaLogic, numIterations, cellSize, deadCellColor, aliveCellColor);

@@ -85,7 +85,7 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->AddSpacer(0);
 
 	cellSizeText = new wxStaticText(mainPanel, wxID_ANY, wxT("Cell size (px):"));
-	cellSizeCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("3"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 100);
+	cellSizeCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("3"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 20);
 	fgs->Add(cellSizeText);
 	fgs->Add(cellSizeCtrl);
 
