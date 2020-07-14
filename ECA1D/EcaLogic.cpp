@@ -15,7 +15,7 @@ EcaLogic::EcaLogic(int _N, int _rule, int _initialCondition, int numEtherRule110
 		init(_N, _rule, createRandomInitialCondition(_N), numEtherRule110ForEdges, ecaBoundary);
 	}
 	else {
-		init(_N, _rule, toBinary(_initialCondition), numEtherRule110ForEdges, ecaBoundary);
+		init(_N, _rule, ToBinary(_initialCondition), numEtherRule110ForEdges, ecaBoundary);
 	}
 }
 
@@ -28,13 +28,13 @@ EcaLogic::EcaLogic(int _N, int _rule, string _initialCondition, int numEtherRule
 
 void EcaLogic::init(int _N, int _rule, string _initialCondition, int numEtherRule110ForEdges = 0, EcaBoundary ecaBoundary = ECABOUNDARY_PERIODIC) {
 	ruleNumber = _rule;
-	rule = toBinary(_rule);
+	rule = ToBinary(_rule);
 	for (int i = rule.length(); i < 8; i++) {
 		rule = "0" + rule;
 	}
 	boundaryType = ecaBoundary;
 
-	_initialCondition = cleanString(_initialCondition);
+	_initialCondition = CleanString(_initialCondition);
 
 	int initialConditionLength = _initialCondition.length();
 
@@ -217,7 +217,7 @@ string EcaLogic::applyRule() {
 	return auxState;
 }
 
-string EcaLogic::toBinary(int n) {
+string EcaLogic::ToBinary(int n) {
 	string r = "";
 	while (n != 0) {
 		r = (n % 2 == 0 ? "0" : "1") + r;
@@ -226,7 +226,7 @@ string EcaLogic::toBinary(int n) {
 	return r;
 }
 
-string EcaLogic::cleanString(string s) {
+string EcaLogic::CleanString(string s) {
 	regex regexp("[^01]");
 	return regex_replace(s, regexp, "");
 }

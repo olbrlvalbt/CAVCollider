@@ -243,7 +243,7 @@ void MainFrame::CreateEcaEvent(wxCommandEvent& event) {
 		eca = new EcaLogic(N, rule, setClosedBoundary ? ECABOUNDARY_CLOSED : ECABOUNDARY_PERIODIC);
 	}
 	else {
-		initialCondition =  initialConditionCtrl->GetValue().ToStdString();
+		initialCondition = EcaLogic::CleanString(initialConditionCtrl->GetValue().ToStdString());
 
 		//Validar
 

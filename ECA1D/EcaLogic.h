@@ -29,7 +29,7 @@ public:
 	
 	string createRandomInitialCondition(int N);
 	string applyRule();
-	string toBinary(int n);
-	string cleanString(string s);
+	static string ToBinary(int n);
+	static string CleanString(string s);
 };
 
