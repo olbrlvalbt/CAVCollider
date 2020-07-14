@@ -10,7 +10,7 @@ bool EcaApp::OnInit() {
 	return true;
 }
 
-MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition, wxSize(500, 700),
+MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition, wxSize(600, 700),
 								 wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
 	mainPanel = new wxPanel(this, wxID_ANY);
 
@@ -30,10 +30,11 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	fgs->Add(setRandomInitialConditionBox);
 
 	initialConditionText = new wxStaticText(mainPanel, wxID_ANY, wxT("Initial Condition:"));
-	initialConditionCtrl = new wxTextCtrl(mainPanel, wxID_ANY, wxT("1"));
+	initialConditionCtrl = new wxTextCtrl(mainPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(-1, 100), wxTE_MULTILINE | wxTE_CHARWRAP);
 	Connect(initialConditionCtrl->GetId(), wxEVT_TEXT, wxCommandEventHandler(MainFrame::SetNewNumCellsAfterEtherEvent));
 	fgs->Add(initialConditionText);
 	fgs->Add(initialConditionCtrl, 1, wxEXPAND);
+	fgs->AddGrowableRow(2, 1);
 
 	adjustNumCellsToInitialConditionText = new wxStaticText(mainPanel, wxID_ANY, wxT("Adjust N to fit initial condition length:"));
 	adjustNumCellsToInitialConditionBox = new wxCheckBox(mainPanel, wxID_ANY, "");

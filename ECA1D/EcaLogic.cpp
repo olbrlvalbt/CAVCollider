@@ -34,6 +34,8 @@ void EcaLogic::init(int _N, int _rule, string _initialCondition, int numEtherRul
 	}
 	boundaryType = ecaBoundary;
 
+	_initialCondition = cleanString(_initialCondition);
+
 	int initialConditionLength = _initialCondition.length();
 
 	initialCondition = _initialCondition;
@@ -222,4 +224,9 @@ string EcaLogic::toBinary(int n) {
 		n /= 2;
 	}
 	return r;
+}
+
+string EcaLogic::cleanString(string s) {
+	regex regexp("[^01]");
+	return regex_replace(s, regexp, "");
 }

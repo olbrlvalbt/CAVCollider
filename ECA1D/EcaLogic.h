@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <regex>
 #include <time.h>
 
 using namespace std;
@@ -29,5 +30,6 @@ public:
 	string createRandomInitialCondition(int N);
 	string applyRule();
 	string toBinary(int n);
+	string cleanString(string s);
 };
 
