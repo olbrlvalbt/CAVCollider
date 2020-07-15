@@ -4,7 +4,7 @@ EcaLogic::EcaLogic(int _N, int _rule, EcaBoundary ecaBoundary = ECABOUNDARY_PERI
 	if (_N < 3) {
 		_N = 3;
 	}
-	init(_N, _rule, createRandomInitialCondition(_N), 0, ecaBoundary);
+	init(_N, _rule, CreateRandomInitialCondition(_N), 0, ecaBoundary);
 }
 
 EcaLogic::EcaLogic(int _N, int _rule, int _initialCondition, int numEtherRule110ForEdges = 0, EcaBoundary ecaBoundary = ECABOUNDARY_PERIODIC) {
@@ -12,7 +12,7 @@ EcaLogic::EcaLogic(int _N, int _rule, int _initialCondition, int numEtherRule110
 		_N = 3;
 	}
 	if (_initialCondition == -1) {
-		init(_N, _rule, createRandomInitialCondition(_N), numEtherRule110ForEdges, ecaBoundary);
+		init(_N, _rule, CreateRandomInitialCondition(_N), numEtherRule110ForEdges, ecaBoundary);
 	}
 	else {
 		init(_N, _rule, ToBinary(_initialCondition), numEtherRule110ForEdges, ecaBoundary);
@@ -73,7 +73,7 @@ void EcaLogic::init(int _N, int _rule, string _initialCondition, int numEtherRul
 	auxState = currentState;
 }
 
-string EcaLogic::createRandomInitialCondition(int N) {
+string EcaLogic::CreateRandomInitialCondition(int N) {
 	srand(time(NULL));
 	string newInitial = "";
 	for (int i = 0; i < N; i++) {

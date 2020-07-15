@@ -27,8 +27,8 @@ public:
 	EcaLogic(int _N, int _rule, int _initialCondition, int numEtherRule110ForEdges, EcaBoundary boundaryType);
 	EcaLogic(int _N, int _rule, string _initialCondition, int numEtherRule110ForEdges, EcaBoundary boundaryType);
 	
-	string createRandomInitialCondition(int N);
 	string applyRule();
+	static string CreateRandomInitialCondition(int N);
 	static string ToBinary(int n);
 	static string CleanString(string s);
 };

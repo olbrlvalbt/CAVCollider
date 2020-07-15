@@ -103,7 +103,7 @@ void DrawPanel::OnKeyDown(wxKeyEvent& event) {
 	case 'n':
 	case 'N':
 		if (wxMessageBox("Create new random initial condition?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
-			eca->initialCondition = eca->createRandomInitialCondition(eca->N);
+			eca->initialCondition = eca->CreateRandomInitialCondition(eca->N);
 			eca->currentState = eca->initialCondition;
 			currentShowingIteration = 1;
 			createBitmap();
