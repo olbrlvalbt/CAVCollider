@@ -8,6 +8,7 @@
 
 class EcaFrame : public wxFrame {
 public:
+	const wxSize MaxFrameSize = wxSize(1000, 800);
 	DrawPanel* drawPanel = nullptr;
 
 	void initEcaFrame(EcaLogic* ecaLogic, int _numIterations, int _cellSize,

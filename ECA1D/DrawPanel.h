@@ -10,7 +10,8 @@
 class DrawPanel : public wxScrolledWindow {
 public:
 	EcaLogic* eca = nullptr;
-	bool shouldRedraw = true;
+	wxBitmap* bitmap;
+
 	int numIterations = 1;
 	int currentShowingIteration = 1;
 	int cellSize = 1;
@@ -23,7 +24,8 @@ public:
 	void paintEvent(wxPaintEvent & evt);
 	void OnKeyDown(wxKeyEvent& event);
 
-	void render(wxDC& dc);
-	bool saveToImage(wxDC& dc);
+	void render();
+	void createBitmap();
+	bool saveToImage(wxBufferedDC& dc);
 };
 

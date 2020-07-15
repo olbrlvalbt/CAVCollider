@@ -11,36 +11,42 @@ DrawPanel::DrawPanel(wxWindow * parent, EcaLogic * ecaLogic, int _numIterations,
 	deadCellBrushColor = new wxBrush(_deadCellColor);
 	aliveCellBrushColor = new wxBrush(_aliveCellColor);
 
-	Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(DrawPanel::paintEvent));
-	Connect(GetId(), wxEVT_CHAR_HOOK, wxKeyEventHandler(DrawPanel::OnKeyDown));
 	wxInitAllImageHandlers();
-
-	//SetScrollbars(1, 1, eca->N * cellSize, numIterations * cellSize, 0, 0);
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
+	createBitmap();
+
+	Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(DrawPanel::paintEvent));
+	Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(DrawPanel::OnKeyDown));
+
+
 	SetClientSize(eca->N * cellSize, numIterations * cellSize);
+	SetScrollbars(1, 1, eca->N * cellSize, numIterations * cellSize, 0, 0);
 }
 
 void DrawPanel::paintEvent(wxPaintEvent & evt) {
-	if (shouldRedraw) {
-		wxAutoBufferedPaintDC dc(this);
-		render(dc);
-	}
+	render();
 }
 
-void DrawPanel::render(wxDC& dc) {
-	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", numIterations, GetParent(), wxPD_AUTO_HIDE);
-	
-	/*dc.DrawText(wxT("Rule " + to_string(eca->ruleNumber)), 10, 10);
-	dc.DrawText(wxT("N = " + to_string(eca->N)), 100, 10);
-	dc.DrawText(wxT("Iterations " + to_string((currentShowingIteration - 1) * numIterations)
-		+ " through " + to_string((currentShowingIteration)* numIterations)), 200, 10);
+void DrawPanel::render() {
+	wxClientDC paintDC(this);
+	DoPrepareDC(paintDC);
+	paintDC.DrawBitmap(*bitmap, 0, 0, true);
+}
 
-	dc.DrawText(wxT("" + to_string(currentShowingIteration)), 500, 10);*/
+void DrawPanel::createBitmap() {
+	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
+
+	bitmap = new wxBitmap(eca->N * cellSize, numIterations * cellSize);
+
+	wxMemoryDC dc(*bitmap);
+	int k = 0;
 
 	dc.SetPen(wxPen(wxColor(0, 0, 0), 1, wxPENSTYLE_TRANSPARENT));
 
 	for (int j = 0; j < numIterations; j++) {
-		progress->Update(j);
+		if ((j * 100) % numIterations == 0) {
+			progress->Update(k++);
+		}
 
 		for (int i = 0; i < eca->N; i++) {
 			if (eca->currentState.at(i) == '1') {
@@ -53,22 +59,25 @@ void DrawPanel::render(wxDC& dc) {
 		}
 
 		eca->applyRule();
-		//wxMilliSleep(1);
 	}
 
 	GetParent()->SetLabel("ECA R" + to_string(eca->ruleNumber) + ", N: " + to_string(eca->N)
-						  + ", Iterations " + to_string((currentShowingIteration - 1) * numIterations)
-						  + "-" + to_string(currentShowingIteration * numIterations - 1)
-						  + " (" + to_string(currentShowingIteration) + ")");
+		+ ", Iterations " + to_string((currentShowingIteration - 1) * numIterations)
+		+ "-" + to_string(currentShowingIteration * numIterations - 1)
+		+ " (" + to_string(currentShowingIteration) + ")");
 
-	shouldRedraw = false;
+	dc.SelectObject(wxNullBitmap);
 
-	saveToImage(dc);
+	progress->Update(100);
 
-	progress->Update(numIterations);
+	progress = new wxProgressDialog("Rendering", "Painting image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
+
+	bitmap->SaveFile("screenshot.jpg", wxBITMAP_TYPE_JPEG);
+
+	progress->Update(100);
 }
 
-bool DrawPanel::saveToImage(wxDC& dc) {
+bool DrawPanel::saveToImage(wxBufferedDC& dc) {
 	wxBitmap *screenshot = new wxBitmap(eca->N * cellSize, numIterations * cellSize);
 
 	wxMemoryDC memDC;
@@ -97,20 +106,20 @@ void DrawPanel::OnKeyDown(wxKeyEvent& event) {
 			eca->initialCondition = eca->createRandomInitialCondition(eca->N);
 			eca->currentState = eca->initialCondition;
 			currentShowingIteration = 1;
-			shouldRedraw = true;
+			createBitmap();
 			Refresh();
 		}
 		break;
 	case WXK_SPACE:
 		currentShowingIteration++;
-		shouldRedraw = true;
+		createBitmap();
 		Refresh();
 		break;
 	case 'r':
 	case 'R':
 		eca->currentState = eca->initialCondition;
 		currentShowingIteration = 1;
-		shouldRedraw = true;
+		createBitmap();
 		Refresh();
 		break;
 	case 's':
