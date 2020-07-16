@@ -23,12 +23,17 @@
     <ClInclude Include="EcaApp.h" />
     <ClInclude Include="EcaFrame.h" />
     <ClInclude Include="EcaLogic.h" />
+    <ClInclude Include="Rule110.h" />
+    <ClInclude Include="Rule110Glider.h" />
+    <ClInclude Include="Rule110GliderConstants.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawPanel.cpp" />
     <ClCompile Include="EcaApp.cpp" />
     <ClCompile Include="EcaFrame.cpp" />
     <ClCompile Include="EcaLogic.cpp" />
+    <ClCompile Include="Rule110.cpp" />
+    <ClCompile Include="Rule110Glider.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
