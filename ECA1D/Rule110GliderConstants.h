@@ -4,6 +4,7 @@
 #include <array>
 #include <vector>
 
+#define Glider std::vector<std::array<std::string, 4>>
 
 static const std::string ETHER[4] = {
 	"11111000100110",
@@ -12,7 +13,7 @@ static const std::string ETHER[4] = {
 	"10111110001001"
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_A {
+static const Glider GLIDER_A {
 	{
 		"111110",
 		"11111000111000100110",
@@ -21,7 +22,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_A {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_A4 = {
+static const Glider GLIDER_A4 = {
 	{
 		"1111101110",
 		"111110001110111000100110",
@@ -30,7 +31,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_A4 = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_B = {
+static const Glider GLIDER_B = {
 	{
 		"11111010",
 		"11111000",
@@ -39,7 +40,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_B = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_Bbar = {
+static const Glider GLIDER_Bbar = {
 	{
 		"1111100010110111100110",
 		"111110001001111111001011111000100110",
@@ -60,7 +61,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_Bbar = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_Bcirc = {
+static const Glider GLIDER_Bcirc = {
 	{
 		"111110001011011110011001111111000100110",
 		"111110001001111111001011101100000100110",
@@ -81,7 +82,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_Bcirc = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_C1 = {
+static const Glider GLIDER_C1 = {
 	{
 		"111110000",
 		"11111000100011000100110",
@@ -96,7 +97,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_C1 = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_C2 = {
+static const Glider GLIDER_C2 = {
 	{
 		"11111000000100110",
 		"11111000100000110",
@@ -111,7 +112,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_C2 = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_C3 = {
+static const Glider GLIDER_C3 = {
 	{
 		"11111011010",
 		"1111100011111111000100110",
@@ -126,7 +127,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_C3 = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_D1 = {
+static const Glider GLIDER_D1 = {
 	{
 		"11111000010",
 		"1111100010001111000100110",
@@ -147,7 +148,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_D1 = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_D2 = {
+static const Glider GLIDER_D2 = {
 	{
 		"1111101011000100110",
 		"1111100011111100110",
@@ -168,7 +169,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_D2 = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_E = {
+static const Glider GLIDER_E = {
 	{
 		"1111100000000100110",
 		"1111100010000000110",
@@ -195,7 +196,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_E = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_E2 = {
+static const Glider GLIDER_E2 = {
 	{
 		"111110000000010011000100110",
 		"",
@@ -222,7 +223,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_E2 = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_E3 = {
+static const Glider GLIDER_E3 = {
 	{
 		"111110000000010011010",
 		"",
@@ -249,7 +250,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_E3 = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_E4 = {
+static const Glider GLIDER_E4 = {
 	{
 		"11111000000001001101011100110",
 		"",
@@ -276,7 +277,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_E4 = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_E5 = {
+static const Glider GLIDER_E5 = {
 	{
 		"1111100000000100110101110011000100110",
 		"",
@@ -303,7 +304,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_E5 = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_Ebar = {
+static const Glider GLIDER_Ebar = {
 	{
 		"111110000100011111010",
 		"111110001000110011000",
@@ -354,7 +355,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_Ebar = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_F = {
+static const Glider GLIDER_F = {
 	{
 		"111110001011010",
 		"11111000100111111111000100110",
@@ -417,7 +418,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_F = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_G = {
+static const Glider GLIDER_G = {
 	{
 		"111110100111110011100110",
 		"111110001110110001011010",
@@ -486,7 +487,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_G = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_H = {
+static const Glider GLIDER_H = {
 	{
 		"11111000101100000000111110001001101001111111000100110",
 		"11111000100111110000000110001001101111101100000100110",
@@ -639,7 +640,7 @@ static const std::vector<std::array<std::string, 4>> GLIDER_H = {
 	}
 };
 
-static const std::vector<std::array<std::string, 4>> GLIDER_GUN = {
+static const Glider GLIDER_GUN = {
 	{
 		"11111010110011101001100101111100000100110",
 		"11111000111111011011101110111100010000110",

@@ -73,8 +73,24 @@ string Rule110Glider::GetGlider(int _multiple, string _gliderId, string _gliderP
 
 string Rule110Glider::GetGlider(int _multiple, string _gliderId, char _gliderPhaseChar, int _gliderPhaseNum, int _etherPhase)
 {
+	auto it = GLIDERMAP.find(_gliderId);
+	if (it == GLIDERMAP.end()) {
+		return "";
+	}
 
+	Glider g = it->second;
+	int gliderPhase = (_gliderPhaseChar - 'a' + 1) + (8 * (_gliderPhaseNum - 1));
 
+	if (g.size() <= gliderPhase) {
+		return "";
+	}
 
-	return string();
+	string gliderString = g[gliderPhase][_etherPhase];
+
+	string multipleString = "";
+	for (int i = 0; i < _multiple; i++) {
+		multipleString += gliderString;
+	}
+
+	return multipleString;
 }

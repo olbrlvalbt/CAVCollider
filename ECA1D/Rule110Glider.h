@@ -15,7 +15,7 @@ public:
 	static string GetGlider(int _multiple, string _gliderId, char _gliderPhaseChar, int _gliderPhaseNum, int _etherPhase);
 };
 
-static const map<string, vector<array<string, 4>>> GLIDERMAP = {
+static const map<string, Glider> GLIDERMAP = {
    {"a", GLIDER_A},
    {"a4", GLIDER_A4},
    {"b", GLIDER_B},
