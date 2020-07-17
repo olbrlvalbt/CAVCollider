@@ -33,7 +33,7 @@
     <ClInclude Include="Rule110Glider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rule110GliderConstants.h">
+    <ClInclude Include="Rule110Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

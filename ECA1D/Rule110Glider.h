@@ -3,7 +3,7 @@
 #include <regex>
 #include <map>
 
-#include "Rule110GliderConstants.h"
+#include "Rule110Constants.h"
 
 using namespace std;
 

@@ -7,10 +7,7 @@ string Rule110Glider::GetGlider(string _expression) {
 	int gliderPhaseNum = 1;
 	int etherPhase = 1;
 
-	_expression.erase(remove_if(_expression.begin(), _expression.end(), isspace), _expression.end());
-	transform(_expression.begin(), _expression.end(), _expression.begin(), tolower);
-
-	regex gliderRegex("[0-9]*(gun|[a-h])([0-9]+|b(ar)?|c(irc)?|_|\\^)?\\(([a-h]([1-9][0-9]*)?,)?f[1-4]_1\\)");
+	regex gliderRegex(REGEX_GLIDER);
 	if (!regex_match(_expression, gliderRegex)) {
 		return "";
 	}
@@ -18,11 +15,11 @@ string Rule110Glider::GetGlider(string _expression) {
 	auto it = _expression.cbegin();
 
 	if (*it >= '0' && *it <= '9') {
-		multiple = *it;
+		multiple = *it - '0';
 		it++;
 
 		while (*it >= '0' && *it <= '9') {
-			multiple = multiple * 10 + *it;
+			multiple = multiple * 10 + *it - '0';
 			it++;
 		}
 	}
@@ -32,20 +29,14 @@ string Rule110Glider::GetGlider(string _expression) {
 	}
 	it++;
 
-	while (*it != ')' || *it != ',') {
-		if (*it >= '0' && *it <= '9') {
-
-		}
-		else {
-			gliderPhase += *it;
-
-		}
+	while (*it != ')' && *it != ',') {
+		gliderPhase += *it;
 		it++;
 	}
 
 	if (*it == ',') {
 		it += 2;
-		etherPhase = *it;
+		etherPhase = *it - '0';
 
 		return GetGlider(multiple, gliderId, gliderPhase, etherPhase);
 	}
@@ -79,13 +70,13 @@ string Rule110Glider::GetGlider(int _multiple, string _gliderId, char _gliderPha
 	}
 
 	Glider g = it->second;
-	int gliderPhase = (_gliderPhaseChar - 'a' + 1) + (8 * (_gliderPhaseNum - 1));
+	int gliderPhase = (_gliderPhaseChar - 'a') + (8 * (_gliderPhaseNum - 1));
 
 	if (g.size() <= gliderPhase) {
 		return "";
 	}
 
-	string gliderString = g[gliderPhase][_etherPhase];
+	string gliderString = g[gliderPhase][_etherPhase - 1];
 
 	string multipleString = "";
 	for (int i = 0; i < _multiple; i++) {

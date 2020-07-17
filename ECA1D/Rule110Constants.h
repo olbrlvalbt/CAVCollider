@@ -6,12 +6,18 @@
 
 #define Glider std::vector<std::array<std::string, 4>>
 
+
+static const std::string REGEX_MANUAL = "(0|1)[01]*";
+static const std::string REGEX_ETHER = "[0-9]*e";
+static const std::string REGEX_GLIDER = "[0-9]*(gun|[a-h])([0-9]+|b(ar)?|c(irc)?|_|\\^)?\\(([a-h]([1-9][0-9]*)?,)?f[1-4]_1\\)";
+
 static const std::string ETHER[4] = {
 	"11111000100110",
 	"10001001101111",
 	"10011011111000",
 	"10111110001001"
 };
+
 
 static const Glider GLIDER_A {
 	{

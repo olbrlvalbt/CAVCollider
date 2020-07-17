@@ -25,7 +25,7 @@
     <ClInclude Include="EcaLogic.h" />
     <ClInclude Include="Rule110.h" />
     <ClInclude Include="Rule110Glider.h" />
-    <ClInclude Include="Rule110GliderConstants.h" />
+    <ClInclude Include="Rule110Constants.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawPanel.cpp" />
