@@ -6,13 +6,25 @@
 
 #include "Rule110Constants.h"
 #include "Rule110Glider.h"
+#include "Rule110Composite.h"
 
 using namespace std;
 
 class Rule110 {
 public:
-	Rule110();
-	static string TranslateExpression(string _expression);
-	static string GetToken(string _token);
-	static string GetEtherMultiple(string _token);
+	static string Translate(string _s);
+	static string GetExpression(string _token);
+
+	static string GetEther(int _multiply);
+	static string GetMultiple(string _expression, int _multiple);
+
+	static bool IsBinaryString(string& _s);
+	static bool IsEther(string& _s);
+
+	static void Trim(string& _s);
+	static void ToLower(string& _s);
+	static void ToUpper(string& _s);
+
+private:
+	static string getEther(string _expression);
 };

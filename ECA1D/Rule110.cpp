@@ -1,48 +1,39 @@
 #include "Rule110.h"
 
-Rule110::Rule110() {
-
-}
-
-string Rule110::TranslateExpression(string _expression) {
+string Rule110::Translate(string _s) {
 	string translatedExpression = "";
 
-	_expression.erase(remove_if(_expression.begin(), _expression.end(), isspace), _expression.end());
-	transform(_expression.begin(), _expression.end(), _expression.begin(), tolower);
-
-	istringstream iss(_expression);
+	istringstream iss(_s);
 	string temp;
 	while (getline(iss, temp, '-')) {
-		translatedExpression += GetToken(temp);
+		translatedExpression += GetExpression(temp);
 	}
 
 	return translatedExpression;
 }
 
-string Rule110::GetToken(string _token) {
-	regex manual(REGEX_MANUAL);
-	if (regex_match(_token, manual)) {
+string Rule110::GetExpression(string _token) {
+	Trim(_token);
+
+	if (IsBinaryString(_token)) {
 		return _token;
 	}
 
-	regex ether(REGEX_ETHER);
-	if (regex_match(_token, ether)) {
-		return GetEtherMultiple(_token);
+	if (IsEther(_token)) {
+		return getEther(_token);
 	}
 
-	regex glider(REGEX_GLIDER);
-	if (regex_match(_token, glider)) {
-		return Rule110Glider::GetGlider(_token);
+	if (Rule110Composite::IsComposite(_token)) {
+		return Rule110Composite::GetComposite(_token);
 	}
 
 	return "";
 }
 
-string Rule110::GetEtherMultiple(string _token) {
+string Rule110::getEther(string _expression) {
 	int multiple = 1;
 
-	auto it = _token.cbegin();
-
+	auto it = _expression.cbegin();
 	if (*it >= '0' && *it <= '9') {
 		multiple = *it - '0';
 		it++;
@@ -52,10 +43,44 @@ string Rule110::GetEtherMultiple(string _token) {
 			it++;
 		}
 	}
+
+	return GetEther(multiple);
+}
+
+string Rule110::GetEther(int _multiple) {
+	return GetMultiple(ETHER_F1_1, _multiple);
+}
+
+string Rule110::GetMultiple(string _expression, int _multiple) {
+	if (!IsBinaryString(_expression)) {
+		return "";
+	}
+
 	string multipleString = "";
-	for (int i = 0; i < multiple; i++) {
-		multipleString += ETHER[0];
+	for (int i = 0; i < _multiple; i++) {
+		multipleString += _expression;
 	}
 
 	return multipleString;
+}
+
+bool Rule110::IsBinaryString(string& _s) {
+	return regex_match(_s, REGEX_BINARY);
+}
+
+bool Rule110::IsEther(string& _s) {
+	return regex_match(_s, REGEX_ETHER);
+}
+
+void Rule110::Trim(string& _s) {
+	_s.erase(remove_if(_s.begin(), _s.end(), isspace), _s.end());
+}
+
+void Rule110::ToLower(string & _s) {
+	transform(_s.begin(), _s.end(), _s.begin(), tolower);
+}
+
+
+void Rule110::ToUpper(string & _s) {
+	transform(_s.begin(), _s.end(), _s.begin(), toupper);
 }

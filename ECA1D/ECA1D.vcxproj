@@ -24,8 +24,11 @@
     <ClInclude Include="EcaFrame.h" />
     <ClInclude Include="EcaLogic.h" />
     <ClInclude Include="Rule110.h" />
-    <ClInclude Include="Rule110Glider.h" />
+    <ClInclude Include="Rule110Composite.h" />
+    <ClInclude Include="Rule110CompositeMaps.h" />
     <ClInclude Include="Rule110Constants.h" />
+    <ClInclude Include="Rule110Glider.h" />
+    <ClInclude Include="Rule110GliderSet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawPanel.cpp" />
@@ -33,7 +36,7 @@
     <ClCompile Include="EcaFrame.cpp" />
     <ClCompile Include="EcaLogic.cpp" />
     <ClCompile Include="Rule110.cpp" />
-    <ClCompile Include="Rule110Glider.cpp" />
+    <ClCompile Include="Rule110Composite.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
