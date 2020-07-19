@@ -1,7 +1,7 @@
 #include "Rule110Composite.h"
 
 string Rule110Composite::GetComposite(string _token) {
-	Rule110::Trim(_token);
+	Rule110Basic::Trim(_token);
 
 	if (!IsComposite(_token)) {
 		return "";
@@ -35,7 +35,8 @@ string Rule110Composite::GetComposite(string _token) {
 }
 
 string Rule110Composite::GetGlider(int _multiple, string _gliderId, char _gliderPhase, int _gliderPhaseNum, int _etherPhase) {
-	Rule110::ToLower(_gliderId);
+	Rule110Basic::ToLower(_gliderId);
+	Rule110Basic::ToLower(_gliderPhase);
 
 	auto it = GLIDERMAP.find(_gliderId);
 	if (it == GLIDERMAP.end()) {
@@ -51,16 +52,28 @@ string Rule110Composite::GetGlider(int _multiple, string _gliderId, char _glider
 
 	string gliderString = g[gliderPhase][_etherPhase - 1];
 
-	string multipleString = "";
-	for (int i = 0; i < _multiple; i++) {
-		multipleString += gliderString;
-	}
-
-	return multipleString;
+	return Rule110Basic::GetMultiple(gliderString, _multiple);
 }
 
 string Rule110Composite::GetGliderSet(string _gliderSetId, char _gliderPhase, int _gliderPhaseNum, int _etherPhase) {
-	return string();
+	//Rule110Basic::ToLower(_gliderSetId);
+	Rule110Basic::ToLower(_gliderPhase);
+
+	auto it = Rule110GliderSet::singleton().GLIDERSETMAP.find(_gliderSetId);
+	if (it == Rule110GliderSet::singleton().GLIDERSETMAP.end()) {
+		return "";
+	}
+
+	GliderSet gs = it->second;
+	int gliderPhase = (_gliderPhase - 'a') + (8 * (_gliderPhaseNum - 1));
+
+	if (gs.size() <= gliderPhase) {
+		return "";
+	}
+
+	string gliderSetString = gs[gliderPhase][_etherPhase - 1];
+
+	return gliderSetString;
 }
 
 void Rule110Composite::processGlider(int & multiple, string & gliderId, string & _s) {
@@ -155,9 +168,9 @@ void Rule110Composite::processPhase(char & gliderPhase, int & gliderPhaseNum, in
 }
 
 bool Rule110Composite::IsComposite(string& _s) {
-	return regex_match(_s, REGEX_COMPOSITE);
+	return regex_match(_s, Rule110Constants::singleton().REGEX_COMPOSITE);
 }
 
 bool Rule110Composite::IsGliderName(string _s) {
-	return regex_match(_s, REGEX_GLIDER);
+	return regex_match(_s, Rule110Constants::singleton().REGEX_GLIDER);
 }

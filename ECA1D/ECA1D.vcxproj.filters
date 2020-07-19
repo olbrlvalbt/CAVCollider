@@ -45,6 +45,9 @@
     <ClInclude Include="Rule110Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rule110Basic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EcaLogic.cpp">
@@ -63,6 +66,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rule110Composite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rule110Basic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rule110Constants.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rule110GliderSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

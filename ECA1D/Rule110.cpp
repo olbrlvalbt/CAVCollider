@@ -13,13 +13,13 @@ string Rule110::Translate(string _s) {
 }
 
 string Rule110::GetExpression(string _token) {
-	Trim(_token);
+	Rule110Basic::Trim(_token);
 
-	if (IsBinaryString(_token)) {
+	if (Rule110Basic::IsBinaryString(_token)) {
 		return _token;
 	}
 
-	if (IsEther(_token)) {
+	if (Rule110Basic::IsEther(_token)) {
 		return getEther(_token);
 	}
 
@@ -44,43 +44,5 @@ string Rule110::getEther(string _expression) {
 		}
 	}
 
-	return GetEther(multiple);
-}
-
-string Rule110::GetEther(int _multiple) {
-	return GetMultiple(ETHER_F1_1, _multiple);
-}
-
-string Rule110::GetMultiple(string _expression, int _multiple) {
-	if (!IsBinaryString(_expression)) {
-		return "";
-	}
-
-	string multipleString = "";
-	for (int i = 0; i < _multiple; i++) {
-		multipleString += _expression;
-	}
-
-	return multipleString;
-}
-
-bool Rule110::IsBinaryString(string& _s) {
-	return regex_match(_s, REGEX_BINARY);
-}
-
-bool Rule110::IsEther(string& _s) {
-	return regex_match(_s, REGEX_ETHER);
-}
-
-void Rule110::Trim(string& _s) {
-	_s.erase(remove_if(_s.begin(), _s.end(), isspace), _s.end());
-}
-
-void Rule110::ToLower(string & _s) {
-	transform(_s.begin(), _s.end(), _s.begin(), tolower);
-}
-
-
-void Rule110::ToUpper(string & _s) {
-	transform(_s.begin(), _s.end(), _s.begin(), toupper);
+	return Rule110Basic::GetEther(multiple);
 }

@@ -3,7 +3,6 @@
 #include <regex>
 #include <map>
 
-#include "Rule110.h"
 #include "Rule110Glider.h"
 #include "Rule110CompositeMaps.h"
 

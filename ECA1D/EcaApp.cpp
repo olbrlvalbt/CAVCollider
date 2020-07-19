@@ -1,8 +1,15 @@
 #include "EcaApp.h"
 
+#include "Rule110.h"
+
 wxIMPLEMENT_APP(EcaApp);
 
 bool EcaApp::OnInit() {
+	string a = "4_A4(F1)";
+	Rule110::Translate(a);
+	string b = "0Ele_C2(F_ 1_1)";
+	Rule110::Translate(b);
+
 	mainFrame = new MainFrame();
 	mainFrame->SetAutoLayout(true);
 	mainFrame->Show();
