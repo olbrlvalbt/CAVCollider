@@ -5,6 +5,7 @@
 #include <wx/spinctrl.h>
 #include <wx/clrpicker.h>
 
+#include "Rule110.h"
 #include "EcaLogic.h"
 #include "EcaFrame.h"
 

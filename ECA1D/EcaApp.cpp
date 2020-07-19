@@ -1,15 +1,8 @@
 #include "EcaApp.h"
 
-#include "Rule110.h"
-
 wxIMPLEMENT_APP(EcaApp);
 
 bool EcaApp::OnInit() {
-	string a = "4_A4(F1)";
-	Rule110::Translate(a);
-	string b = "0Ele_C2(F_ 1_1)";
-	Rule110::Translate(b);
-
 	mainFrame = new MainFrame();
 	mainFrame->SetAutoLayout(true);
 	mainFrame->Show();
@@ -250,8 +243,8 @@ void MainFrame::CreateEcaEvent(wxCommandEvent& event) {
 		eca = new EcaLogic(N, rule, setClosedBoundary ? ECABOUNDARY_CLOSED : ECABOUNDARY_PERIODIC);
 	}
 	else {
-		initialCondition = EcaLogic::CleanString(initialConditionCtrl->GetValue().ToStdString());
-
+		//initialCondition = EcaLogic::CleanString(initialConditionCtrl->GetValue().ToStdString());
+		initialCondition = Rule110::Translate(initialConditionCtrl->GetValue().ToStdString());
 		//Validar
 
 		if (adjustNumCellsToInitialConditionBox->GetValue()) {

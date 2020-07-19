@@ -25,9 +25,11 @@ bool Rule110Basic::IsEther(string& _s) {
 	return regex_match(_s, Rule110Constants::singleton().REGEX_ETHER);
 }
 
+
 void Rule110Basic::Trim(string& _s) {
 	_s.erase(remove_if(_s.begin(), _s.end(), isspace), _s.end());
 }
+
 
 void Rule110Basic::ToLower(string & _s) {
 	transform(_s.begin(), _s.end(), _s.begin(), tolower);
