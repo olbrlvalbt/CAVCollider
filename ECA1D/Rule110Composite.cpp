@@ -17,8 +17,8 @@ string Rule110Composite::GetComposite(string _token) {
 	it++;
 
 	char gliderPhase = 'a';
-	int gliderPhaseNum = 1;
-	int etherPhase = 1;
+	size_t gliderPhaseNum = 1;
+	size_t etherPhase = 1;
 
 	processPhase(gliderPhase, gliderPhaseNum, etherPhase, _token.substr(it - _token.cbegin()));
 
@@ -34,17 +34,17 @@ string Rule110Composite::GetComposite(string _token) {
 	return GetGliderSet(compositeId, gliderPhase, gliderPhaseNum, etherPhase);
 }
 
-string Rule110Composite::GetGlider(int _multiple, string _gliderId, char _gliderPhase, int _gliderPhaseNum, int _etherPhase) {
+string Rule110Composite::GetGlider(int _multiple, string _gliderId, char _gliderPhase, size_t _gliderPhaseNum, size_t _etherPhase) {
 	Rule110Basic::ToLower(_gliderId);
 	Rule110Basic::ToLower(_gliderPhase);
 
-	auto it = GLIDERMAP.find(_gliderId);
-	if (it == GLIDERMAP.end()) {
+	auto it = Rule110Glider::singleton().GLIDERMAP.find(_gliderId);
+	if (it == Rule110Glider::singleton().GLIDERMAP.end()) {
 		return "";
 	}
 
 	Glider g = it->second;
-	int gliderPhase = (_gliderPhase - 'a') + (8 * (_gliderPhaseNum - 1));
+	size_t gliderPhase = (_gliderPhase - 'a') + (8 * (_gliderPhaseNum - 1));
 
 	if (g.size() <= gliderPhase) {
 		return "";
@@ -55,7 +55,7 @@ string Rule110Composite::GetGlider(int _multiple, string _gliderId, char _glider
 	return Rule110Basic::GetMultiple(gliderString, _multiple);
 }
 
-string Rule110Composite::GetGliderSet(string _gliderSetId, char _gliderPhase, int _gliderPhaseNum, int _etherPhase) {
+string Rule110Composite::GetGliderSet(string _gliderSetId, char _gliderPhase, size_t _gliderPhaseNum, size_t _etherPhase) {
 	//Rule110Basic::ToLower(_gliderSetId);
 	Rule110Basic::ToLower(_gliderPhase);
 
@@ -65,7 +65,7 @@ string Rule110Composite::GetGliderSet(string _gliderSetId, char _gliderPhase, in
 	}
 
 	GliderSet gs = it->second;
-	int gliderPhase = (_gliderPhase - 'a') + (8 * (_gliderPhaseNum - 1));
+	size_t gliderPhase = (_gliderPhase - 'a') + (8 * (_gliderPhaseNum - 1));
 
 	if (gs.size() <= gliderPhase) {
 		return "";
@@ -92,7 +92,7 @@ void Rule110Composite::processGlider(int & multiple, string & gliderId, string &
 	}
 }
 
-void Rule110Composite::processPhase(char & gliderPhase, int & gliderPhaseNum, int & etherPhase, string _s) {
+void Rule110Composite::processPhase(char & gliderPhase, size_t & gliderPhaseNum, size_t & etherPhase, string _s) {
 	auto it = _s.cbegin();
 
 	if (*it >= '1' && *it <= '4') {

@@ -1,9 +1,5 @@
 #include "Rule110Constants.h"
 
-
-Rule110Constants::Rule110Constants() {
-}
-
 const std::regex Rule110Constants::REGEX_BINARY = std::regex("[01]+");
 const std::regex Rule110Constants::REGEX_ETHER = std::regex("[0-9]*(e|E)");
 const std::regex Rule110Constants::REGEX_COMPOSITE = std::regex("[0-9a-zA-Z_\\^]+\\(([a-hA-H]([1-9][0-9]*)?,)?((f|F)_?)?[1-4](_1)?\\)");

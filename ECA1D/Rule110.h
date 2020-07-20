@@ -4,8 +4,6 @@
 #include <sstream>
 #include <regex>
 
-#include "Rule110Constants.h"
-#include "Rule110Glider.h"
 #include "Rule110Basic.h"
 #include "Rule110Composite.h"
 

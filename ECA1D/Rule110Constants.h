@@ -20,7 +20,4 @@ public:
 	static const std::string ETHER[4];
 
 	static const std::string ETHER_F1_1;
-
-private:
-	Rule110Constants();
 };

@@ -39,9 +39,6 @@
     <ClInclude Include="Rule110GliderSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rule110CompositeMaps.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Rule110Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -75,6 +72,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rule110GliderSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rule110Glider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
