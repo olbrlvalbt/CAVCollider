@@ -6,7 +6,7 @@ string Rule110Basic::GetEther(int _multiple) {
 
 string Rule110Basic::GetMultiple(string _expression, int _multiple) {
 	if (!IsBinaryString(_expression)) {
-		return "";
+		throw InvalidTokenException(_expression);
 	}
 
 	string multipleString = "";

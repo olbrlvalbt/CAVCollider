@@ -27,7 +27,7 @@ string Rule110::GetExpression(string _token) {
 		return Rule110Composite::GetComposite(_token);
 	}
 
-	return "";
+	throw InvalidTokenException(_token);
 }
 
 string Rule110::getEther(string _expression) {

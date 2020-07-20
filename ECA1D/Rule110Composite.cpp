@@ -4,7 +4,7 @@ string Rule110Composite::GetComposite(string _token) {
 	Rule110Basic::Trim(_token);
 
 	if (!IsComposite(_token)) {
-		return "";
+		throw InvalidTokenException(_token);
 	}
 
 	string name = "";
@@ -40,14 +40,15 @@ string Rule110Composite::GetGlider(int _multiple, string _gliderId, char _glider
 
 	auto it = Rule110Glider::singleton().GLIDERMAP.find(_gliderId);
 	if (it == Rule110Glider::singleton().GLIDERMAP.end()) {
-		return "";
+		throw CompositeNotFoundException(_gliderId);
 	}
 
 	Glider g = it->second;
 	size_t gliderPhase = (_gliderPhase - 'a') + (8 * (_gliderPhaseNum - 1));
 
 	if (g.size() <= gliderPhase) {
-		return "";
+		string gliderString = _gliderId + _gliderPhase + "(f" + to_string(_etherPhase) + "_1)";
+		throw PhaseNotFoundException(gliderString);
 	}
 
 	string gliderString = g[gliderPhase][_etherPhase - 1];
@@ -61,14 +62,15 @@ string Rule110Composite::GetGliderSet(string _gliderSetId, char _gliderPhase, si
 
 	auto it = Rule110GliderSet::singleton().GLIDERSETMAP.find(_gliderSetId);
 	if (it == Rule110GliderSet::singleton().GLIDERSETMAP.end()) {
-		return "";
+		throw CompositeNotFoundException(_gliderSetId);
 	}
 
 	GliderSet gs = it->second;
 	size_t gliderPhase = (_gliderPhase - 'a') + (8 * (_gliderPhaseNum - 1));
 
 	if (gs.size() <= gliderPhase) {
-		return "";
+		string gliderSetString = _gliderSetId + _gliderPhase + "(f" + to_string(_etherPhase) + "_1)";
+		throw PhaseNotFoundException(gliderSetString);
 	}
 
 	string gliderSetString = gs[gliderPhase][_etherPhase - 1];
