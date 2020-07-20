@@ -56,7 +56,7 @@ string Rule110Composite::GetGlider(int _multiple, string _gliderId, char _glider
 }
 
 string Rule110Composite::GetGliderSet(string _gliderSetId, char _gliderPhase, size_t _gliderPhaseNum, size_t _etherPhase) {
-	//Rule110Basic::ToLower(_gliderSetId);
+	Rule110Basic::ToLower(_gliderSetId);
 	Rule110Basic::ToLower(_gliderPhase);
 
 	auto it = Rule110GliderSet::singleton().GLIDERSETMAP.find(_gliderSetId);
