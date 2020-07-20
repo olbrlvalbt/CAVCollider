@@ -26,7 +26,9 @@ string Rule110::GetExpression(string _token) {
 	if (Rule110Composite::IsComposite(_token)) {
 		return Rule110Composite::GetComposite(_token);
 	}
-
+	if (_token.empty()) {
+		return "";
+	}
 	throw InvalidTokenException(_token);
 }
 

@@ -47,7 +47,8 @@ string Rule110Composite::GetGlider(int _multiple, string _gliderId, char _glider
 	size_t gliderPhase = (_gliderPhase - 'a') + (8 * (_gliderPhaseNum - 1));
 
 	if (g.size() <= gliderPhase) {
-		string gliderString = _gliderId + _gliderPhase + "(f" + to_string(_etherPhase) + "_1)";
+		string gliderString = _gliderId + "(" + _gliderPhase + to_string(_gliderPhaseNum) +
+			", " + to_string(_etherPhase) + "_1)";
 		throw PhaseNotFoundException(gliderString);
 	}
 
@@ -69,7 +70,8 @@ string Rule110Composite::GetGliderSet(string _gliderSetId, char _gliderPhase, si
 	size_t gliderPhase = (_gliderPhase - 'a') + (8 * (_gliderPhaseNum - 1));
 
 	if (gs.size() <= gliderPhase) {
-		string gliderSetString = _gliderSetId + _gliderPhase + "(f" + to_string(_etherPhase) + "_1)";
+		string gliderSetString = _gliderSetId + "(" + _gliderPhase + to_string(_gliderPhaseNum) + 
+								 ", " + to_string(_etherPhase) + "_1)";
 		throw PhaseNotFoundException(gliderSetString);
 	}
 

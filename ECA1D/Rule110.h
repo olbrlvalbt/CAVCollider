@@ -14,7 +14,6 @@ public:
 	static string Translate(string _s);
 	static string GetExpression(string _token);
 
-
 private:
 	static string getEther(string _expression);
 };

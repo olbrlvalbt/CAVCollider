@@ -23,10 +23,12 @@ public:
 	static void ToUpper(char& _c);
 };
 
+
 class TranslationException : public exception {
 protected:
 	string errorSource;
 	string errorMessage;
+
 public:
 	TranslationException(const std::string& _errorSource) {
 		errorSource = _errorSource;
@@ -34,7 +36,7 @@ public:
 	}
 
 	virtual const char* what() const noexcept override {
-		return errorSource.c_str();
+		return errorMessage.c_str();
 	}
 };
 

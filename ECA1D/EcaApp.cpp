@@ -193,7 +193,14 @@ void MainFrame::SetNewNumCellsAfterEtherEvent(wxCommandEvent& event) {
 
 void MainFrame::setNewNumCellsAfterEther() {
 	if (fillEdgesWithRule110EtherBox->GetValue()) {
-		int initialConditionLength = initialConditionCtrl->GetLineLength(0);
+		int initialConditionLength = 0;
+		try {
+			string initialCondition = Rule110::Translate(initialConditionCtrl->GetValue().ToStdString());
+			initialConditionLength = initialCondition.length();
+		}
+		catch (TranslationException e) {
+		}
+
 		int numCells = initialConditionLength;
 		if (!adjustNumCellsToInitialConditionBox->GetValue()) {
 			numCells = numCellsCtrl->GetValue();
@@ -243,9 +250,16 @@ void MainFrame::CreateEcaEvent(wxCommandEvent& event) {
 		eca = new EcaLogic(N, rule, setClosedBoundary ? ECABOUNDARY_CLOSED : ECABOUNDARY_PERIODIC);
 	}
 	else {
-		//initialCondition = EcaLogic::CleanString(initialConditionCtrl->GetValue().ToStdString());
-		initialCondition = Rule110::Translate(initialConditionCtrl->GetValue().ToStdString());
-		//Validar
+		try {
+			initialCondition = Rule110::Translate(initialConditionCtrl->GetValue().ToStdString());
+		}
+		catch (TranslationException e) {
+			wxMessageDialog *errorDial = new wxMessageDialog(this,
+				e.what(), wxT("Initial condition invalid"), wxOK | wxICON_ERROR);
+			errorDial->ShowModal();
+
+			return;
+		}
 
 		if (adjustNumCellsToInitialConditionBox->GetValue()) {
 			N = initialCondition.length();
@@ -273,24 +287,4 @@ void MainFrame::CreateEcaEvent(wxCommandEvent& event) {
 	EcaFrame* ecaFrame = new EcaFrame(eca, numIterations, cellSize, deadCellColor, aliveCellColor);
 
 	ecaFrame->Show();
-
-	/*EcaLogic* ecaLogic = new EcaLogic(NUMCELLS, RULE, INITIALCONDITION, ECABOUNDARY_PERIODIC);
-
-	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-	int numCells = NUMCELLS;
-	int cellSize = CELLSIZE;
-	int numIterations = NUMITERATIONS;
-	int textOffset = TEXTOFFSET;
-	frame = new EcaFrame(numCells * cellSize, numIterations * cellSize + textOffset);
-
-	drawPane = new DrawPane(frame, ecaLogic, numIterations, cellSize, textOffset);
-
-	drawPane->Bind(wxEVT_CHAR_HOOK, &EcaFrame::OnKeyDown, frame);
-	drawPane->SetSize(wxSize(numCells * cellSize, numIterations * cellSize + textOffset));
-	sizer->Add(drawPane, 1, wxEXPAND);
-
-	frame->SetSizer(sizer);
-	frame->SetAutoLayout(true);
-	frame->Show();*/
-
 }
