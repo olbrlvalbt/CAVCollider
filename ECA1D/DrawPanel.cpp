@@ -72,7 +72,7 @@ void DrawPanel::createBitmap() {
 
 	progress = new wxProgressDialog("Rendering", "Painting image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
-	bitmap->SaveFile("screenshot.jpg", wxBITMAP_TYPE_JPEG);
+	bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
 
 	progress->Update(100);
 }
