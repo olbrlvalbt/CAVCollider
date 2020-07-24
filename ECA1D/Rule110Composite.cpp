@@ -176,5 +176,5 @@ bool Rule110Composite::IsComposite(string& _s) {
 }
 
 bool Rule110Composite::IsGliderName(string _s) {
-	return regex_match(_s, Rule110Constants::singleton().REGEX_GLIDER);
+	return regex_match(_s, Rule110Constants::singleton().REGEX_GLIDERNAME);
 }
