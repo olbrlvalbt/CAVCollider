@@ -5,6 +5,10 @@ string Rule110Basic::GetEther(int _multiple) {
 }
 
 string Rule110Basic::GetMultiple(string _expression, int _multiple) {
+	if (_expression.empty()) {
+		return "";
+	}
+
 	if (!IsBinaryString(_expression)) {
 		throw InvalidTokenException(_expression);
 	}

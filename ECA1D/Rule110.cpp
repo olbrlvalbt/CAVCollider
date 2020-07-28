@@ -2,12 +2,65 @@
 
 string Rule110::Translate(string _s) {
 	string translatedExpression = "";
+	string temp = "";
 
+	Rule110Basic::Trim(_s);
+	string::const_iterator it = _s.cbegin();
+
+	for (; it != _s.cend(); it++) {
+		if (*it == '-') {
+			translatedExpression += GetExpression(temp);
+			temp = "";
+		}
+		else if (*it == '{') {
+			it++;
+
+			Rule110Basic::Trim(temp);
+
+			int multiple = 1;
+			if (!temp.empty()) {
+				try {
+					multiple = stoi(temp);
+				}
+				catch (exception e) {
+					throw InvalidTokenException(temp);
+				}
+			}
+
+			string::const_iterator nestStart = it;
+			translatedExpression += Rule110Basic::GetMultiple(translateNested(_s, it), multiple);
+
+			if (it != _s.cend() && *it != '}' && *it != '-') {
+				throw InvalidTokenException(_s.substr(nestStart - _s.cbegin(), it - nestStart));
+			}
+
+			temp = "";
+			it--;
+		}
+		else if (*it == '}') {
+			throw ParseException(_s.substr(0, it - _s.cbegin()));
+		}
+		else {
+			temp += *it;
+		}
+	}
+
+	if (it != _s.cend()) {
+		throw ParseException(_s.substr(0, it - _s.cbegin()));
+	}
+
+	return translatedExpression;
+	
+	
+
+
+
+	/*
 	istringstream iss(_s);
 	string temp;
 	while (getline(iss, temp, '-')) {
 		translatedExpression += GetExpression(temp);
-	}
+	}*/
 
 	return translatedExpression;
 }
@@ -30,6 +83,54 @@ string Rule110::GetExpression(string _token) {
 		return "";
 	}
 	throw InvalidTokenException(_token);
+}
+
+string Rule110::translateNested(string& _s, string::const_iterator& it) {
+	string translatedExpression = "";
+	string temp = "";
+
+	for (; it != _s.cend(); it++) {
+		if (*it == '-') {
+			translatedExpression += GetExpression(temp);
+			temp = "";
+		}
+		else if (*it == '{') {
+			it++;
+
+			Rule110Basic::Trim(temp);
+
+			int multiple = 1;
+			if (!temp.empty()) {
+				try {
+					multiple = stoi(temp);
+				}
+				catch (exception e) {
+					throw InvalidTokenException(temp);
+				}
+			}
+
+			string::const_iterator nestStart = it;
+			translatedExpression += Rule110Basic::GetMultiple(translateNested(_s, it), multiple);
+
+			if (it != _s.cend() && *it != '}' && *it != '-') {
+				throw InvalidTokenException(_s.substr(nestStart - _s.cbegin(), it - nestStart));
+			}
+
+			temp = "";
+			it--;
+		}
+		else if (*it == '}') {
+			it++;
+			translatedExpression += GetExpression(temp);
+
+			return translatedExpression;
+		}
+		else {
+			temp += *it;
+		}
+	}
+
+	throw ParseException(temp);
 }
 
 string Rule110::getEther(string _expression) {

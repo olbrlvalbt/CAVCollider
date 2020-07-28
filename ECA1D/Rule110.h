@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <regex>
+#include <exception>
 
 #include "Rule110Basic.h"
 #include "Rule110Composite.h"
@@ -15,5 +16,6 @@ public:
 	static string GetExpression(string _token);
 
 private:
+	static string translateNested(string& _s, string::const_iterator& it);
 	static string getEther(string _expression);
 };
