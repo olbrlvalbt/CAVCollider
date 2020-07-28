@@ -4,6 +4,7 @@
 #include <wx/sizer.h>
 #include <wx/dcbuffer.h>
 #include <wx/progdlg.h>
+#include <wx/dcgraph.h>
 
 #include "EcaLogic.h"
 
@@ -26,6 +27,8 @@ public:
 
 	void render();
 	void createBitmap();
+	void drawWithT3Filter();
+	void filterT3(string (&iterationGroup)[4], wxGCDC& filterDc, int iteration);
 	bool saveToImage(wxBufferedDC& dc);
 };
 

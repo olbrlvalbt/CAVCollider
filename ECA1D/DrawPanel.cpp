@@ -34,6 +34,11 @@ void DrawPanel::render() {
 }
 
 void DrawPanel::createBitmap() {
+	if (true) {
+		drawWithT3Filter();
+		return;
+	}
+
 	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
 	bitmap = new wxBitmap(eca->N * cellSize, numIterations * cellSize);
@@ -75,6 +80,136 @@ void DrawPanel::createBitmap() {
 	bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
 
 	progress->Update(100);
+}
+
+void DrawPanel::drawWithT3Filter() {
+	if (numIterations < 4) {
+		return;
+	}
+
+	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
+
+	bitmap = new wxBitmap(eca->N * cellSize, numIterations * cellSize);
+	wxMemoryDC dc(*bitmap);
+	dc.SetPen(wxPen(wxColor(0, 0, 0), 1, wxPENSTYLE_TRANSPARENT));
+
+
+	wxBitmap filterBitmap(eca->N * cellSize, numIterations * cellSize, 32);
+	filterBitmap.UseAlpha();
+	wxMemoryDC memDc(filterBitmap);
+
+	wxGCDC filterDc(memDc);
+	filterDc.SetBackground(*wxTRANSPARENT_BRUSH);
+	filterDc.Clear();
+	filterDc.SetPen(*wxTRANSPARENT_PEN);
+
+
+	int k = 0;
+
+	string iterationGroup[4] = { "", "", "", "" };
+
+	for (int j = 0; j < 4; j++) {
+		iterationGroup[j] = eca->currentState;
+		eca->applyRule();
+	}
+
+	filterT3(iterationGroup, filterDc, 0);
+
+	memDc.SelectObject(wxNullBitmap);
+	filterBitmap.SaveFile("screenshotFilter.png", wxBITMAP_TYPE_PNG);
+
+	eca->currentState = eca->initialCondition;
+
+	for (int j = 0; j < numIterations; j++) {
+		//filterT3(iterationGroup, filterDc, j);
+
+		if ((j * 100) % numIterations == 0) {
+			progress->Update(k++);
+		}
+
+		for (int i = 0; i < eca->N; i++) {
+			if (eca->currentState.at(i) == '1') {
+				dc.SetBrush(*aliveCellBrushColor);
+			}
+			else {
+				dc.SetBrush(*deadCellBrushColor);
+			}
+			dc.DrawRectangle(i * cellSize, j * cellSize, cellSize, cellSize);
+		}
+
+		eca->applyRule();
+	}
+
+	GetParent()->SetLabel("ECA R" + to_string(eca->ruleNumber) + ", N: " + to_string(eca->N)
+		+ ", Iterations " + to_string((currentShowingIteration - 1) * numIterations)
+		+ "-" + to_string(currentShowingIteration * numIterations - 1)
+		+ " (" + to_string(currentShowingIteration) + ")");
+
+	dc.SelectObject(wxNullBitmap);
+
+	progress->Update(100);
+
+	progress = new wxProgressDialog("Rendering", "Painting image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
+
+	bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
+
+	progress->Update(100);
+}
+
+void DrawPanel::filterT3(string(&iterationGroup)[4], wxGCDC&filterDc, int iteration) {
+	string f1 = "";
+	string f2 = "";
+	string f3 = "";
+	string f4 = "";
+
+	int n = eca->N;
+
+	for (int i = 0; i < n; i++) {
+		f1 = iterationGroup[0].at(i);
+		f1 += iterationGroup[0].at((i + 1) % n);
+		f1 += iterationGroup[0].at((i + 2) % n);
+		f1 += iterationGroup[0].at((i + 3) % n);
+
+		f2 = iterationGroup[1].at(i);
+		f2 += iterationGroup[1].at((i + 1) % n);
+		f2 += iterationGroup[1].at((i + 2) % n);
+		f2 += iterationGroup[1].at((i + 3) % n);
+
+		f3 = iterationGroup[2].at(i);
+		f3 += iterationGroup[2].at((i + 1) % n);
+		f3 += iterationGroup[2].at((i + 2) % n);
+		f3 += iterationGroup[2].at((i + 3) % n);
+
+		f4 = iterationGroup[3].at(i);
+		f4 += iterationGroup[3].at((i + 1) % n);
+
+		if (f1.compare("1111") == 0 && f2.compare("1000") == 0 && f3.compare("1001") == 0 && f4.compare("10") == 0) {
+			filterDc.SetBrush(wxBrush(wxColour(15, 15, 95)));
+			filterDc.DrawRectangle(i * cellSize, iteration * cellSize, cellSize, cellSize);
+			filterDc.DrawRectangle(((i + 1) % n) * cellSize, iteration * cellSize, cellSize, cellSize);
+			filterDc.DrawRectangle(((i + 2) % n) * cellSize, iteration * cellSize, cellSize, cellSize);
+			filterDc.DrawRectangle(((i + 3) % n) * cellSize, iteration * cellSize, cellSize, cellSize);
+
+			filterDc.DrawRectangle(i * cellSize, (iteration + 1) * cellSize, cellSize, cellSize);
+			filterDc.SetBrush(wxBrush(wxColour(45, 45, 120)));
+			filterDc.DrawRectangle(((i + 1) % n) * cellSize, (iteration + 1) * cellSize, cellSize, cellSize);
+			filterDc.DrawRectangle(((i + 2) % n) * cellSize, (iteration + 1) * cellSize, cellSize, cellSize);
+			filterDc.DrawRectangle(((i + 3) % n) * cellSize, (iteration + 1) * cellSize, cellSize, cellSize);
+
+			filterDc.SetBrush(wxBrush(wxColour(15, 15, 95)));
+			filterDc.DrawRectangle(i * cellSize, (iteration + 2) * cellSize, cellSize, cellSize);
+			filterDc.SetBrush(wxBrush(wxColour(45, 45, 120)));
+			filterDc.DrawRectangle(((i + 1) % n) * cellSize, (iteration + 2) * cellSize, cellSize, cellSize);
+			filterDc.DrawRectangle(((i + 2) % n) * cellSize, (iteration + 2) * cellSize, cellSize, cellSize);
+			filterDc.SetBrush(wxBrush(wxColour(15, 15, 95)));
+			filterDc.DrawRectangle(((i + 3) % n) * cellSize, (iteration + 2) * cellSize, cellSize, cellSize);
+
+			filterDc.SetBrush(wxBrush(wxColour(15, 15, 95)));
+			filterDc.DrawRectangle(i * cellSize, (iteration + 3) * cellSize, cellSize, cellSize);
+			filterDc.SetBrush(wxBrush(wxColour(45, 45, 120)));
+			filterDc.DrawRectangle(((i + 1) % n) * cellSize, (iteration + 3) * cellSize, cellSize, cellSize);
+		}
+	}
 }
 
 bool DrawPanel::saveToImage(wxBufferedDC& dc) {
