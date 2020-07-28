@@ -50,19 +50,6 @@ string Rule110::Translate(string _s) {
 	}
 
 	return translatedExpression;
-	
-	
-
-
-
-	/*
-	istringstream iss(_s);
-	string temp;
-	while (getline(iss, temp, '-')) {
-		translatedExpression += GetExpression(temp);
-	}*/
-
-	return translatedExpression;
 }
 
 string Rule110::GetExpression(string _token) {
