@@ -49,7 +49,7 @@ string Rule110::Translate(string _s) {
 		throw ParseException(_s.substr(0, it - _s.cbegin()));
 	}
 
-	return translatedExpression;
+	return translatedExpression + GetExpression(temp);
 }
 
 string Rule110::GetExpression(string _token) {
