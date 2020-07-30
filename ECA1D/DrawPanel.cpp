@@ -81,77 +81,86 @@ void DrawPanel::createBitmap() {
 
 	progress->Update(100);
 }
+void DrawPanel::paintIteration(wxDC& dc, int iteration) {
+	for (int i = 0; i < eca->N; i++) {
+		if (eca->currentState.at(i) == '1') {
+			dc.SetBrush(*aliveCellBrushColor);
+		}
+		else {
+			dc.SetBrush(*deadCellBrushColor);
+		}
+		dc.DrawRectangle(i * cellSize, iteration * cellSize, cellSize, cellSize);
+	}
+}
 
 void DrawPanel::drawWithT3Filter() {
-	if (numIterations < 4) {
-		return;
-	}
-
 	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
 	bitmap = new wxBitmap(eca->N * cellSize, numIterations * cellSize);
-	wxMemoryDC dc(*bitmap);
-	dc.SetPen(wxPen(wxColor(0, 0, 0), 1, wxPENSTYLE_TRANSPARENT));
+	wxMemoryDC baseDc(*bitmap);
+	baseDc.SetPen(wxPen(wxColor(0, 0, 0), 1, wxPENSTYLE_TRANSPARENT));
 
 
 	wxBitmap filterBitmap(eca->N * cellSize, numIterations * cellSize, 32);
 	filterBitmap.UseAlpha();
-	wxMemoryDC memDc(filterBitmap);
+	wxMemoryDC filterMemDc(filterBitmap);
 
-	wxGCDC filterDc(memDc);
+	wxGCDC filterDc(filterMemDc);
 	filterDc.SetBackground(*wxTRANSPARENT_BRUSH);
 	filterDc.Clear();
 	filterDc.SetPen(*wxTRANSPARENT_PEN);
 
-
-	int k = 0;
-
 	string iterationGroup[4] = { "", "", "", "" };
 
-	for (int j = 0; j < 4; j++) {
-		iterationGroup[j] = eca->currentState;
-		eca->applyRule();
-	}
 
-	filterT3(iterationGroup, filterDc, 0);
+	int k = 0;
+	int j = 0;
 
-	memDc.SelectObject(wxNullBitmap);
-	filterBitmap.SaveFile("screenshotFilter.png", wxBITMAP_TYPE_PNG);
-
-	eca->currentState = eca->initialCondition;
-
-	for (int j = 0; j < numIterations; j++) {
-		//filterT3(iterationGroup, filterDc, j);
-
+	for (; j < 4; j++) {
 		if ((j * 100) % numIterations == 0) {
 			progress->Update(k++);
 		}
 
-		for (int i = 0; i < eca->N; i++) {
-			if (eca->currentState.at(i) == '1') {
-				dc.SetBrush(*aliveCellBrushColor);
-			}
-			else {
-				dc.SetBrush(*deadCellBrushColor);
-			}
-			dc.DrawRectangle(i * cellSize, j * cellSize, cellSize, cellSize);
+		paintIteration(baseDc, j);
+
+		iterationGroup[j] = eca->currentState;
+		eca->applyRule();
+	}
+
+	for (; j < numIterations; j++) {
+		if ((j * 100) % numIterations == 0) {
+			progress->Update(k++);
 		}
+
+		filterT3(iterationGroup, filterDc, j - 4);
+		iterationGroup[0] = iterationGroup[1];
+		iterationGroup[1] = iterationGroup[2];
+		iterationGroup[2] = iterationGroup[3];
+		iterationGroup[3] = eca->currentState;
+
+		paintIteration(baseDc, j);
 
 		eca->applyRule();
 	}
+
+	filterT3(iterationGroup, filterDc, j - 4);
+
 
 	GetParent()->SetLabel("ECA R" + to_string(eca->ruleNumber) + ", N: " + to_string(eca->N)
 		+ ", Iterations " + to_string((currentShowingIteration - 1) * numIterations)
 		+ "-" + to_string(currentShowingIteration * numIterations - 1)
 		+ " (" + to_string(currentShowingIteration) + ")");
 
-	dc.SelectObject(wxNullBitmap);
+	baseDc.SelectObject(wxNullBitmap);
+	filterMemDc.SelectObject(wxNullBitmap);
 
 	progress->Update(100);
 
 	progress = new wxProgressDialog("Rendering", "Painting image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
 	bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
+
+	filterBitmap.SaveFile("screenshotFilter.png", wxBITMAP_TYPE_PNG);
 
 	progress->Update(100);
 }

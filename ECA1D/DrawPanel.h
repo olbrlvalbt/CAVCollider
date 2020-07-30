@@ -27,6 +27,7 @@ public:
 
 	void render();
 	void createBitmap();
+	void paintIteration(wxDC& dc, int iteration);
 	void drawWithT3Filter();
 	void filterT3(string (&iterationGroup)[4], wxGCDC& filterDc, int iteration);
 	bool saveToImage(wxBufferedDC& dc);
