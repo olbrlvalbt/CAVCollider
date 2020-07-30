@@ -13,7 +13,7 @@ DrawPanel::DrawPanel(wxWindow * parent, EcaLogic * ecaLogic, int _numIterations,
 
 	wxInitAllImageHandlers();
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
-	createBitmap();
+	createBitmapWithT3Filter();
 
 	Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(DrawPanel::paintEvent));
 	Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(DrawPanel::OnKeyDown));
@@ -37,11 +37,6 @@ void DrawPanel::render() {
 }
 
 void DrawPanel::createBitmap() {
-	if (true) {
-		createBitmapWithT3Filter();
-		return;
-	}
-
 	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
 	bitmap = new wxBitmap(eca->N * cellSize, numIterations * cellSize);
@@ -254,20 +249,20 @@ void DrawPanel::OnKeyDown(wxKeyEvent& event) {
 			eca->initialCondition = eca->CreateRandomInitialCondition(eca->N);
 			eca->currentState = eca->initialCondition;
 			currentShowingIteration = 1;
-			createBitmap();
+			createBitmapWithT3Filter();
 			Refresh();
 		}
 		break;
 	case WXK_SPACE:
 		currentShowingIteration++;
-		createBitmap();
+		createBitmapWithT3Filter();
 		Refresh();
 		break;
 	case 'r':
 	case 'R':
 		eca->currentState = eca->initialCondition;
 		currentShowingIteration = 1;
-		createBitmap();
+		createBitmapWithT3Filter();
 		Refresh();
 		break;
 	case 'f':
