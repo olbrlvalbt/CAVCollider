@@ -2,24 +2,24 @@
 
 EcaFrame::EcaFrame(EcaLogic* ecaLogic, int numIterations, int cellSize = 1,
 				   wxColour deadCellColor = wxColour(220, 170, 15),
-				   wxColour aliveCellColor = wxColour(115, 35, 15))
+				   wxColour aliveCellColor = wxColour(115, 35, 15),
+				   wxColour filterExteriorColor = wxColour(15, 15, 95),
+				   wxColour filterInteriorColor = wxColour(45, 45, 120))
 		: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(ecaLogic->ruleNumber) + " - N: " + to_string(ecaLogic->N)),
 				  wxDefaultPosition, wxDefaultSize) {
-	initEcaFrame(ecaLogic, numIterations, cellSize, deadCellColor, aliveCellColor);
+	initEcaFrame(ecaLogic, numIterations, cellSize,
+				 deadCellColor, aliveCellColor,
+				 filterExteriorColor, filterInteriorColor);
 }
 
 void EcaFrame::initEcaFrame(EcaLogic* ecaLogic, int numIterations, int cellSize,
-							wxColour deadCellColor, wxColour aliveCellColor) {
-	/*drawPanel = new DrawPanel(this, ecaLogic, numIterations, cellSize, deadCellColor, aliveCellColor);
-	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-	sizer->Add(drawPanel, 1, wxEXPAND);
-	SetSizer(sizer);
-	SetClientSize(drawPanel->GetSize());
-	Center();*/
-
+							wxColour deadCellColor, wxColour aliveCellColor,
+							wxColour filterExteriorColor, wxColour filterInteriorColor) {
 	wxBoxSizer* frameSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	drawPanel = new DrawPanel(this, ecaLogic, numIterations, cellSize, deadCellColor, aliveCellColor);
+	drawPanel = new DrawPanel(this, ecaLogic, numIterations, cellSize,
+							  deadCellColor, aliveCellColor,
+							  filterExteriorColor, filterInteriorColor);
 	frameSizer->Add(drawPanel, 1, wxALL | wxEXPAND);
 	SetSizer(frameSizer);
 	wxSize panelSize = drawPanel->GetClientSize();

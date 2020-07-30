@@ -13,8 +13,10 @@ public:
 	DrawPanel* drawPanel = nullptr;
 
 	void initEcaFrame(EcaLogic* ecaLogic, int _numIterations, int _cellSize,
-					  wxColour deadCellColor, wxColour aliveCellColor);
+					  wxColour deadCellColor, wxColour aliveCellColor,
+					  wxColour filterExteriorColor, wxColour filterInteriorColor);
 	EcaFrame(EcaLogic* ecaLogic, int numIterations, int cellSize,
-			 wxColour deadCellColor, wxColour aliveCellColor);
+			 wxColour deadCellColor, wxColour aliveCellColor,
+			 wxColour filterExteriorColor, wxColour filterInteriorColor);
 };
 

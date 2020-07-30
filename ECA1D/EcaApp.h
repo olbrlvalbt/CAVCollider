@@ -54,6 +54,12 @@ public:
 	wxStaticText* aliveCellColorText;
 	wxColourPickerCtrl* aliveCellColorCtrl;
 
+	wxStaticText* filterExteriorColorText;
+	wxColourPickerCtrl* filterExteriorColorCtrl;
+
+	wxStaticText* filterInteriorColorText;
+	wxColourPickerCtrl* filterInteriorColorCtrl;
+
 	wxButton* createEcaButton;
 
 	MainFrame();
