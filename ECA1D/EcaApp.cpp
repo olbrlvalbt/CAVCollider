@@ -10,12 +10,12 @@ bool EcaApp::OnInit() {
 	return true;
 }
 
-MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition, wxSize(600, 700),
+MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition, wxSize(600, 750),
 								 wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
 	mainPanel = new wxPanel(this, wxID_ANY);
 
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-	wxFlexGridSizer* fgs = new wxFlexGridSizer(14, 2, 10, 20);
+	wxFlexGridSizer* fgs = new wxFlexGridSizer(16, 2, 10, 20);
 
 
 	ruleText = new wxStaticText(mainPanel, wxID_ANY, wxT("Rule:"));
@@ -98,6 +98,16 @@ MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosit
 	aliveCellColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(115, 35, 15));
 	fgs->Add(aliveCellColorText);
 	fgs->Add(aliveCellColorCtrl);
+
+	filterExteriorColorText = new wxStaticText(mainPanel, wxID_ANY, wxT("Filter exterior color:"));
+	filterExteriorColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(15, 15, 95));
+	fgs->Add(filterExteriorColorText);
+	fgs->Add(filterExteriorColorCtrl);
+
+	filterInteriorColorText = new wxStaticText(mainPanel, wxID_ANY, wxT("Filter interior color:"));
+	filterInteriorColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(45, 45, 120));
+	fgs->Add(filterInteriorColorText);
+	fgs->Add(filterInteriorColorCtrl);
 
 	createEcaButton = new wxButton(mainPanel, wxID_ANY, wxT("Create ECA"));
 	Connect(createEcaButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MainFrame::CreateEcaEvent));
@@ -239,6 +249,8 @@ void MainFrame::CreateEcaEvent(wxCommandEvent& event) {
 	int cellSize = cellSizeCtrl->GetValue();
 	wxColour deadCellColor = deadCellColorCtrl->GetColour();
 	wxColour aliveCellColor = aliveCellColorCtrl->GetColour();
+	wxColour filterExteriorColor = filterExteriorColorCtrl->GetColour();
+	wxColour filterInteriorColor = filterInteriorColorCtrl->GetColour();
 
 	int N;
 	string initialCondition;
@@ -284,7 +296,9 @@ void MainFrame::CreateEcaEvent(wxCommandEvent& event) {
 	}
 	 
 	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-	EcaFrame* ecaFrame = new EcaFrame(eca, numIterations, cellSize, deadCellColor, aliveCellColor);
+	EcaFrame* ecaFrame = new EcaFrame(eca, numIterations, cellSize,
+									  deadCellColor, aliveCellColor,
+									  filterExteriorColor, filterInteriorColor);
 
 	ecaFrame->Show();
 }

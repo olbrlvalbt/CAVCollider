@@ -3,13 +3,17 @@
 DrawPanel::DrawPanel(wxWindow * parent, EcaLogic * ecaLogic, int _numIterations,
 					 int _cellSize = 1,
 					 wxColour _deadCellColor = wxColour(220, 170, 15),
-					 wxColour _aliveCellColor = wxColour(115, 35, 15))
+					 wxColour _aliveCellColor = wxColour(115, 35, 15),
+					 wxColour _filterExteriorColor = wxColour(15, 15, 95),
+					 wxColour _filterInteriorColor = wxColour(45, 45, 120))
 		 : wxScrolledWindow(parent) {
 	eca = ecaLogic;
 	numIterations = _numIterations;
 	cellSize = _cellSize;
 	deadCellBrushColor = new wxBrush(_deadCellColor);
 	aliveCellBrushColor = new wxBrush(_aliveCellColor);
+	filterExteriorBrushColor = new wxBrush(_filterExteriorColor);
+	filterInteriorBrushColor = new wxBrush(_filterInteriorColor);
 
 	wxInitAllImageHandlers();
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
@@ -192,29 +196,28 @@ void DrawPanel::filterT3(string(&iterationGroup)[4], wxGCDC&filterDc, int iterat
 		f4 += iterationGroup[3].at((i + 1) % n);
 
 		if (f1.compare("1111") == 0 && f2.compare("1000") == 0 && f3.compare("1001") == 0 && f4.compare("10") == 0) {
-			filterDc.SetBrush(wxBrush(wxColour(15, 15, 95)));
+			filterDc.SetBrush(*filterExteriorBrushColor);
 			filterDc.DrawRectangle(i * cellSize, iteration * cellSize, cellSize, cellSize);
 			filterDc.DrawRectangle(((i + 1) % n) * cellSize, iteration * cellSize, cellSize, cellSize);
 			filterDc.DrawRectangle(((i + 2) % n) * cellSize, iteration * cellSize, cellSize, cellSize);
 			filterDc.DrawRectangle(((i + 3) % n) * cellSize, iteration * cellSize, cellSize, cellSize);
 
 			filterDc.DrawRectangle(i * cellSize, (iteration + 1) * cellSize, cellSize, cellSize);
-			filterDc.SetBrush(wxBrush(wxColour(45, 45, 120)));
+			filterDc.SetBrush(*filterInteriorBrushColor);
 			filterDc.DrawRectangle(((i + 1) % n) * cellSize, (iteration + 1) * cellSize, cellSize, cellSize);
 			filterDc.DrawRectangle(((i + 2) % n) * cellSize, (iteration + 1) * cellSize, cellSize, cellSize);
 			filterDc.DrawRectangle(((i + 3) % n) * cellSize, (iteration + 1) * cellSize, cellSize, cellSize);
 
-			filterDc.SetBrush(wxBrush(wxColour(15, 15, 95)));
+			filterDc.SetBrush(*filterExteriorBrushColor);
 			filterDc.DrawRectangle(i * cellSize, (iteration + 2) * cellSize, cellSize, cellSize);
-			filterDc.SetBrush(wxBrush(wxColour(45, 45, 120)));
+			filterDc.SetBrush(*filterInteriorBrushColor);
 			filterDc.DrawRectangle(((i + 1) % n) * cellSize, (iteration + 2) * cellSize, cellSize, cellSize);
 			filterDc.DrawRectangle(((i + 2) % n) * cellSize, (iteration + 2) * cellSize, cellSize, cellSize);
-			filterDc.SetBrush(wxBrush(wxColour(15, 15, 95)));
+			filterDc.SetBrush(*filterExteriorBrushColor);
 			filterDc.DrawRectangle(((i + 3) % n) * cellSize, (iteration + 2) * cellSize, cellSize, cellSize);
 
-			filterDc.SetBrush(wxBrush(wxColour(15, 15, 95)));
 			filterDc.DrawRectangle(i * cellSize, (iteration + 3) * cellSize, cellSize, cellSize);
-			filterDc.SetBrush(wxBrush(wxColour(45, 45, 120)));
+			filterDc.SetBrush(*filterInteriorBrushColor);
 			filterDc.DrawRectangle(((i + 1) % n) * cellSize, (iteration + 3) * cellSize, cellSize, cellSize);
 		}
 	}

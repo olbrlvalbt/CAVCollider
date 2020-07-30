@@ -21,9 +21,12 @@ public:
 	int cellSize = 1;
 	wxBrush* deadCellBrushColor;
 	wxBrush* aliveCellBrushColor;
+	wxBrush* filterExteriorBrushColor;
+	wxBrush* filterInteriorBrushColor;
 
 	DrawPanel(wxWindow* parent, EcaLogic* ecaLogic, int _numIterations, int _cellSize,
-			  wxColour _deadCellColor, wxColour _aliveCellColor);
+			  wxColour _deadCellColor, wxColour _aliveCellColor,
+			  wxColour _filterExteriorColor, wxColour _filterInteriorColor);
 
 	void paintEvent(wxPaintEvent & evt);
 	void OnKeyDown(wxKeyEvent& event);
