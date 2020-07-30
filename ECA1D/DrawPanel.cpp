@@ -28,14 +28,17 @@ void DrawPanel::paintEvent(wxPaintEvent & evt) {
 }
 
 void DrawPanel::render() {
-	wxClientDC paintDC(this);
+	wxBufferedPaintDC paintDC(this);
 	DoPrepareDC(paintDC);
 	paintDC.DrawBitmap(*bitmap, 0, 0, true);
+	if (filterOn) {
+		paintDC.DrawBitmap(*filterBitmap, 0, 0, true);
+	}
 }
 
 void DrawPanel::createBitmap() {
 	if (true) {
-		drawWithT3Filter();
+		createBitmapWithT3Filter();
 		return;
 	}
 
@@ -81,19 +84,8 @@ void DrawPanel::createBitmap() {
 
 	progress->Update(100);
 }
-void DrawPanel::paintIteration(wxDC& dc, int iteration) {
-	for (int i = 0; i < eca->N; i++) {
-		if (eca->currentState.at(i) == '1') {
-			dc.SetBrush(*aliveCellBrushColor);
-		}
-		else {
-			dc.SetBrush(*deadCellBrushColor);
-		}
-		dc.DrawRectangle(i * cellSize, iteration * cellSize, cellSize, cellSize);
-	}
-}
 
-void DrawPanel::drawWithT3Filter() {
+void DrawPanel::createBitmapWithT3Filter() {
 	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
 	bitmap = new wxBitmap(eca->N * cellSize, numIterations * cellSize);
@@ -101,9 +93,9 @@ void DrawPanel::drawWithT3Filter() {
 	baseDc.SetPen(wxPen(wxColor(0, 0, 0), 1, wxPENSTYLE_TRANSPARENT));
 
 
-	wxBitmap filterBitmap(eca->N * cellSize, numIterations * cellSize, 32);
-	filterBitmap.UseAlpha();
-	wxMemoryDC filterMemDc(filterBitmap);
+	filterBitmap = new wxBitmap(eca->N * cellSize, numIterations * cellSize, 32);
+	filterBitmap->UseAlpha();
+	wxMemoryDC filterMemDc(*filterBitmap);
 
 	wxGCDC filterDc(filterMemDc);
 	filterDc.SetBackground(*wxTRANSPARENT_BRUSH);
@@ -159,10 +151,22 @@ void DrawPanel::drawWithT3Filter() {
 	progress = new wxProgressDialog("Rendering", "Painting image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
 	bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
-
-	filterBitmap.SaveFile("screenshotFilter.png", wxBITMAP_TYPE_PNG);
+	progress->Update(50);
+	filterBitmap->SaveFile("screenshotFilter.png", wxBITMAP_TYPE_PNG);
 
 	progress->Update(100);
+}
+
+void DrawPanel::paintIteration(wxDC& dc, int iteration) {
+	for (int i = 0; i < eca->N; i++) {
+		if (eca->currentState.at(i) == '1') {
+			dc.SetBrush(*aliveCellBrushColor);
+		}
+		else {
+			dc.SetBrush(*deadCellBrushColor);
+		}
+		dc.DrawRectangle(i * cellSize, iteration * cellSize, cellSize, cellSize);
+	}
 }
 
 void DrawPanel::filterT3(string(&iterationGroup)[4], wxGCDC&filterDc, int iteration) {
@@ -264,6 +268,11 @@ void DrawPanel::OnKeyDown(wxKeyEvent& event) {
 		eca->currentState = eca->initialCondition;
 		currentShowingIteration = 1;
 		createBitmap();
+		Refresh();
+		break;
+	case 'f':
+	case 'F':
+		filterOn = !filterOn;
 		Refresh();
 		break;
 	case 's':

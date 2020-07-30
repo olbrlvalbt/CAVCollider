@@ -12,6 +12,9 @@ class DrawPanel : public wxScrolledWindow {
 public:
 	EcaLogic* eca = nullptr;
 	wxBitmap* bitmap;
+	wxBitmap* filterBitmap;
+
+	bool filterOn = false;
 
 	int numIterations = 1;
 	int currentShowingIteration = 1;
@@ -28,7 +31,7 @@ public:
 	void render();
 	void createBitmap();
 	void paintIteration(wxDC& dc, int iteration);
-	void drawWithT3Filter();
+	void createBitmapWithT3Filter();
 	void filterT3(string (&iterationGroup)[4], wxGCDC& filterDc, int iteration);
 	bool saveToImage(wxBufferedDC& dc);
 };
