@@ -1,8 +1,7 @@
 #include "EcaMenu.h"
 
-
 EcaMenu::EcaMenu() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition, wxSize(600, 750),
-	wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
+						 	 wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
 	mainPanel = new wxPanel(this, wxID_ANY);
 
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
