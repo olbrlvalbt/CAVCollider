@@ -23,6 +23,7 @@
     <ClInclude Include="EcaApp.h" />
     <ClInclude Include="EcaFrame.h" />
     <ClInclude Include="EcaLogic.h" />
+    <ClInclude Include="EcaMenu.h" />
     <ClInclude Include="Rule110.h" />
     <ClInclude Include="Rule110Composite.h" />
     <ClInclude Include="Rule110Constants.h" />
@@ -35,6 +36,7 @@
     <ClCompile Include="EcaApp.cpp" />
     <ClCompile Include="EcaFrame.cpp" />
     <ClCompile Include="EcaLogic.cpp" />
+    <ClCompile Include="EcaMenu.cpp" />
     <ClCompile Include="Rule110.cpp" />
     <ClCompile Include="Rule110Composite.cpp" />
     <ClCompile Include="Rule110Basic.cpp" />
