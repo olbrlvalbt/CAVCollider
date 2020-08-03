@@ -5,7 +5,7 @@ EcaMenu::EcaMenu() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition,
 	mainPanel = new wxPanel(this, wxID_ANY);
 
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-	wxFlexGridSizer* fgs = new wxFlexGridSizer(17, 2, 10, 20);
+	wxFlexGridSizer* fgs = new wxFlexGridSizer(16, 2, 10, 20);
 
 
 	ruleText = new wxStaticText(mainPanel, wxID_ANY, wxT("Rule:"));
