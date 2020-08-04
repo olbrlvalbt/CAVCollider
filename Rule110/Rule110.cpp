@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Rule110.h"
 
 string Rule110::Translate(string _s) {

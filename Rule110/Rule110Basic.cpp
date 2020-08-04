@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Rule110Basic.h"
 
 string Rule110Basic::GetEther(int _multiple) {

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Rule110Glider.h"
 
 const Glider Rule110Glider::GLIDER_A = {

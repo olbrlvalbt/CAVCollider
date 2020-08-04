@@ -1,5 +1,11 @@
 #pragma once
 
+#ifdef RULE110_EXPORTS
+#define RULE110_API __declspec(dllexport)
+#else
+#define RULE110_API __declspec(dllimport)
+#endif
+
 #include <string>
 #include <sstream>
 #include <regex>
@@ -10,7 +16,7 @@
 
 using namespace std;
 
-class Rule110 {
+class RULE110_API Rule110 {
 public:
 	static string Translate(string _s);
 	static string GetExpression(string _token);

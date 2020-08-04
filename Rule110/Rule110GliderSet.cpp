@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Rule110GliderSet.h"
 
 const GliderSet Rule110GliderSet::GLIDERSET_4_A4 = {

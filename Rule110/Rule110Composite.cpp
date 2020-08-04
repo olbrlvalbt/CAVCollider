@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Rule110Composite.h"
 
 string Rule110Composite::GetComposite(string _token) {

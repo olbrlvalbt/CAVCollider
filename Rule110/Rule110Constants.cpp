@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Rule110Constants.h"
 
 const std::string Rule110Constants::STRING_MULTIPLE = "([0-9]*)";
