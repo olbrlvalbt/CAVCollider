@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include "EcaLogic.h"
 
 EcaLogic::EcaLogic(int _N, int _rule, EcaBoundary ecaBoundary = ECABOUNDARY_PERIODIC) {

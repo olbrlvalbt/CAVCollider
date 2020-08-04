@@ -1,13 +1,20 @@
 #pragma once
+
+#ifdef ECALOGIC_EXPORTS
+#define ECALOGIC_API __declspec(dllexport)
+#else
+#define ECALOGIC_API __declspec(dllimport)
+#endif
+
 #include <string>
 #include <regex>
 #include <time.h>
 
 using namespace std;
 
-enum EcaBoundary {ECABOUNDARY_PERIODIC, ECABOUNDARY_CLOSED};
+enum ECALOGIC_API EcaBoundary {ECABOUNDARY_PERIODIC, ECABOUNDARY_CLOSED};
 
-class EcaLogic {
+class ECALOGIC_API EcaLogic {
 public:
 	int N = 100;
 	int ruleNumber = 110;
