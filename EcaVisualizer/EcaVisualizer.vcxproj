@@ -19,32 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DrawPanel.h" />
-    <ClInclude Include="EcaApp.h" />
-    <ClInclude Include="EcaFrame.h" />
-    <ClInclude Include="EcaMenu.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="DrawPanel.cpp" />
     <ClCompile Include="EcaApp.cpp" />
     <ClCompile Include="EcaFrame.cpp" />
     <ClCompile Include="EcaMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EcaLogic\EcaLogic.vcxproj">
-      <Project>{6ef4fe21-933e-4f44-a863-cdd6a0af04f0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Rule110\Rule110.vcxproj">
-      <Project>{86c77faf-a311-44d4-9f34-0e8ede8ec618}</Project>
-    </ProjectReference>
+    <ClInclude Include="DrawPanel.h" />
+    <ClInclude Include="EcaApp.h" />
+    <ClInclude Include="EcaFrame.h" />
+    <ClInclude Include="EcaMenu.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{1F729349-AEB8-4B00-AEBD-AC82321EFCEE}</ProjectGuid>
+    <ProjectGuid>{23C9CBF0-17FA-4E23-B944-7F43491433FC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ECA1D</RootNamespace>
+    <RootNamespace>EcaVisualizer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
-    <ProjectName>EcaVisualizer</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -111,12 +102,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir);</AdditionalLibraryDirectories>
       <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -128,12 +119,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir);</AdditionalLibraryDirectories>
       <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -147,14 +138,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir);</AdditionalLibraryDirectories>
       <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -168,14 +159,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir);</AdditionalLibraryDirectories>
       <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
