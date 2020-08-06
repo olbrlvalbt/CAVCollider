@@ -14,6 +14,7 @@ public:
 	wxBitmap* bitmap;
 	wxBitmap* filterBitmap;
 
+	int ringOffset = 1;
 	int ringWidth = 2;
 	int ringRadius = 500;
 	int panelSize = 1500;

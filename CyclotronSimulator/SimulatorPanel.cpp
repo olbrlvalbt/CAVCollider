@@ -20,8 +20,13 @@ SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic,
 
 	wxInitAllImageHandlers();
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
-	createBitmap();
-	//createBitmapWithT3Filter();
+
+	bitmap = new wxBitmap(panelSize, panelSize);
+
+	wxMemoryDC memDc(*bitmap);
+	memDc.SetBrush(*wxBLACK_BRUSH);
+	memDc.Clear();
+	memDc.SelectObject(wxNullBitmap);
 
 	Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(SimulatorPanel::paintEvent));
 	//Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(SimulatorPanel::OnKeyDown));
@@ -29,6 +34,14 @@ SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic,
 
 	SetClientSize(panelSize, panelSize);
 	//SetScrollbars(1, 1, panelSize, panelSize, 0, 0);
+	
+	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait",
+													  200, nullptr, wxPD_AUTO_HIDE);
+	for (int i = 0; i < 200; i++) {
+		createBitmap();
+		//createBitmapWithT3Filter();
+		progress->Update(i + 1);
+	}
 }
 
 void SimulatorPanel::paintEvent(wxPaintEvent & evt) {
@@ -45,10 +58,21 @@ void SimulatorPanel::render() {
 }
 
 void SimulatorPanel::createBitmap() {
-	bitmap = new wxBitmap(panelSize, panelSize);
+	wxBitmap newBitmap(panelSize, panelSize);
 
-	wxMemoryDC memDc(*bitmap);
+	wxMemoryDC memDc(newBitmap);
 	wxGCDC dc(memDc);
+	memDc.SetBrush(*wxBLACK_BRUSH);
+	memDc.Clear();
+
+
+	wxMemoryDC previousDc(*bitmap);
+	memDc.Blit(0, 0,
+			   panelSize - ringOffset, panelSize - ringOffset,
+			   &previousDc,
+			   ringOffset, ringOffset);
+	previousDc.SelectObject(wxNullBitmap);
+
 	dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
 	double currentDegree = 0;
@@ -77,5 +101,6 @@ void SimulatorPanel::createBitmap() {
 
 	memDc.SelectObject(wxNullBitmap);
 
+	bitmap = new wxBitmap(newBitmap);
 	bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
 }
