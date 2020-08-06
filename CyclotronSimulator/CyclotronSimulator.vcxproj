@@ -160,11 +160,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="SimulatorApp.h" />
+    <ClInclude Include="SimulatorFrame.h" />
     <ClInclude Include="SimulatorMenu.h" />
+    <ClInclude Include="SimulatorPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SimulatorApp.cpp" />
+    <ClCompile Include="SimulatorFrame.cpp" />
     <ClCompile Include="SimulatorMenu.cpp" />
+    <ClCompile Include="SimulatorPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EcaLogic\EcaLogic.vcxproj">

@@ -21,12 +21,24 @@
     <ClInclude Include="SimulatorApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SimulatorFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulatorPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SimulatorMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimulatorApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulatorFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulatorPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

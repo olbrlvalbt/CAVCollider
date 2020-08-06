@@ -161,11 +161,9 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 
 	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
 
+	SimulatorFrame* simFrame = new SimulatorFrame(eca, 200, 700,
+												  deadCellColor, aliveCellColor,
+												  filterExteriorColor, filterInteriorColor);
 
-	
-	/*EcaFrame* ecaFrame = new EcaFrame(eca, numIterations, cellSize,
-		deadCellColor, aliveCellColor,
-		filterExteriorColor, filterInteriorColor);
-
-	ecaFrame->Show();*/
+	simFrame->Show();
 }

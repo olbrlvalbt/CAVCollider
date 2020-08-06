@@ -6,6 +6,7 @@
 
 #include "Rule110.h"
 #include "EcaLogic.h"
+#include "SimulatorFrame.h"
 
 class SimulatorMenu : public wxFrame {
 public:
