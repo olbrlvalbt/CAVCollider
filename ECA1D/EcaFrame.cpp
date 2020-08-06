@@ -7,19 +7,11 @@ EcaFrame::EcaFrame(EcaLogic* ecaLogic, int numIterations, int cellSize = 1,
 				   wxColour filterInteriorColor = wxColour(45, 45, 120))
 		: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(ecaLogic->ruleNumber) + " - N: " + to_string(ecaLogic->N)),
 				  wxDefaultPosition, wxDefaultSize) {
-	initEcaFrame(ecaLogic, numIterations, cellSize,
-				 deadCellColor, aliveCellColor,
-				 filterExteriorColor, filterInteriorColor);
-}
-
-void EcaFrame::initEcaFrame(EcaLogic* ecaLogic, int numIterations, int cellSize,
-							wxColour deadCellColor, wxColour aliveCellColor,
-							wxColour filterExteriorColor, wxColour filterInteriorColor) {
 	wxBoxSizer* frameSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	drawPanel = new DrawPanel(this, ecaLogic, numIterations, cellSize,
-							  deadCellColor, aliveCellColor,
-							  filterExteriorColor, filterInteriorColor);
+		deadCellColor, aliveCellColor,
+		filterExteriorColor, filterInteriorColor);
 	frameSizer->Add(drawPanel, 1, wxALL | wxEXPAND);
 	SetSizer(frameSizer);
 	wxSize panelSize = drawPanel->GetClientSize();
