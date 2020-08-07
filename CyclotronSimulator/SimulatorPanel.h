@@ -22,7 +22,7 @@ public:
 	wxPoint ringCenter = wxPoint(panelSize / 2, panelSize / 2);
 
 	bool filterOn = false;
-	bool paintActive = true;
+	bool toggleAnimation = true;
 	bool enable3d = false;
 
 	wxPen* deadCellPenColor;

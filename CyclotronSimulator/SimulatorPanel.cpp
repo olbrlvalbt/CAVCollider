@@ -115,19 +115,19 @@ void SimulatorPanel::clearBitmap() {
 }
 
 void SimulatorPanel::timerEvent(wxTimerEvent& evt) {
-	if(paintActive) {
+	if(toggleAnimation) {
 		createBitmap();
 		Refresh();
 	}
 }
 
 void SimulatorPanel::OnKeyDown(wxKeyEvent& evt) {
-	bool curPaintActive = paintActive;
+	bool curPaintActive = toggleAnimation;
 	
 	switch ((int)evt.GetKeyCode()) {
 	case 'n':
 	case 'N':
-		paintActive = false;
+		toggleAnimation = false;
 		if (wxMessageBox("Create new random initial condition?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
 			eca->initialCondition = eca->CreateRandomInitialCondition(eca->N);
 			eca->currentState = eca->initialCondition;
@@ -135,25 +135,25 @@ void SimulatorPanel::OnKeyDown(wxKeyEvent& evt) {
 			enable3d = false;
 			curPaintActive = true;
 		}
-		paintActive = curPaintActive;
+		toggleAnimation = curPaintActive;
 		break;
 	case WXK_SPACE:
 		enable3d = true;
 		break;
 	case 'p':
 	case 'P':
-		paintActive = !paintActive;
+		toggleAnimation = !toggleAnimation;
 		break;
 	case 'r':
 	case 'R':
-		paintActive = false;
+		toggleAnimation = false;
 		if (wxMessageBox("Restart ECA?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
 			eca->currentState = eca->initialCondition;
 			clearBitmap();
 			enable3d = false;
 			curPaintActive = true;
 		}
-		paintActive = curPaintActive;
+		toggleAnimation = curPaintActive;
 		break;
 	case 'f':
 	case 'F':
@@ -162,9 +162,9 @@ void SimulatorPanel::OnKeyDown(wxKeyEvent& evt) {
 		break;
 	case 's':
 	case 'S':
-		paintActive = false;
+		toggleAnimation = false;
 		saveToImage();
-		paintActive = curPaintActive;
+		toggleAnimation = curPaintActive;
 		break;
 	}
 	evt.Skip();
