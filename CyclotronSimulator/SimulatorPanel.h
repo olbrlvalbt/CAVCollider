@@ -13,7 +13,6 @@ class SimulatorPanel : public wxScrolledWindow {
 public:
 	EcaLogic* eca = nullptr;
 	wxBitmap* bitmap;
-	wxBitmap* filterBitmap;
 
 	int ringOffset = 1;
 	int ringWidth = 2;
@@ -21,9 +20,11 @@ public:
 	int panelSize = 1500;
 	wxPoint ringCenter = wxPoint(panelSize / 2, panelSize / 2);
 
-	bool filterOn = false;
+	bool filterOn = true;
 	bool toggleAnimation = true;
 	bool enable3d = false;
+	int refreshRate = 50;
+	int currentIteration = 0;
 
 	wxPen* deadCellPenColor;
 	wxPen* aliveCellPenColor;
@@ -32,9 +33,14 @@ public:
 
 	wxTimer paintTimer;
 
+	string iterationGroup[4] = { "", "", "", "" };
+	string filterGroup[4] = { "", "", "", "" };
+
 	SimulatorPanel(wxWindow* parent, EcaLogic* ecaLogic, int _ringRadius, int _panelSize,
 				   wxColour _deadCellColor, wxColour _aliveCellColor,
 				   wxColour _filterExteriorColor, wxColour _filterInteriorColor);
+
+	~SimulatorPanel();
 
 	void paintEvent(wxPaintEvent & evt);
 	void timerEvent(wxTimerEvent& evt);
@@ -43,9 +49,10 @@ public:
 	void render();
 	void createBitmap();
 	void clearBitmap();
-	//void paintIteration(wxDC& dc, int iteration);
 	void saveToImage();
-	//void createBitmapWithT3Filter();
-	//void filterT3(string(&iterationGroup)[4], wxGCDC& filterDc, int iteration);
-	//bool saveToImage(wxBufferedDC& dc);
+	
+	void createBitmapWithT3Filter();
+	void paintIterationWithT3Filter(wxDC& dc);
+	void filterT3();
+	void paintIteration(wxDC& dc);
 };

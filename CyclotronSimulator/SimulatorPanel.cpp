@@ -24,26 +24,28 @@ SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic,
 	bitmap = new wxBitmap(panelSize, panelSize);
 	clearBitmap();
 
+	if(filterOn) {
+		for (int i = 0; i < 4; i++) {
+			iterationGroup[i] = eca->currentState;
+			filterGroup[i] = string(eca->N, '0');
+			eca->applyRule();
+		}
+	}
+
 	Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(SimulatorPanel::paintEvent));
 	Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(SimulatorPanel::OnKeyDown));
-	//Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(SimulatorPanel::OnKeyDown));
-
 
 	SetClientSize(panelSize, panelSize);
 	//SetScrollbars(1, 1, panelSize, panelSize, 0, 0);
 
 	paintTimer.SetOwner(this);
-	paintTimer.Start(50);
+	paintTimer.Start(refreshRate);
 
 	Connect(paintTimer.GetId(), wxEVT_TIMER, wxTimerEventHandler(SimulatorPanel::timerEvent));
-	
-	/*wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait",
-													  200, nullptr, wxPD_AUTO_HIDE);
-	for (int i = 0; i < 200; i++) {
-		createBitmap();
-		//createBitmapWithT3Filter();
-		progress->Update(i + 1);
-	}*/
+}
+
+SimulatorPanel::~SimulatorPanel() {
+	paintTimer.Stop();
 }
 
 void SimulatorPanel::paintEvent(wxPaintEvent & evt) {
@@ -54,9 +56,9 @@ void SimulatorPanel::render() {
 	wxBufferedPaintDC paintDC(this);
 	DoPrepareDC(paintDC);
 	paintDC.DrawBitmap(*bitmap, 0, 0, true);
-	if (filterOn) {
-		paintDC.DrawBitmap(*filterBitmap, 0, 0, true);
-	}
+	
+	GetParent()->SetLabel("ECA R" + to_string(eca->ruleNumber) + ", N: " + to_string(eca->N)
+		+ ", Iteration " + to_string(currentIteration));
 }
 
 void SimulatorPanel::createBitmap() {
@@ -67,12 +69,12 @@ void SimulatorPanel::createBitmap() {
 	memDc.SetBrush(*wxBLACK_BRUSH);
 	memDc.Clear();
 
-	if(enable3d) {
+	if (enable3d) {
 		wxMemoryDC previousDc(*bitmap);
 		memDc.Blit(0, 0,
-				   panelSize - ringOffset, panelSize - ringOffset,
-				   &previousDc,
-				   ringOffset, ringOffset);
+			panelSize - ringOffset, panelSize - ringOffset,
+			&previousDc,
+			ringOffset, ringOffset);
 		previousDc.SelectObject(wxNullBitmap);
 	}
 
@@ -91,22 +93,45 @@ void SimulatorPanel::createBitmap() {
 		}
 		newDegree += degreeIncrement;
 		dc.DrawEllipticArc(ringCenter.x - ringRadius, ringCenter.y - ringRadius, 2 * ringRadius, 2 * ringRadius,
-						   currentDegree, newDegree);
+			currentDegree, newDegree);
 		currentDegree = newDegree;
 	}
 
 	eca->applyRule();
 
-	/*GetParent()->SetLabel("ECA R" + to_string(eca->ruleNumber) + ", N: " + to_string(eca->N)
-		+ ", Iterations " + to_string((currentShowingIteration - 1) * numIterations)
-		+ "-" + to_string(currentShowingIteration * numIterations - 1)
-		+ " (" + to_string(currentShowingIteration) + ")");*/
+	memDc.SelectObject(wxNullBitmap);
+
+	bitmap = new wxBitmap(newBitmap);
+}
+
+void SimulatorPanel::createBitmapWithT3Filter() {
+	wxBitmap newBitmap(panelSize, panelSize);
+
+	wxMemoryDC memDc(newBitmap);
+	wxGCDC dc(memDc);
+	memDc.SetBrush(*wxBLACK_BRUSH);
+	memDc.Clear();
+
+	if (enable3d) {
+		wxMemoryDC previousDc(*bitmap);
+		memDc.Blit(0, 0,
+			panelSize - ringOffset, panelSize - ringOffset,
+			&previousDc,
+			ringOffset, ringOffset);
+		previousDc.SelectObject(wxNullBitmap);
+	}
+
+	dc.SetBrush(*wxTRANSPARENT_BRUSH);
+
+	paintIterationWithT3Filter(dc);
+	eca->applyRule();
+	currentIteration++;
 
 	memDc.SelectObject(wxNullBitmap);
 
 	bitmap = new wxBitmap(newBitmap);
-	//bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
 }
+
 void SimulatorPanel::clearBitmap() {
 	wxMemoryDC memDc(*bitmap);
 	memDc.SetBrush(*wxBLACK_BRUSH);
@@ -116,7 +141,12 @@ void SimulatorPanel::clearBitmap() {
 
 void SimulatorPanel::timerEvent(wxTimerEvent& evt) {
 	if(toggleAnimation) {
-		createBitmap();
+		if(filterOn) {
+			createBitmapWithT3Filter();
+		}
+		else {
+			createBitmap();
+		}
 		Refresh();
 	}
 }
@@ -177,4 +207,93 @@ void SimulatorPanel::saveToImage() {
 		return;
 	}
 	bitmap->SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
+}
+
+void SimulatorPanel::paintIterationWithT3Filter(wxDC& dc) {
+	filterT3();
+	paintIteration(dc);
+}
+
+void SimulatorPanel::filterT3() {
+	string f1 = "";
+	string f2 = "";
+	string f3 = "";
+	string f4 = "";
+
+	int n = eca->N;
+
+	for (int i = 0; i < n; i++) {
+		f1 = iterationGroup[0].at(i);
+		f1 += iterationGroup[0].at((i + 1) % n);
+		f1 += iterationGroup[0].at((i + 2) % n);
+		f1 += iterationGroup[0].at((i + 3) % n);
+
+		f2 = iterationGroup[1].at(i);
+		f2 += iterationGroup[1].at((i + 1) % n);
+		f2 += iterationGroup[1].at((i + 2) % n);
+		f2 += iterationGroup[1].at((i + 3) % n);
+
+		f3 = iterationGroup[2].at(i);
+		f3 += iterationGroup[2].at((i + 1) % n);
+		f3 += iterationGroup[2].at((i + 2) % n);
+		f3 += iterationGroup[2].at((i + 3) % n);
+
+		f4 = iterationGroup[3].at(i);
+		f4 += iterationGroup[3].at((i + 1) % n);
+
+		if (f1.compare("1111") == 0 && f2.compare("1000") == 0 && f3.compare("1001") == 0 && f4.compare("10") == 0) {
+			filterGroup[0][i] = '1';
+			filterGroup[0][(i + 1) % n] = '1';
+			filterGroup[0][(i + 2) % n] = '1';
+			filterGroup[0][(i + 3) % n] = '1';
+
+			filterGroup[1][i] = '1';
+			filterGroup[1][(i + 1) % n] = '2';
+			filterGroup[1][(i + 2) % n] = '2';
+			filterGroup[1][(i + 3) % n] = '2';
+
+			filterGroup[2][i] = '1';
+			filterGroup[2][(i + 1) % n] = '2';
+			filterGroup[2][(i + 2) % n] = '2';
+			filterGroup[2][(i + 3) % n] = '1';
+
+			filterGroup[3][i] = '1';
+			filterGroup[3][(i + 1) % n] = '2';
+		}
+	}
+}
+
+void SimulatorPanel::paintIteration(wxDC& dc) {
+	double currentDegree = 0;
+	double newDegree = 0;
+	const double degreeIncrement = 360 / (double)(eca->N);
+	
+	for (int i = 0; i < eca->N; i++) {
+		if (filterGroup[0].at(i) == '1') {
+			dc.SetPen(*filterExteriorPenColor);
+		}
+		else if (filterGroup[0].at(i) == '2') {
+			dc.SetPen(*filterInteriorPenColor);
+		}
+		else if (iterationGroup[0].at(i) == '1') {
+			dc.SetPen(*aliveCellPenColor);
+		}
+		else {
+			dc.SetPen(*deadCellPenColor);
+		}
+		newDegree += degreeIncrement;
+		dc.DrawEllipticArc(ringCenter.x - ringRadius, ringCenter.y - ringRadius, 2 * ringRadius, 2 * ringRadius,
+			currentDegree, newDegree);
+		currentDegree = newDegree;
+	}
+
+	iterationGroup[0] = iterationGroup[1];
+	iterationGroup[1] = iterationGroup[2];
+	iterationGroup[2] = iterationGroup[3];
+	iterationGroup[3] = eca->currentState;
+
+	filterGroup[0] = filterGroup[1];
+	filterGroup[1] = filterGroup[2];
+	filterGroup[2] = filterGroup[3];
+	filterGroup[3] = string(eca->N, '0');
 }
