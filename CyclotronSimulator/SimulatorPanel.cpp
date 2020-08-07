@@ -22,26 +22,28 @@ SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic,
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 
 	bitmap = new wxBitmap(panelSize, panelSize);
-
-	wxMemoryDC memDc(*bitmap);
-	memDc.SetBrush(*wxBLACK_BRUSH);
-	memDc.Clear();
-	memDc.SelectObject(wxNullBitmap);
+	clearBitmap();
 
 	Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(SimulatorPanel::paintEvent));
+	Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(SimulatorPanel::OnKeyDown));
 	//Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(SimulatorPanel::OnKeyDown));
 
 
 	SetClientSize(panelSize, panelSize);
 	//SetScrollbars(1, 1, panelSize, panelSize, 0, 0);
+
+	paintTimer.SetOwner(this);
+	paintTimer.Start(50);
+
+	Connect(paintTimer.GetId(), wxEVT_TIMER, wxTimerEventHandler(SimulatorPanel::timerEvent));
 	
-	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait",
+	/*wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait",
 													  200, nullptr, wxPD_AUTO_HIDE);
 	for (int i = 0; i < 200; i++) {
 		createBitmap();
 		//createBitmapWithT3Filter();
 		progress->Update(i + 1);
-	}
+	}*/
 }
 
 void SimulatorPanel::paintEvent(wxPaintEvent & evt) {
@@ -65,13 +67,14 @@ void SimulatorPanel::createBitmap() {
 	memDc.SetBrush(*wxBLACK_BRUSH);
 	memDc.Clear();
 
-
-	wxMemoryDC previousDc(*bitmap);
-	memDc.Blit(0, 0,
-			   panelSize - ringOffset, panelSize - ringOffset,
-			   &previousDc,
-			   ringOffset, ringOffset);
-	previousDc.SelectObject(wxNullBitmap);
+	if(enable3d) {
+		wxMemoryDC previousDc(*bitmap);
+		memDc.Blit(0, 0,
+				   panelSize - ringOffset, panelSize - ringOffset,
+				   &previousDc,
+				   ringOffset, ringOffset);
+		previousDc.SelectObject(wxNullBitmap);
+	}
 
 	dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
@@ -102,5 +105,76 @@ void SimulatorPanel::createBitmap() {
 	memDc.SelectObject(wxNullBitmap);
 
 	bitmap = new wxBitmap(newBitmap);
-	bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
+	//bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
+}
+void SimulatorPanel::clearBitmap() {
+	wxMemoryDC memDc(*bitmap);
+	memDc.SetBrush(*wxBLACK_BRUSH);
+	memDc.Clear();
+	memDc.SelectObject(wxNullBitmap);
+}
+
+void SimulatorPanel::timerEvent(wxTimerEvent& evt) {
+	if(paintActive) {
+		createBitmap();
+		Refresh();
+	}
+}
+
+void SimulatorPanel::OnKeyDown(wxKeyEvent& evt) {
+	bool curPaintActive = paintActive;
+	
+	switch ((int)evt.GetKeyCode()) {
+	case 'n':
+	case 'N':
+		paintActive = false;
+		if (wxMessageBox("Create new random initial condition?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
+			eca->initialCondition = eca->CreateRandomInitialCondition(eca->N);
+			eca->currentState = eca->initialCondition;
+			clearBitmap();
+			enable3d = false;
+			curPaintActive = true;
+		}
+		paintActive = curPaintActive;
+		break;
+	case WXK_SPACE:
+		enable3d = true;
+		break;
+	case 'p':
+	case 'P':
+		paintActive = !paintActive;
+		break;
+	case 'r':
+	case 'R':
+		paintActive = false;
+		if (wxMessageBox("Restart ECA?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
+			eca->currentState = eca->initialCondition;
+			clearBitmap();
+			enable3d = false;
+			curPaintActive = true;
+		}
+		paintActive = curPaintActive;
+		break;
+	case 'f':
+	case 'F':
+		/*filterOn = !filterOn;
+		Refresh();*/
+		break;
+	case 's':
+	case 'S':
+		paintActive = false;
+		saveToImage();
+		paintActive = curPaintActive;
+		break;
+	}
+	evt.Skip();
+}
+
+void SimulatorPanel::saveToImage() {
+	wxFileDialog saveFileDialog(this, _("Save file"), wxGetCwd(), "",
+								"PNG files (*.png)|*.png", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+		return;
+	}
+	bitmap->SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
 }
