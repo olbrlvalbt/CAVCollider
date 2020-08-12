@@ -12,7 +12,8 @@
 class SimulatorPanel : public wxScrolledWindow {
 public:
 	EcaLogic* eca = nullptr;
-	wxBitmap* bitmap;
+	wxBitmap currentBitmap;
+	wxBitmap helperBitmap;
 
 	int ringOffset = 1;
 	int ringWidth = 2;
@@ -40,15 +41,13 @@ public:
 				   wxColour _deadCellColor, wxColour _aliveCellColor,
 				   wxColour _filterExteriorColor, wxColour _filterInteriorColor);
 
-	~SimulatorPanel();
-
 	void paintEvent(wxPaintEvent & evt);
 	void timerEvent(wxTimerEvent& evt);
 	void OnKeyDown(wxKeyEvent& evt);
 
 	void render();
 	void createBitmap();
-	void clearBitmap();
+	void clearBitmap(wxBitmap& bitmap);
 	void saveToImage();
 	
 	void createBitmapWithT3Filter();

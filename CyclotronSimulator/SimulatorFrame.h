@@ -14,4 +14,6 @@ public:
 	SimulatorFrame(EcaLogic* ecaLogic, int _ringRadius, int _panelSize,
 				   wxColour _deadCellColor, wxColour _aliveCellColor,
 				   wxColour _filterExteriorColor, wxColour _filterInteriorColor);
+
+	void closeEvent(wxCloseEvent & evt);
 };

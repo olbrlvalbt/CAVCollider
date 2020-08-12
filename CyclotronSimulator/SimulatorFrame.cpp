@@ -25,4 +25,10 @@ SimulatorFrame::SimulatorFrame(EcaLogic* ecaLogic, int _ringRadius = 500, int _p
 	SetClientSize(frameSize);
 	SetMaxClientSize(panelSize);
 	Center();
+	Connect(GetId(), wxEVT_CLOSE_WINDOW, wxCloseEventHandler(SimulatorFrame::closeEvent));
+}
+
+void SimulatorFrame::closeEvent(wxCloseEvent& evt) {
+	drawPanel->Destroy();
+	evt.Skip();
 }
