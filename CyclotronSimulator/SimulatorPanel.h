@@ -34,13 +34,15 @@ public:
 
 	wxTimer paintTimer;
 
-	string iterationGroup[4] = { "", "", "", "" };
-	string filterGroup[4] = { "", "", "", "" };
-
 	SimulatorPanel(wxWindow* parent, EcaLogic* ecaLogic, int _ringRadius, int _panelSize,
 				   wxColour _deadCellColor, wxColour _aliveCellColor,
 				   wxColour _filterExteriorColor, wxColour _filterInteriorColor);
 
+	
+private:
+	string iterationGroup[4] = { "", "", "", "" };
+	string filterGroup[4] = { "", "", "", "" };
+	
 	void paintEvent(wxPaintEvent & evt);
 	void timerEvent(wxTimerEvent& evt);
 	void OnKeyDown(wxKeyEvent& evt);
@@ -49,9 +51,11 @@ public:
 	void createBitmap();
 	void clearBitmap(wxBitmap& bitmap);
 	void saveToImage();
-	
+
 	void createBitmapWithT3Filter();
 	void paintIterationWithT3Filter(wxDC& dc);
 	void filterT3();
 	void paintIteration(wxDC& dc);
+
+	void initializeFilterGroup();
 };

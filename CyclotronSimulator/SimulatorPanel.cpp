@@ -27,11 +27,7 @@ SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic,
 	clearBitmap(helperBitmap);
 
 	if(filterOn) {
-		for (int i = 0; i < 4; i++) {
-			iterationGroup[i] = eca->currentState;
-			filterGroup[i] = string(eca->N, '0');
-			eca->applyRule();
-		}
+		initializeFilterGroup();
 	}
 
 	Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(SimulatorPanel::paintEvent));
@@ -162,6 +158,10 @@ void SimulatorPanel::OnKeyDown(wxKeyEvent& evt) {
 		if (wxMessageBox("Create new random initial condition?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
 			eca->initialCondition = eca->CreateRandomInitialCondition(eca->N);
 			eca->currentState = eca->initialCondition;
+			if(filterOn) {
+				initializeFilterGroup();
+			}
+			currentIteration = 0;
 			clearBitmap(currentBitmap);
 			enable3d = false;
 			curPaintActive = true;
@@ -169,7 +169,7 @@ void SimulatorPanel::OnKeyDown(wxKeyEvent& evt) {
 		toggleAnimation = curPaintActive;
 		break;
 	case WXK_SPACE:
-		enable3d = true;
+		enable3d = !enable3d;
 		break;
 	case 'p':
 	case 'P':
@@ -180,6 +180,10 @@ void SimulatorPanel::OnKeyDown(wxKeyEvent& evt) {
 		toggleAnimation = false;
 		if (wxMessageBox("Restart ECA?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
 			eca->currentState = eca->initialCondition;
+			if (filterOn) {
+				initializeFilterGroup();
+			}
+			currentIteration = 0;
 			clearBitmap(currentBitmap);
 			enable3d = false;
 			curPaintActive = true;
@@ -297,4 +301,12 @@ void SimulatorPanel::paintIteration(wxDC& dc) {
 	filterGroup[1] = filterGroup[2];
 	filterGroup[2] = filterGroup[3];
 	filterGroup[3] = string(eca->N, '0');
+}
+
+void SimulatorPanel::initializeFilterGroup() {
+	for (int i = 0; i < 4; i++) {
+		iterationGroup[i] = eca->currentState;
+		filterGroup[i] = string(eca->N, '0');
+		eca->applyRule();
+	}
 }
