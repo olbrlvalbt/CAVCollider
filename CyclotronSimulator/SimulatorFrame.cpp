@@ -1,6 +1,6 @@
 #include "SimulatorFrame.h"
 
-SimulatorFrame::SimulatorFrame(EcaLogic* ecaLogic, int _ringRadius = 500, int _panelSize = 1500,
+SimulatorFrame::SimulatorFrame(EcaLogic* ecaLogic, int _ringRadius = 500,
 							   wxColour _deadCellColor = wxColour(220, 170, 15),
 							   wxColour _aliveCellColor = wxColour(115, 35, 15),
 							   wxColour _filterExteriorColor = wxColour(15, 15, 95),
@@ -9,7 +9,7 @@ SimulatorFrame::SimulatorFrame(EcaLogic* ecaLogic, int _ringRadius = 500, int _p
 			  wxDefaultPosition, wxDefaultSize) {
 	wxBoxSizer* frameSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	drawPanel = new SimulatorPanel(this, ecaLogic, _ringRadius, _panelSize,
+	drawPanel = new SimulatorPanel(this, ecaLogic, _ringRadius,
 								   _deadCellColor, _aliveCellColor,
 								   _filterExteriorColor, _filterInteriorColor);
 	frameSizer->Add(drawPanel, 1, wxALL | wxEXPAND);

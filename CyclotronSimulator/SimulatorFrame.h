@@ -11,7 +11,7 @@ public:
 		wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) - 100);
 	SimulatorPanel* drawPanel = nullptr;
 
-	SimulatorFrame(EcaLogic* ecaLogic, int _ringRadius, int _panelSize,
+	SimulatorFrame(EcaLogic* ecaLogic, int _ringRadius,
 				   wxColour _deadCellColor, wxColour _aliveCellColor,
 				   wxColour _filterExteriorColor, wxColour _filterInteriorColor);
 

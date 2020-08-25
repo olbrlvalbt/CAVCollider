@@ -1,7 +1,6 @@
 #include "SimulatorPanel.h"
 
-SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic,
-							   int _ringRadius = 500, int _panelSize = 1500,
+SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic, int _ringRadius = 500,
 							   wxColour _deadCellColor = wxColour(220, 170, 15),
 							   wxColour _aliveCellColor = wxColour(115, 35, 15),
 							   wxColour _filterExteriorColor = wxColour(15, 15, 95),
@@ -9,7 +8,7 @@ SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic,
 	: wxScrolledWindow(parent) {
 	eca = ecaLogic;
 	ringRadius = _ringRadius;
-	panelSize = _panelSize;
+	panelSize = 3 * ringRadius;
 	ringCenter = wxPoint(panelSize / 2, panelSize / 2);
 	deadCellPenColor = new wxPen(_deadCellColor, ringWidth);
 	deadCellPenColor->SetCap(wxCAP_BUTT);
@@ -33,8 +32,8 @@ SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic,
 	Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(SimulatorPanel::paintEvent));
 	Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(SimulatorPanel::OnKeyDown));
 
-	SetClientSize(panelSize, panelSize);
-	//SetScrollbars(1, 1, panelSize, panelSize, 0, 0);
+	SetClientSize(500, 500);
+	SetScrollbars(1, 1, panelSize, panelSize, 0, 0);
 
 	paintTimer.SetOwner(this);
 	paintTimer.Start(refreshRate);

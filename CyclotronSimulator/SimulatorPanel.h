@@ -13,12 +13,11 @@ class SimulatorPanel : public wxScrolledWindow {
 public:
 	EcaLogic* eca = nullptr;
 	wxBitmap currentBitmap;
-	wxBitmap helperBitmap;
 
-	int ringOffset = 1;
 	int ringWidth = 2;
 	int ringRadius = 500;
-	int panelSize = 1500;
+	int panelSize = 3 * ringRadius;
+	int ringOffset = 1;
 	wxPoint ringCenter = wxPoint(panelSize / 2, panelSize / 2);
 
 	bool filterOn = true;
@@ -34,12 +33,13 @@ public:
 
 	wxTimer paintTimer;
 
-	SimulatorPanel(wxWindow* parent, EcaLogic* ecaLogic, int _ringRadius, int _panelSize,
+	SimulatorPanel(wxWindow* parent, EcaLogic* ecaLogic, int _ringRadius,
 				   wxColour _deadCellColor, wxColour _aliveCellColor,
 				   wxColour _filterExteriorColor, wxColour _filterInteriorColor);
 
 	
 private:
+	wxBitmap helperBitmap;
 	string iterationGroup[4] = { "", "", "", "" };
 	string filterGroup[4] = { "", "", "", "" };
 	

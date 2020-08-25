@@ -28,14 +28,26 @@ public:
 	wxSpinCtrl* numCellsCtrl;
 	
 
-	wxStaticText* cellSizeText;
-	wxSpinCtrl* cellSizeCtrl;
+	wxStaticText* ringWidthText;
+	wxSpinCtrl* ringWidthCtrl;
+
+	wxStaticText* ringRadiusText;
+	wxSpinCtrl* ringRadiusCtrl;
+
+	wxStaticText* refreshRateText;
+	wxSpinCtrl* refreshRateCtrl;
+
+	wxStaticText* ringOffsetText;
+	wxSpinCtrl* ringOffsetCtrl;
 
 	wxStaticText* deadCellColorText;
 	wxColourPickerCtrl* deadCellColorCtrl;
 
 	wxStaticText* aliveCellColorText;
 	wxColourPickerCtrl* aliveCellColorCtrl;
+
+	wxStaticText* enableRule110T3FilterText;
+	wxCheckBox* enableRule110T3FilterBox;
 
 	wxStaticText* filterExteriorColorText;
 	wxColourPickerCtrl* filterExteriorColorCtrl;
@@ -52,5 +64,6 @@ public:
 	void AdjustNumCellsToInitialConditionBoxEvent(wxCommandEvent& event);
 	
 	void CreateEcaEvent(wxCommandEvent& event);
+	void ToggleFilterColorsEvent(wxCommandEvent& event);
 };
 
