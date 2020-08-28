@@ -159,12 +159,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CyclotronConfiguration.h" />
     <ClInclude Include="SimulatorApp.h" />
     <ClInclude Include="SimulatorFrame.h" />
     <ClInclude Include="SimulatorMenu.h" />
     <ClInclude Include="SimulatorPanel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CyclotronConfiguration.cpp" />
     <ClCompile Include="SimulatorApp.cpp" />
     <ClCompile Include="SimulatorFrame.cpp" />
     <ClCompile Include="SimulatorMenu.cpp" />

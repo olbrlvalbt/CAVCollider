@@ -1,17 +1,11 @@
 #include "SimulatorFrame.h"
 
-SimulatorFrame::SimulatorFrame(EcaLogic* ecaLogic, int _ringRadius = 500,
-							   wxColour _deadCellColor = wxColour(220, 170, 15),
-							   wxColour _aliveCellColor = wxColour(115, 35, 15),
-							   wxColour _filterExteriorColor = wxColour(15, 15, 95),
-							   wxColour _filterInteriorColor = wxColour(45, 45, 120))
+SimulatorFrame::SimulatorFrame(EcaLogic* ecaLogic, CyclotronConfiguration* config)
 	: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(ecaLogic->ruleNumber) + " - N: " + to_string(ecaLogic->N)),
 			  wxDefaultPosition, wxDefaultSize) {
 	wxBoxSizer* frameSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	drawPanel = new SimulatorPanel(this, ecaLogic, _ringRadius,
-								   _deadCellColor, _aliveCellColor,
-								   _filterExteriorColor, _filterInteriorColor);
+	drawPanel = new SimulatorPanel(this, ecaLogic, config);
 	frameSizer->Add(drawPanel, 1, wxALL | wxEXPAND);
 	SetSizer(frameSizer);
 	wxSize panelSize = drawPanel->GetClientSize();

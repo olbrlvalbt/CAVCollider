@@ -7,35 +7,26 @@
 #include <wx/filefn.h>
 #include <wx/dcgraph.h>
 
+
+#include "CyclotronConfiguration.h"
 #include "EcaLogic.h"
 
 class SimulatorPanel : public wxScrolledWindow {
 public:
 	EcaLogic* eca = nullptr;
+	CyclotronConfiguration* cyclotronConfiguration = nullptr;
 	wxBitmap currentBitmap;
 
-	int ringWidth = 2;
-	int ringRadius = 500;
-	int panelSize = 3 * ringRadius;
-	int ringOffset = 1;
+	int panelSize;
 	wxPoint ringCenter = wxPoint(panelSize / 2, panelSize / 2);
 
-	bool filterOn = true;
 	bool toggleAnimation = true;
 	bool enable3d = false;
-	int refreshRate = 50;
 	int currentIteration = 0;
-
-	wxPen* deadCellPenColor;
-	wxPen* aliveCellPenColor;
-	wxPen* filterExteriorPenColor;
-	wxPen* filterInteriorPenColor;
 
 	wxTimer paintTimer;
 
-	SimulatorPanel(wxWindow* parent, EcaLogic* ecaLogic, int _ringRadius,
-				   wxColour _deadCellColor, wxColour _aliveCellColor,
-				   wxColour _filterExteriorColor, wxColour _filterInteriorColor);
+	SimulatorPanel(wxWindow* parent, EcaLogic* ecaLogic, CyclotronConfiguration* config);
 
 	
 private:

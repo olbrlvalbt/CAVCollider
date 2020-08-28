@@ -48,7 +48,7 @@ SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Cyclotron"),
 	fgs->Add(ringWidthCtrl);
 
 	ringRadiusText = new wxStaticText(menuPanel, wxID_ANY, wxT("Ring radius (px):"));
-	ringRadiusCtrl = new wxSpinCtrl(menuPanel, wxID_ANY, wxT("500"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 1000);
+	ringRadiusCtrl = new wxSpinCtrl(menuPanel, wxID_ANY, wxT("200"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 1000);
 	fgs->Add(ringRadiusText);
 	fgs->Add(ringRadiusCtrl);
 
@@ -145,10 +145,18 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 
 	int rule = ruleCtrl->GetValue();
 
+	int ringWidth = ringWidthCtrl->GetValue();
+	int ringRadius = ringRadiusCtrl->GetValue();
+	int refreshRate = refreshRateCtrl->GetValue();
+	int ringOffset = ringOffsetCtrl->GetValue();
+
 	wxColour deadCellColor = deadCellColorCtrl->GetColour();
 	wxColour aliveCellColor = aliveCellColorCtrl->GetColour();
+	bool enableRule110T3Filter = enableRule110T3FilterBox->GetValue();
 	wxColour filterExteriorColor = filterExteriorColorCtrl->GetColour();
 	wxColour filterInteriorColor = filterInteriorColorCtrl->GetColour();
+	
+	CyclotronConfiguration* config;
 
 	int N;
 	string initialCondition;
@@ -179,12 +187,14 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 
 		eca = new EcaLogic(N, rule, initialCondition, 0, ECABOUNDARY_PERIODIC);
 	}
+	
+	config = new CyclotronConfiguration(ringWidth, ringRadius, refreshRate, ringOffset, enableRule110T3Filter,
+										deadCellColor, aliveCellColor,
+										filterExteriorColor, filterInteriorColor);
 
 	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
 
-	SimulatorFrame* simFrame = new SimulatorFrame(eca, 200,
-												  deadCellColor, aliveCellColor,
-												  filterExteriorColor, filterInteriorColor);
+	SimulatorFrame* simFrame = new SimulatorFrame(eca, config);
 
 	simFrame->Show();
 }
