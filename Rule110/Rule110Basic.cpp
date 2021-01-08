@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Rule110Basic.h"
+#include <algorithm>
 
 string Rule110Basic::GetEther(int _multiple) {
 	return GetMultiple(Rule110Constants::singleton().ETHER_F1_1, _multiple);
@@ -32,12 +33,16 @@ bool Rule110Basic::IsEther(string& _s) {
 
 
 void Rule110Basic::Trim(string& _s) {
-	_s.erase(remove_if(_s.begin(), _s.end(), isspace), _s.end());
+	_s.erase(remove_if(_s.begin(), _s.end(), [](unsigned char c) {
+		return isspace(c);
+	}), _s.end());
 }
 
 
 void Rule110Basic::ToLower(string & _s) {
-	transform(_s.begin(), _s.end(), _s.begin(), tolower);
+	transform(_s.begin(), _s.end(), _s.begin(), [](unsigned char c) {
+		return tolower(c);
+	});
 }
 
 void Rule110Basic::ToLower(char & _c) {
@@ -46,7 +51,9 @@ void Rule110Basic::ToLower(char & _c) {
 
 
 void Rule110Basic::ToUpper(string & _s) {
-	transform(_s.begin(), _s.end(), _s.begin(), toupper);
+	transform(_s.begin(), _s.end(), _s.begin(), [](unsigned char c) {
+		return toupper(c);
+	});
 }
 
 void Rule110Basic::ToUpper(char & _c) {
