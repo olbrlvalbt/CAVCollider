@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2003
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EcaLogic", "EcaLogic\EcaLogic.vcxproj", "{6EF4FE21-933E-4F44-A863-CDD6A0AF04F0}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CyclotronSimulator", "CyclotronSimulator\CyclotronSimulator.vcxproj", "{13184C32-AFBF-4516-9F56-55B872090984}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EcaVisualizer", "EcaVisualizer\EcaVisualizer.vcxproj", "{23C9CBF0-17FA-4E23-B944-7F43491433FC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EcaController", "EcaController\EcaController.vcxproj", "{1939B4AC-7E4D-43CC-8CB3-6B56779BF3F2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EcaControllerTest", "EcaControllerTest\EcaControllerTest.vcxproj", "{12F26CD6-C889-435D-8B14-6BBBB2DC86C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,22 @@ Global
 		{23C9CBF0-17FA-4E23-B944-7F43491433FC}.Release|x64.Build.0 = Release|x64
 		{23C9CBF0-17FA-4E23-B944-7F43491433FC}.Release|x86.ActiveCfg = Release|Win32
 		{23C9CBF0-17FA-4E23-B944-7F43491433FC}.Release|x86.Build.0 = Release|Win32
+		{1939B4AC-7E4D-43CC-8CB3-6B56779BF3F2}.Debug|x64.ActiveCfg = Debug|x64
+		{1939B4AC-7E4D-43CC-8CB3-6B56779BF3F2}.Debug|x64.Build.0 = Debug|x64
+		{1939B4AC-7E4D-43CC-8CB3-6B56779BF3F2}.Debug|x86.ActiveCfg = Debug|Win32
+		{1939B4AC-7E4D-43CC-8CB3-6B56779BF3F2}.Debug|x86.Build.0 = Debug|Win32
+		{1939B4AC-7E4D-43CC-8CB3-6B56779BF3F2}.Release|x64.ActiveCfg = Release|x64
+		{1939B4AC-7E4D-43CC-8CB3-6B56779BF3F2}.Release|x64.Build.0 = Release|x64
+		{1939B4AC-7E4D-43CC-8CB3-6B56779BF3F2}.Release|x86.ActiveCfg = Release|Win32
+		{1939B4AC-7E4D-43CC-8CB3-6B56779BF3F2}.Release|x86.Build.0 = Release|Win32
+		{12F26CD6-C889-435D-8B14-6BBBB2DC86C3}.Debug|x64.ActiveCfg = Debug|x64
+		{12F26CD6-C889-435D-8B14-6BBBB2DC86C3}.Debug|x64.Build.0 = Debug|x64
+		{12F26CD6-C889-435D-8B14-6BBBB2DC86C3}.Debug|x86.ActiveCfg = Debug|Win32
+		{12F26CD6-C889-435D-8B14-6BBBB2DC86C3}.Debug|x86.Build.0 = Debug|Win32
+		{12F26CD6-C889-435D-8B14-6BBBB2DC86C3}.Release|x64.ActiveCfg = Release|x64
+		{12F26CD6-C889-435D-8B14-6BBBB2DC86C3}.Release|x64.Build.0 = Release|x64
+		{12F26CD6-C889-435D-8B14-6BBBB2DC86C3}.Release|x86.ActiveCfg = Release|Win32
+		{12F26CD6-C889-435D-8B14-6BBBB2DC86C3}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
