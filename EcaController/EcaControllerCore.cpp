@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "EcaControllerCore.h"
 
+const int EcaControllerCore::CHUNK_SIZE = 16;
+
 string EcaControllerCore::ToBinaryString(int n) {
 	if (n < 0) {
 		throw exception("N cannot be negative");
