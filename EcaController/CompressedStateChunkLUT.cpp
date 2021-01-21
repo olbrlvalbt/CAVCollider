@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "CompressedStateChunkLUT.h"
 
-CompressedStateChunkLUT::CompressedStateChunkLUT(string _rule, unsigned char _chunkLength) {
+CompressedStateChunkLUT::CompressedStateChunkLUT(int _rule, int _chunkSize)
+	: CompressedStateChunkLUT(FormatBinaryString(_rule, 8), _chunkSize){ }
+
+CompressedStateChunkLUT::CompressedStateChunkLUT(string _rule, int _chunkSize) {
 	if (_rule.empty()) {
 		throw exception("Rule cannot be empty");
 	}
@@ -11,55 +14,63 @@ CompressedStateChunkLUT::CompressedStateChunkLUT(string _rule, unsigned char _ch
 	if (_rule.length() > 8) {
 		throw exception("Rule length cannot exceed 8");
 	}
-	if (_chunkLength > 16 || _chunkLength == 0) {
-		throw exception("Chunk length must be between 1 and 16");
+	if (_chunkSize > 16 || _chunkSize <= 0) {
+		throw exception("Chunk size must be between 1 and 16");
 	}
 
-	rule = _rule;
+	rule = FormatBinaryString(_rule, 8);
 
-	chunkLength = _chunkLength;
-	lutSize = pow(2, chunkLength);
+	chunkSize = _chunkSize;
+	lutSize = pow(2, chunkSize);
 
-	lut = (unsigned short***)malloc(lutSize);
+	lut = (unsigned short***)malloc(sizeof(unsigned short**) * lutSize);
 
 	int i, j;
 	for (i = 0; i < lutSize; i++) {
-		lut[i] = (unsigned short**)malloc(2);
+		lut[i] = (unsigned short**)malloc(sizeof(unsigned short*) * 2);
 
-		lut[i][0] = (unsigned short*)malloc(2);
-		lut[i][1] = (unsigned short*)malloc(2);
+		lut[i][0] = (unsigned short*)malloc(sizeof(unsigned short) * 2);
+		lut[i][1] = (unsigned short*)malloc(sizeof(unsigned short) * 2);
 
-		string iState = FormatBinaryString(ToBinaryString(i), chunkLength);
-		string nextIState = FormatBinaryString("", chunkLength);
-
-		char prev, cur, next;
-		for (j = 1; j < iState.length() - 1; j++) {
-			prev = iState.at(j - 1);
-			cur = iState.at(j);
-			next = iState.at(j + 1);
-
-			nextIState.at(j) = applyRule(prev, cur, next);
+		string iState = FormatBinaryString(ToBinaryString(i), chunkSize);
+		string nextIState = FormatBinaryString("", chunkSize);
+		
+		if (iState.length() == 1) {
+			nextIState.at(0) = applyElementalRule('0', iState.at(0), '0');
+			lut[i][0][0] = stoi(nextIState, 0, 2);
+			nextIState.at(0) = applyElementalRule('0', iState.at(0), '1');
+			lut[i][0][1] = stoi(nextIState, 0, 2);
+			nextIState.at(0) = applyElementalRule('1', iState.at(0), '0');
+			lut[i][1][0] = stoi(nextIState, 0, 2);
+			nextIState.at(0) = applyElementalRule('1', iState.at(0), '1');
+			lut[i][1][1] = stoi(nextIState, 0, 2);
 		}
+		else {
+			char prev, cur, next;
+			for (j = 1; j < iState.length() - 1; j++) {
+				prev = iState.at(j - 1);
+				cur = iState.at(j);
+				next = iState.at(j + 1);
 
-		nextIState.at(0) = applyRule('0', iState.at(0), iState.at(1));
-		nextIState.at(iState.length() - 1) = applyRule(iState.at(iState.length() - 2), iState.at(iState.length() - 1), '0');
-		unsigned short compressedNext00 = std::stoi(nextIState);
-		lut[i][0][0] = compressedNext00;
+				nextIState.at(j) = applyElementalRule(prev, cur, next);
+			}
 
-		nextIState.at(0) = applyRule('0', iState.at(0), iState.at(1));
-		nextIState.at(iState.length() - 1) = applyRule(iState.at(iState.length() - 2), iState.at(iState.length() - 1), '1');
-		unsigned short compressedNext01 = std::stoi(nextIState);
-		lut[i][0][1] = compressedNext01;
+			nextIState.at(0) = applyElementalRule('0', iState.at(0), iState.at(1));
+			nextIState.at(iState.length() - 1) = applyElementalRule(iState.at(iState.length() - 2), iState.at(iState.length() - 1), '0');
+			lut[i][0][0] = stoi(nextIState, 0, 2);
 
-		nextIState.at(0) = applyRule('1', iState.at(0), iState.at(1));
-		nextIState.at(iState.length() - 1) = applyRule(iState.at(iState.length() - 2), iState.at(iState.length() - 1), '0');
-		unsigned short compressedNext10 = std::stoi(nextIState);
-		lut[i][1][0] = compressedNext10;
+			nextIState.at(0) = applyElementalRule('0', iState.at(0), iState.at(1));
+			nextIState.at(iState.length() - 1) = applyElementalRule(iState.at(iState.length() - 2), iState.at(iState.length() - 1), '1');
+			lut[i][0][1] = stoi(nextIState, 0, 2);
 
-		nextIState.at(0) = applyRule('1', iState.at(0), iState.at(1));
-		nextIState.at(iState.length() - 1) = applyRule(iState.at(iState.length() - 2), iState.at(iState.length() - 1), '1');
-		unsigned short compressedNext11 = std::stoi(nextIState);
-		lut[i][1][1] = compressedNext11;
+			nextIState.at(0) = applyElementalRule('1', iState.at(0), iState.at(1));
+			nextIState.at(iState.length() - 1) = applyElementalRule(iState.at(iState.length() - 2), iState.at(iState.length() - 1), '0');
+			lut[i][1][0] = stoi(nextIState, 0, 2);
+
+			nextIState.at(0) = applyElementalRule('1', iState.at(0), iState.at(1));
+			nextIState.at(iState.length() - 1) = applyElementalRule(iState.at(iState.length() - 2), iState.at(iState.length() - 1), '1');
+			lut[i][1][1] = stoi(nextIState, 0, 2);
+		}
 	}
 }
 
@@ -67,7 +78,14 @@ unsigned int CompressedStateChunkLUT::getLutSize() {
 	return lutSize;
 }
 
-unsigned short CompressedStateChunkLUT::applyRule(unsigned short state, unsigned char leftLSB, unsigned char rightMSB) {
+string CompressedStateChunkLUT::getRule() {
+	return rule;
+}
+
+unsigned short CompressedStateChunkLUT::applyRule(int state, int leftLSB, int rightMSB) {
+	if (state < 0) {
+		throw exception("State cannot be negative");
+	}
 	if (state >= lutSize) {
 		throw exception("State out of bounds for lut of size " + lutSize);
 	}
