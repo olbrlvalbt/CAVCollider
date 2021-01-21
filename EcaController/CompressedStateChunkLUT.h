@@ -8,13 +8,13 @@ class ECACONTROLLER_DLL CompressedStateChunkLUT {
 private:
 	unsigned short*** lut;
 	string rule;
-	unsigned char chunkSize;
-	unsigned int lutSize;
+	size_t chunkSize;
+	int lutSize;
 
 public:
 	CompressedStateChunkLUT(int _rule, int _chunkSize = 16);
 	CompressedStateChunkLUT(string _rule, int _chunkSize = 16);
-	unsigned int getLutSize();
+	int getLutSize();
 	string getRule();
 
 	unsigned short applyRule(int state, int leftLSB, int rightMSB);

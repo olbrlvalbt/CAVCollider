@@ -74,7 +74,7 @@ CompressedStateChunkLUT::CompressedStateChunkLUT(string _rule, int _chunkSize) {
 	}
 }
 
-unsigned int CompressedStateChunkLUT::getLutSize() {
+int CompressedStateChunkLUT::getLutSize() {
 	return lutSize;
 }
 
