@@ -1,39 +1,23 @@
 #include "pch.h"
-#include "CompressedStateChunkLUT.h"
+#include "ChunkLUT.h"
 
-CompressedStateChunkLUT::CompressedStateChunkLUT(int _rule, int _chunkFunctionalSize)
-	: CompressedStateChunkLUT(FormatBinaryString(_rule, 8), _chunkFunctionalSize){ }
+ChunkLUT::ChunkLUT(string _rule, int _bitSize) {
+	rule = _rule;
 
-CompressedStateChunkLUT::CompressedStateChunkLUT(string _rule, int _chunkFunctionalSize) {
-	if (_rule.empty()) {
-		throw exception("Rule cannot be empty");
-	}
-	if (!IsBinaryString(_rule)) {
-		throw exception("Rule is not a binary string");
-	}
-	if (_rule.length() > 8) {
-		throw exception("Rule length cannot exceed 8");
-	}
-	if (_chunkFunctionalSize > CHUNK_SIZE || _chunkFunctionalSize <= 0) {
-		throw exception("Chunk size must be between 1 and " + CHUNK_SIZE);
-	}
+	bitSize = _bitSize;
+	lutSize = pow(2, bitSize);
 
-	rule = FormatBinaryString(_rule, 8);
-
-	chunkFunctionalSize = _chunkFunctionalSize;
-	lutSize = pow(2, chunkFunctionalSize);
-
-	lut = (chunk***)malloc(sizeof(chunk**) * lutSize);
+	lut = (CHUNK***)malloc(sizeof(CHUNK**) * lutSize);
 
 	int i, j;
 	for (i = 0; i < lutSize; i++) {
-		lut[i] = (chunk**)malloc(sizeof(chunk*) * 2);
+		lut[i] = (CHUNK**)malloc(sizeof(CHUNK*) * 2);
 
-		lut[i][0] = (chunk*)malloc(sizeof(chunk) * 2);
-		lut[i][1] = (chunk*)malloc(sizeof(chunk) * 2);
+		lut[i][0] = (CHUNK*)malloc(sizeof(CHUNK) * 2);
+		lut[i][1] = (CHUNK*)malloc(sizeof(CHUNK) * 2);
 
-		string iState = FormatBinaryString(ToBinaryString(i), chunkFunctionalSize);
-		string nextIState = FormatBinaryString("", chunkFunctionalSize);
+		string iState = FormatBinaryString(ToBinaryString(i), bitSize);
+		string nextIState = FormatBinaryString("", bitSize);
 		
 		if (iState.length() == 1) {
 			nextIState.at(0) = applyElementalRule('0', iState.at(0), '0');
@@ -74,32 +58,15 @@ CompressedStateChunkLUT::CompressedStateChunkLUT(string _rule, int _chunkFunctio
 	}
 }
 
-int CompressedStateChunkLUT::getLutSize() {
+int ChunkLUT::getLutSize() {
 	return lutSize;
 }
 
-string CompressedStateChunkLUT::getRule() {
-	return rule;
-}
-
-chunk CompressedStateChunkLUT::applyRule(int state, int leftLSB, int rightMSB) {
-	if (state < 0) {
-		throw exception("State cannot be negative");
-	}
-	if (state >= lutSize) {
-		throw exception("State out of bounds for lut of size " + lutSize);
-	}
-	if (leftLSB != 0 && leftLSB != 1) {
-		throw exception("Left LSB must be 0 or 1");
-	}
-	if (rightMSB != 0 && rightMSB != 1) {
-		throw exception("Right MSB must be 0 or 1");
-	}
-
+CHUNK ChunkLUT::get(int state, int leftLSB, int rightMSB) {
 	return lut[state][leftLSB][rightMSB];
 }
 
-char CompressedStateChunkLUT::applyElementalRule(char prev, char cur, char next) {
+char ChunkLUT::applyElementalRule(char prev, char cur, char next) {
 	if (prev == '1') {
 		if (cur == '1') {
 			if (next == '1') { // 111

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EcaControllerCore.h"
 
-const int EcaControllerCore::CHUNK_SIZE = 16;
+const int EcaControllerCore::CHUNK_BITSIZE = 16;
 
 string EcaControllerCore::ToBinaryString(int n) {
 	if (n < 0) {
@@ -54,6 +54,22 @@ string EcaControllerCore::FormatBinaryString(string s, int n) {
 	int i;
 	for (i = s.length(); i < n; i++) {
 		s = '0' + s;
+	}
+
+	return s;
+}
+
+string EcaControllerCore::CreateRandomBinaryString(int n) {
+	if (n < 0) {
+		throw exception("N cannot be negative");
+	}
+
+	srand(time(NULL));
+
+	string s = "";
+	int i;
+	for (i = 0; i < n; i++) {
+		s += rand() % 2;
 	}
 
 	return s;

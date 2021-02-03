@@ -36,9 +36,9 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EcaControllerTest.cpp" />
     <ClCompile Include="CompressedStateTest.cpp" />
-    <ClCompile Include="CompressedStateChunkArrayTest.cpp" />
-    <ClCompile Include="CompressedStateChunkLUTTest.cpp" />
+    <ClCompile Include="ChunkLUTTest.cpp" />
     <ClCompile Include="EcaControllerCoreTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

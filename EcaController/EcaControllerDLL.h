@@ -5,6 +5,3 @@
 #else
 #define ECACONTROLLER_DLL __declspec(dllimport)
 #endif
-
-#include <string>
-using namespace std;

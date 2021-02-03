@@ -21,16 +21,22 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CompressedStateChunkLUT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EcaControllerDLL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EcaControllerCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CompressedStateChunkArray.h">
+    <ClInclude Include="ChunkTranslator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkLUTAgent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkLUT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EcaController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CompressedState.h">
@@ -44,13 +50,19 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CompressedStateChunkLUT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EcaControllerCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CompressedStateChunkArray.cpp">
+    <ClCompile Include="ChunkTranslator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChunkLUT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChunkLUTAgent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EcaController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CompressedState.cpp">

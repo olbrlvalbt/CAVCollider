@@ -1,44 +1,59 @@
 #pragma once
+
+#include <vector>
+
 #include "EcaControllerCore.h"
+#include "ChunkTranslator.h"
+#include "ChunkLUTAgent.h"
 
 using namespace std;
 using namespace EcaControllerCore;
 
-//enum ECALOGIC_API EcaBoundary {ECABOUNDARY_PERIODIC, ECABOUNDARY_CLOSED};
-
 class ECACONTROLLER_DLL CompressedState {
 private:
-	//CompressedState compressedInitialCondition;
-	//CompressedState compressedCurrentState;
-	//CompressedStateChunkLUT stateLUT;
-	//CompressedStateChunkLUT mostSignificativeStateLUT;
-public:
-	unsigned int N = 100;
-	size_t ruleNumber = 110;
-	string rule = "";
-	string initialCondition = "";
+	
+	int N;
+	CHUNK* initialStateChunkArray;
+	CHUNK* currentStateChunkArray;
+	CHUNK* savedStateChunkArray;
+	size_t chunkArrayLength;
+	int mostSignificativeChunkBitSize;
+	size_t mostSignificativeChunkPosition;
+	long currentIteration;
+	long savedIteration;
+	size_t savedMSChunkPosition;
+
+	vector<string> rawState;
 
 private:
-	/*string auxState;
-	void init(int _N, int _rule, string _initialCondition, int numEtherRule110ForEdges, EcaBoundary boundaryType);*/
-	//static string ToBinary(int n);
-	void initializeLUTs();
-	int compress(unsigned short** compressedState);
+	void start(string& _initialCondition);
+	void compress(CHUNK** pDestArray, string& _state);
+	
+	void createChunkArray(CHUNK** pChunkArray);
+	void copyChunkArray(CHUNK** pSourceArray, CHUNK** pDestArray);
 
+	int getMSBAt(int i);
+	
 public:
-	CompressedState(unsigned int _N, unsigned char _rule);
-	CompressedState(unsigned int _N, unsigned char _rule, string _initialCondition);
+	CompressedState(string _initialCondition);
+	CompressedState(int _N, string _initialCondition);
+	
+	void reset(string _newInitialCondition);
+	void restart();
 
+	void saveState();
+	void applySavedState(bool applySavedCount = true);
+	void resetWithSavedState();
+	
+	void applyRule(ChunkLUTAgent& lutAgent);
 
+	bool hasAdjustedMostSignificativeChunk();
+	size_t getMostSignificativeChunkPosition();
+	bool isMostSignificativeChunkPosition(int i);
+	int getMostSignificativeChunkBitSize();
+	size_t getChunkArrayLength();
+	long getCurrentIteration();
+	CHUNK at(int i);
 
-	/*EcaLogic(int _N, int _rule, EcaBoundary boundaryType);
-	EcaLogic(int _N, int _rule, int _initialCondition, int numEtherRule110ForEdges, EcaBoundary boundaryType);
-	EcaLogic(int _N, int _rule, string _initialCondition, int numEtherRule110ForEdges, EcaBoundary boundaryType);
-
-	string applyRule();
-	static string CreateRandomInitialCondition(int N);
-	static string ToBinary(int n);
-	static string CleanString(string s);*/
-
-
+	const vector<string>& getRawState();
 };

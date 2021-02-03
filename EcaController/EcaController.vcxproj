@@ -151,18 +151,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ChunkTranslator.h" />
+    <ClInclude Include="EcaController.h" />
     <ClInclude Include="CompressedState.h" />
-    <ClInclude Include="CompressedStateChunkArray.h" />
-    <ClInclude Include="CompressedStateChunkLUT.h" />
+    <ClInclude Include="ChunkLUT.h" />
+    <ClInclude Include="ChunkLUTAgent.h" />
     <ClInclude Include="EcaControllerCore.h" />
     <ClInclude Include="EcaControllerDLL.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChunkTranslator.cpp" />
+    <ClCompile Include="EcaController.cpp" />
     <ClCompile Include="CompressedState.cpp" />
-    <ClCompile Include="CompressedStateChunkArray.cpp" />
-    <ClCompile Include="CompressedStateChunkLUT.cpp" />
+    <ClCompile Include="ChunkLUT.cpp" />
+    <ClCompile Include="ChunkLUTAgent.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="EcaControllerCore.cpp" />
     <ClCompile Include="pch.cpp">
