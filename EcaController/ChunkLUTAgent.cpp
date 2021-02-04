@@ -12,6 +12,9 @@ ChunkLUTAgent::ChunkLUTAgent(string _rule, int _N) {
 	N = _N;
 
 	adjustedLutBitSize = N % CHUNK_BITSIZE;
+	if (adjustedLutBitSize == 0) {
+		adjustedLutBitSize = CHUNK_BITSIZE;
+	}
 
 	regularLut = new ChunkLUT(rule);
 	if (hasAdjustedLut()) {
@@ -28,7 +31,7 @@ string ChunkLUTAgent::getRule() {
 }
 
 bool ChunkLUTAgent::hasAdjustedLut() {
-	return adjustedLutBitSize != 0;
+	return adjustedLutBitSize != 16;
 }
 
 int ChunkLUTAgent::getAdjustedLutBitSize() {
@@ -40,7 +43,7 @@ int ChunkLUTAgent::getAdjustedLutBitSize() {
 }
 
 CHUNK ChunkLUTAgent::applyRule(CHUNK c, int leftLSB, int rightMSB, bool adjusted) {
-	if (adjusted) {
+	if (adjusted && hasAdjustedLut()) {
 		return adjustedLut->get(c, leftLSB, rightMSB);
 	}
 

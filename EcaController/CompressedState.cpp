@@ -28,6 +28,7 @@ CompressedState::CompressedState(int _N, string _initialCondition) {
 	savedIteration = -1;
 
 	rawState = vector<string>(chunkArrayLength, "");
+	ChunkTranslator::GetInstance();
 
 	createChunkArray(&initialStateChunkArray);
 	createChunkArray(&currentStateChunkArray);
@@ -40,7 +41,8 @@ void CompressedState::reset(string _newInitialCondition) {
 		throw exception("Initial condition cannot be empty");
 	}
 	if (N < _newInitialCondition.length()) {
-		throw exception("Initial condition cannot be longer than current N: " + N);
+		string ex = "Initial condition cannot be longer than current N: " + to_string(N);
+		throw exception(ex.c_str());
 	}
 	if (!IsBinaryString(_newInitialCondition)) {
 		throw exception("Initial condition is not a binary string");
@@ -211,10 +213,15 @@ int CompressedState::getMSBAt(int i) {
 
 const vector<string>& CompressedState::getRawState() {
 	int i, j;
-	for (i = mostSignificativeChunkPosition, j = 0; i >= 0; i--, j++) {
+
+	rawState[mostSignificativeChunkPosition] = ChunkTranslator::GetInstance().translate(
+		currentStateChunkArray[mostSignificativeChunkPosition]
+	).substr(CHUNK_BITSIZE - mostSignificativeChunkBitSize);
+	
+	for (i = mostSignificativeChunkPosition - 1, j = 1; i >= 0; i--, j++) {
 		rawState[j] = ChunkTranslator::GetInstance().translate(currentStateChunkArray[i]);
 	}
-	for (i = chunkArrayLength; i > mostSignificativeChunkPosition; i--, j++) {
+	for (i = chunkArrayLength - 1; i > mostSignificativeChunkPosition; i--, j++) {
 		rawState[j] = ChunkTranslator::GetInstance().translate(currentStateChunkArray[i]);
 	}
 

@@ -43,11 +43,9 @@ string EcaControllerCore::FormatBinaryString(string s, int n) {
 		throw exception(ex.c_str());
 	}
 	if (n < s.length()) {
-		string ex = "Desired length (";
-		ex += n;
-		ex += ") cannot be less than string length (";
-		ex += s.length();
-		ex += ")";
+		string ex = "Desired length (" + to_string(n); +
+			") cannot be less than string length (" +
+			to_string(s.length()) + ")";
 		throw exception(ex.c_str());
 	}
 
@@ -69,7 +67,7 @@ string EcaControllerCore::CreateRandomBinaryString(int n) {
 	string s = "";
 	int i;
 	for (i = 0; i < n; i++) {
-		s += rand() % 2;
+		s += rand() % 2 ? '0' : '1';
 	}
 
 	return s;
