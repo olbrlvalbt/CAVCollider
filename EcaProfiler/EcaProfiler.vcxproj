@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{12f26cd6-c889-435d-8b14-6bbbb2dc86c3}</ProjectGuid>
+    <ProjectGuid>{a367f945-1ee2-4281-a233-0bd4815b8d24}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
@@ -36,10 +36,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EcaControllerTest.cpp" />
-    <ClCompile Include="CompressedStateTest.cpp" />
-    <ClCompile Include="ChunkLUTTest.cpp" />
-    <ClCompile Include="EcaControllerCoreTest.cpp" />
+    <ClCompile Include="EcaProfiler.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -50,6 +47,9 @@
   <ItemGroup>
     <ProjectReference Include="..\EcaController\EcaController.vcxproj">
       <Project>{1939b4ac-7e4d-43cc-8cb3-6b56779bf3f2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\EcaLogic\EcaLogic.vcxproj">
+      <Project>{6ef4fe21-933e-4f44-a863-cdd6a0af04f0}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -69,13 +69,11 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>../EcaController;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../EcaLogic;../EcaController;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>../$(IntDir);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies);../$(IntDir)EcaLogic.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
