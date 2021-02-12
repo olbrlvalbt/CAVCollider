@@ -20,6 +20,7 @@ private:
 public:
 	EcaController(int _N, int _rule);
 	EcaController(int _N, int _rule, string _initialCondition);
+	~EcaController();
 
 	int getN();
 	string getRule();

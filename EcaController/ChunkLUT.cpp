@@ -58,6 +58,18 @@ ChunkLUT::ChunkLUT(string _rule, int _bitSize) {
 	}
 }
 
+ChunkLUT::~ChunkLUT() {
+	int i;
+	for(i = 0; i < lutSize; i++) {
+		free(lut[i][0]);
+		free(lut[i][1]);
+
+		free(lut[i]);
+	}
+	
+	free(lut);
+}
+
 int ChunkLUT::getLutSize() {
 	return lutSize;
 }

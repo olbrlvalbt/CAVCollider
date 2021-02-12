@@ -22,6 +22,11 @@ ChunkLUTAgent::ChunkLUTAgent(string _rule, int _N) {
 	}
 }
 
+ChunkLUTAgent::~ChunkLUTAgent() {
+	delete regularLut;
+	delete adjustedLut;
+}
+
 int ChunkLUTAgent::getN() {
 	return N;
 }

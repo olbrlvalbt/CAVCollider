@@ -3,7 +3,7 @@
 #include "EcaControllerCore.h"
 #include "ChunkLUT.h"
 
-class ChunkLUTAgent {
+class ECACONTROLLER_DLL ChunkLUTAgent {
 private:
 	ChunkLUT* regularLut;
 	ChunkLUT* adjustedLut;
@@ -14,6 +14,7 @@ private:
 
 public:
 	ChunkLUTAgent(string _rule, int _N);
+	~ChunkLUTAgent();
 
 	int getN();
 	string getRule();

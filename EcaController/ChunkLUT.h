@@ -13,6 +13,8 @@ private:
 
 public:
 	ChunkLUT(string _rule, int _bitSize = CHUNK_BITSIZE);
+	~ChunkLUT();
+	
 	int getLutSize();
 
 	CHUNK get(int state, int leftLSB, int rightMSB);

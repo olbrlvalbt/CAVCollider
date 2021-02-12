@@ -20,6 +20,10 @@ EcaController::EcaController(int _N, int _rule, string _initialCondition) {
 	lutAgent = new ChunkLUTAgent(rule, N);
 }
 
+EcaController::~EcaController() {
+	delete compressedState;
+	delete lutAgent;
+}
 
 
 void EcaController::reset(string _newInitialCondition) {
