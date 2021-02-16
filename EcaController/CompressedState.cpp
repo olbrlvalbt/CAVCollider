@@ -107,7 +107,7 @@ void CompressedState::compress(CHUNK** pDestArray, string & _state) {
 	for (i = _state.length() - 1, j = 1, k = 0; i >= 0; i--, j++) {
 		stateChunk = _state.at(i) + stateChunk;
 		
-		if (j > CHUNK_BITSIZE) {
+		if (j >= CHUNK_BITSIZE) {
 			(*pDestArray)[k] = stoi(stateChunk, 0, 2);
 
 			stateChunk = "";
@@ -115,8 +115,10 @@ void CompressedState::compress(CHUNK** pDestArray, string & _state) {
 			j = 0;
 		}
 	}
-	(*pDestArray)[k] = stoi(stateChunk, 0, 2);
-	k++;
+	if (!stateChunk.empty()) {
+		(*pDestArray)[k] = stoi(stateChunk, 0, 2);
+		k++;
+	}
 	
 	for (k; k < chunkArrayLength; k++) {
 		(*pDestArray)[k] = 0;
@@ -214,7 +216,7 @@ int CompressedState::getMSBAt(int i) {
 const vector<string>& CompressedState::getRawState() {
 	int i, j;
 
-	rawState[mostSignificativeChunkPosition] = ChunkTranslator::GetInstance().translate(
+	rawState[0] = ChunkTranslator::GetInstance().translate(
 		currentStateChunkArray[mostSignificativeChunkPosition]
 	).substr(CHUNK_BITSIZE - mostSignificativeChunkBitSize);
 	
