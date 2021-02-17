@@ -5,8 +5,8 @@ CompressedState::CompressedState(string _initialCondition)
 	: CompressedState(_initialCondition.length(), _initialCondition) { }
 
 CompressedState::CompressedState(int _N, string _initialCondition) {
-	if (_N <= 0) {
-		throw exception("N cannot be negative nor zero");
+	if (_N < 3) {
+		throw exception("N cannot be less than 3");
 	}
 	if (_N < _initialCondition.length()) {
 		throw exception("N cannot be less than the length of the initial condition");
@@ -34,6 +34,10 @@ CompressedState::CompressedState(int _N, string _initialCondition) {
 	createChunkArray(&currentStateChunkArray);
 
 	start(_initialCondition);
+}
+
+void CompressedState::reset() {
+	reset(CreateRandomBinaryString(N));
 }
 
 void CompressedState::reset(string _newInitialCondition) {
@@ -87,7 +91,7 @@ void CompressedState::applySavedState(bool applySavedCount) {
 		currentIteration = savedIteration;
 	}
 	else {
-		savedIteration++;
+		currentIteration++;
 	}
 }
 

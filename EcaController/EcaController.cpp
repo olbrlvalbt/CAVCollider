@@ -9,63 +9,34 @@ EcaController::EcaController(int _N, int _rule, string _initialCondition) {
 	if (_rule < 0 || _rule > 255) {
 		throw exception("Rule must be between 0 and 255");
 	}
+	if (_N < 3) {
+		throw exception("N cannot be less than 3");
+	}
+	if (_N < _initialCondition.length()) {
+		throw exception("N cannot be less than the length of the initial condition");
+	}
+	if (!IsBinaryString(_initialCondition)) {
+		throw exception("Initial condition is not a binary string");
+	}
 
 	N = _N;
 	ruleNumber = _rule;
 	rule = FormatBinaryString(_rule, 8);
 
 	initialCondition = _initialCondition;
-
-	compressedState = new CompressedState(N, initialCondition);
-	lutAgent = new ChunkLUTAgent(rule, N);
-}
-
-EcaController::~EcaController() {
-	delete compressedState;
-	delete lutAgent;
-}
-
-
-void EcaController::reset(string _newInitialCondition) {
-	compressedState->reset(_newInitialCondition);
-}
-
-void EcaController::restart() {
-	compressedState->restart();
-}
-
-void EcaController::saveState() {
-	compressedState->saveState();
-}
-
-void EcaController::applySavedState(bool applySavedCount) {
-	compressedState->applySavedState(applySavedCount);
-}
-
-void EcaController::resetWithSavedState() {
-	compressedState->resetWithSavedState();
-}
-
-void EcaController::applyRule() {
-	compressedState->applyRule(*lutAgent);
-}
-
-size_t EcaController::getChunkArrayLength() {
-	return compressedState->getChunkArrayLength();
-}
-
-long EcaController::getCurrentIteration() {
-	return compressedState->getCurrentIteration();
-}
-
-const vector<string>& EcaController::getCurrentState() {
-	return compressedState->getRawState();
 }
 
 int EcaController::getN() {
 	return N;
 }
 
+size_t EcaController::getRuleNumber() {
+	return ruleNumber;
+}
+
 string EcaController::getRule() {
 	return rule;
+}
+
+EcaController::~EcaController() {
 }

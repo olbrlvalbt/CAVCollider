@@ -1,40 +1,38 @@
 #pragma once
-#include "CompressedState.h"
+
+#include <vector>
 #include "EcaControllerCore.h"
 
 using namespace std;
 using namespace EcaControllerCore;
 
 class ECACONTROLLER_DLL EcaController {
-private:
+protected:
 	int N = 100;
 	size_t ruleNumber = 110;
 	string rule = "";
 	string initialCondition = "";
-
-	CompressedState* compressedState;
-	ChunkLUTAgent* lutAgent;
-
-private:
-
-public:
+	
 	EcaController(int _N, int _rule);
 	EcaController(int _N, int _rule, string _initialCondition);
-	~EcaController();
 
-	int getN();
-	string getRule();
+public:
+	virtual ~EcaController();
 	
-	void reset(string _newInitialCondition);
-	void restart();
+	virtual int getN();
+	virtual size_t getRuleNumber();
+	virtual string getRule();
 
-	void saveState();
-	void applySavedState(bool applySavedCount = true);
-	void resetWithSavedState();
+	virtual void reset() = 0;
+	virtual void reset(string _newInitialCondition) = 0;
+	virtual void restart() = 0;
 
-	void applyRule();
-	size_t getChunkArrayLength();
-	long getCurrentIteration();
+	virtual void saveState() = 0;
+	virtual void applySavedState(bool _applySavedCount = true) = 0;
+	virtual void resetWithSavedState() = 0;
 
-	const vector<string>& getCurrentState();
+	virtual void applyRule() = 0;
+	virtual long getCurrentIteration() = 0;
+
+	const virtual vector<string>& getCurrentState() = 0;
 };

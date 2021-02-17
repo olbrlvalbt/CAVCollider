@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChunkTranslator.h" />
+    <ClInclude Include="CompressedController.h" />
     <ClInclude Include="EcaController.h" />
     <ClInclude Include="CompressedState.h" />
     <ClInclude Include="ChunkLUT.h" />
@@ -159,16 +160,19 @@
     <ClInclude Include="EcaControllerCore.h" />
     <ClInclude Include="EcaControllerDLL.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="NaiveController.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChunkTranslator.cpp" />
+    <ClCompile Include="CompressedController.cpp" />
     <ClCompile Include="EcaController.cpp" />
     <ClCompile Include="CompressedState.cpp" />
     <ClCompile Include="ChunkLUT.cpp" />
     <ClCompile Include="ChunkLUTAgent.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="EcaControllerCore.cpp" />
+    <ClCompile Include="NaiveController.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
