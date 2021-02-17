@@ -37,7 +37,8 @@ private:
 public:
 	CompressedState(string _initialCondition);
 	CompressedState(int _N, string _initialCondition);
-	
+
+	void reset();
 	void reset(string _newInitialCondition);
 	void restart();
 
