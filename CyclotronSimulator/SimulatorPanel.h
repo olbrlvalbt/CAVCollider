@@ -9,11 +9,12 @@
 
 
 #include "CyclotronConfiguration.h"
-#include "EcaLogic.h"
+#include "NaiveController.h"
+#include "CompressedController.h"
 
 class SimulatorPanel : public wxScrolledWindow {
 public:
-	EcaLogic* eca = nullptr;
+	EcaController* eca = nullptr;
 	CyclotronConfiguration* cyclotronConfiguration = nullptr;
 	wxBitmap currentBitmap;
 
@@ -26,11 +27,25 @@ public:
 
 	wxTimer paintTimer;
 
-	SimulatorPanel(wxWindow* parent, EcaLogic* ecaLogic, CyclotronConfiguration* config);
+	SimulatorPanel(wxWindow* parent, EcaController* ecaController, CyclotronConfiguration* config);
+	~SimulatorPanel();
 
 	
 private:
 	wxBitmap helperBitmap;
+
+	wxBitmap baseBitmap;
+
+	wxBitmap filterAliveBitmap;
+	wxBitmap filterDeadBitmap;
+
+	wxBitmap depthOnFilterOnBitmap;
+	wxBitmap depthOnFilterOffBitmap;
+
+	wxMask mask;
+	wxColour maskColour;
+	
+	
 	string iterationGroup[4] = { "", "", "", "" };
 	string filterGroup[4] = { "", "", "", "" };
 	

@@ -36,7 +36,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EcaControllerTest.cpp" />
+    <ClCompile Include="CompressedControllerTest.cpp" />
     <ClCompile Include="CompressedStateTest.cpp" />
     <ClCompile Include="ChunkLUTTest.cpp" />
     <ClCompile Include="EcaControllerCoreTest.cpp" />

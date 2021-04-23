@@ -1,11 +1,11 @@
 #include "SimulatorFrame.h"
 
-SimulatorFrame::SimulatorFrame(EcaLogic* ecaLogic, CyclotronConfiguration* config)
-	: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(ecaLogic->ruleNumber) + " - N: " + to_string(ecaLogic->N)),
+SimulatorFrame::SimulatorFrame(EcaController* ecaController, CyclotronConfiguration* config)
+	: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(ecaController->getRuleNumber()) + " - N: " + to_string(ecaController->getN())),
 			  wxDefaultPosition, wxDefaultSize) {
 	wxBoxSizer* frameSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	drawPanel = new SimulatorPanel(this, ecaLogic, config);
+	drawPanel = new SimulatorPanel(this, ecaController, config);
 	frameSizer->Add(drawPanel, 1, wxALL | wxEXPAND);
 	SetSizer(frameSizer);
 	wxSize panelSize = drawPanel->GetClientSize();

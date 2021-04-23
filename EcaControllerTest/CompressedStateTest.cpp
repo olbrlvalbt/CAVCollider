@@ -8,6 +8,14 @@ TEST(ChunkArray_Constructor1Param,
     EXPECT_EQ(arr.hasAdjustedMostSignificativeChunk(), true);
 }
 
+
+
+
+
+
+
+
+
 TEST(ChunkArray_Constructor2Param,
     ICLengthCHUNKSIZE_HasMostSignificativeChunkShouldBeFalse) {
     CompressedState arr(CHUNK_BITSIZE, "1");

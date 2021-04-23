@@ -2,7 +2,7 @@
 
 #include <wx/wx.h>
 
-#include "EcaLogic.h"
+#include "EcaController.h"
 #include "SimulatorPanel.h"
 
 class SimulatorFrame : public wxFrame {
@@ -11,7 +11,7 @@ public:
 									   wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) - 100);
 	SimulatorPanel* drawPanel = nullptr;
 
-	SimulatorFrame(EcaLogic* ecaLogic, CyclotronConfiguration* config);
+	SimulatorFrame(EcaController* ecaController, CyclotronConfiguration* config);
 
 	void closeEvent(wxCloseEvent & evt);
 };

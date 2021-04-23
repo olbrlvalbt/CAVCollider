@@ -5,7 +5,9 @@
 #include <wx/clrpicker.h>
 
 #include "Rule110.h"
-#include "EcaLogic.h"
+#include "NaiveController.h"
+#include "CompressedController.h"
+#include "ChunkTranslator.h"
 #include "SimulatorFrame.h"
 
 class SimulatorMenu : public wxFrame {

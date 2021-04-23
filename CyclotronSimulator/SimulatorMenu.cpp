@@ -1,8 +1,8 @@
 #include "SimulatorMenu.h"
 
 SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Cyclotron"),
-									 wxDefaultPosition, wxSize(600, 750),
-									 wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
+                                         wxDefaultPosition, wxSize(600, 750),
+                                         wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
 	menuPanel = new wxPanel(this, wxID_ANY);
 	
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -48,7 +48,7 @@ SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Cyclotron"),
 	fgs->Add(ringWidthCtrl);
 
 	ringRadiusText = new wxStaticText(menuPanel, wxID_ANY, wxT("Ring radius (px):"));
-	ringRadiusCtrl = new wxSpinCtrl(menuPanel, wxID_ANY, wxT("200"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 1000);
+	ringRadiusCtrl = new wxSpinCtrl(menuPanel, wxID_ANY, wxT("200"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 10000);
 	fgs->Add(ringRadiusText);
 	fgs->Add(ringRadiusCtrl);
 
@@ -102,6 +102,7 @@ SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Cyclotron"),
 	initialConditionCtrl->SetFocus();
 	initialConditionCtrl->SelectAll();
 
+	//ChunkTranslator::GetInstance();
 }
 
 void SimulatorMenu::SetRandomInitialConditionBoxEvent(wxCommandEvent& event) {
@@ -141,7 +142,7 @@ void SimulatorMenu::AdjustNumCellsToInitialConditionBoxEvent(wxCommandEvent& eve
 }
 
 void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
-	EcaLogic* eca;
+	EcaController* eca;
 
 	int rule = ruleCtrl->GetValue();
 
@@ -163,8 +164,8 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 
 	if (setRandomInitialConditionBox->GetValue()) {
 		N = numCellsCtrl->GetValue();
-
-		eca = new EcaLogic(N, rule, ECABOUNDARY_PERIODIC);
+		
+		eca = new NaiveController(N, rule);
 	}
 	else {
 		try {
@@ -185,7 +186,7 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 			N = numCellsCtrl->GetValue();
 		}
 
-		eca = new EcaLogic(N, rule, initialCondition, 0, ECABOUNDARY_PERIODIC);
+		eca = new NaiveController(N, rule, initialCondition);
 	}
 	
 	config = new CyclotronConfiguration(ringWidth, ringRadius, refreshRate, ringOffset, enableRule110T3Filter,

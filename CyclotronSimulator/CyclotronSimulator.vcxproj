@@ -90,7 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110;../EcaController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -173,6 +173,9 @@
     <ClCompile Include="SimulatorPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EcaController\EcaController.vcxproj">
+      <Project>{1939b4ac-7e4d-43cc-8cb3-6b56779bf3f2}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\EcaLogic\EcaLogic.vcxproj">
       <Project>{6ef4fe21-933e-4f44-a863-cdd6a0af04f0}</Project>
     </ProjectReference>

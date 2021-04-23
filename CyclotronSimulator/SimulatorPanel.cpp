@@ -1,8 +1,10 @@
 #include "SimulatorPanel.h"
+#include <chrono>
+#include <sstream>
 
-SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic, CyclotronConfiguration* config)
+SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaController* ecaController, CyclotronConfiguration* config)
 	: wxScrolledWindow(parent) {
-	eca = ecaLogic;
+	eca = ecaController;
 	cyclotronConfiguration = config;
 	panelSize = 3 * cyclotronConfiguration->ringRadius;
 	ringCenter = wxPoint(panelSize / 2, panelSize / 2);
@@ -14,6 +16,21 @@ SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic, Cyclotron
 	helperBitmap = wxBitmap(panelSize, panelSize);
 	clearBitmap(currentBitmap);
 	clearBitmap(helperBitmap);
+
+	baseBitmap = wxBitmap(panelSize, panelSize);
+	//baseBitmap.UseAlpha();
+
+	filterAliveBitmap = wxBitmap(panelSize, panelSize);
+	filterDeadBitmap = wxBitmap(panelSize, panelSize);
+	//filterAliveBitmap.UseAlpha();
+	//filterDeadBitmap.UseAlpha();
+
+	depthOnFilterOnBitmap = wxBitmap(panelSize, panelSize);
+	depthOnFilterOffBitmap = wxBitmap(panelSize, panelSize);
+	//depthOnFilterOnBitmap.UseAlpha();
+	//depthOnFilterOffBitmap.UseAlpha();
+
+	maskColour = *wxGREEN;
 
 	if(cyclotronConfiguration->enableRule110T3Filter) {
 		initializeFilterGroup();
@@ -31,6 +48,10 @@ SimulatorPanel::SimulatorPanel(wxWindow * parent, EcaLogic * ecaLogic, Cyclotron
 	Connect(paintTimer.GetId(), wxEVT_TIMER, wxTimerEventHandler(SimulatorPanel::timerEvent));
 }
 
+SimulatorPanel::~SimulatorPanel() {
+	delete eca;
+}
+
 void SimulatorPanel::paintEvent(wxPaintEvent & evt) {
 	render();
 }
@@ -39,9 +60,6 @@ void SimulatorPanel::render() {
 	wxBufferedPaintDC paintDC(this);
 	DoPrepareDC(paintDC);
 	paintDC.DrawBitmap(currentBitmap, 0, 0, true);
-	
-	GetParent()->SetLabel("ECA R" + to_string(eca->ruleNumber) + ", N: " + to_string(eca->N)
-		+ ", Iteration " + to_string(currentIteration));
 }
 
 void SimulatorPanel::createBitmap() {
@@ -60,24 +78,59 @@ void SimulatorPanel::createBitmap() {
 
 	dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
+	dc.SetPen(cyclotronConfiguration->deadCellPenColor);
+	dc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->ringRadius, ringCenter.y - cyclotronConfiguration->ringRadius,
+		2 * cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius,
+		0, 360);
+	
+	dc.SetPen(cyclotronConfiguration->aliveCellPenColor);
+	
 	double currentDegree = 0;
 	double newDegree = 0;
-	const double degreeIncrement = 360 / (double)(eca->N);
+	const double degreeIncrement = 360 / (double)(eca->getN());
+	int counter = 0;
+	int i = 0;
+	for (const string& st : eca->getCurrentState()) {
+		for (const char& c : st) {
+			if (c == '1') {
+				counter++;
+			}
+			else {
+				if (counter != 0) {
+					dc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->ringRadius, ringCenter.y - cyclotronConfiguration->ringRadius,
+						2 * cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius,
+						(i - counter) * degreeIncrement, i * degreeIncrement);
 
-	for (int i = 0; i < eca->N; i++) {
-		if (eca->currentState.at(i) == '1') {
-			dc.SetPen(cyclotronConfiguration->aliveCellPenColor);
+					counter = 0;
+				}
+			}
+			i++;
 		}
-		else {
-			dc.SetPen(cyclotronConfiguration->deadCellPenColor);
-		}
-		newDegree += degreeIncrement;
-		dc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->ringRadius, ringCenter.y - cyclotronConfiguration->ringRadius,
-						   2 * cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius,
-						   currentDegree, newDegree);
-		currentDegree = newDegree;
 	}
 
+
+	/*int i = 0;
+	double currentDegree = 0;
+	double newDegree = 0;
+	const double degreeIncrement = 360 / (double)(eca->getN());
+
+	for (const string& st : eca->getCurrentState()) {
+		for (const char& c : st) {
+			if (c == '1') {
+				dc.SetPen(cyclotronConfiguration->aliveCellPenColor);
+			}
+			else {
+				dc.SetPen(cyclotronConfiguration->deadCellPenColor);
+			}
+			newDegree += degreeIncrement;
+			dc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->ringRadius, ringCenter.y - cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius,
+				currentDegree, newDegree);
+			currentDegree = newDegree;
+			i++;
+		}
+	}*/
+	
+	
 	eca->applyRule();
 
 	currentMemDc.Blit(0, 0,
@@ -92,8 +145,8 @@ void SimulatorPanel::createBitmap() {
 void SimulatorPanel::createBitmapWithT3Filter() {
 	wxMemoryDC helperMemDc(helperBitmap);
 	wxGCDC dc(helperMemDc);
-	helperMemDc.SetBrush(*wxBLACK_BRUSH);
-	helperMemDc.Clear();
+	dc.SetBackground(*wxBLACK_BRUSH);
+	dc.Clear();
 	wxMemoryDC currentMemDc(currentBitmap);
 
 	if (enable3d) {
@@ -146,8 +199,7 @@ void SimulatorPanel::OnKeyDown(wxKeyEvent& evt) {
 	case 'N':
 		toggleAnimation = false;
 		if (wxMessageBox("Create new random initial condition?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
-			eca->initialCondition = eca->CreateRandomInitialCondition(eca->N);
-			eca->currentState = eca->initialCondition;
+			eca->reset();
 			if(cyclotronConfiguration->enableRule110T3Filter) {
 				initializeFilterGroup();
 			}
@@ -169,7 +221,7 @@ void SimulatorPanel::OnKeyDown(wxKeyEvent& evt) {
 	case 'R':
 		toggleAnimation = false;
 		if (wxMessageBox("Restart ECA?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
-			eca->currentState = eca->initialCondition;
+			eca->restart();
 			if (cyclotronConfiguration->enableRule110T3Filter) {
 				initializeFilterGroup();
 			}
@@ -200,8 +252,8 @@ void SimulatorPanel::saveToImage() {
 								"PNG files (*.png)|*.png", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
 		return;
-	}
-	currentBitmap.SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
+		}
+		currentBitmap.SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
 }
 
 void SimulatorPanel::paintIterationWithT3Filter(wxDC& dc) {
@@ -215,7 +267,7 @@ void SimulatorPanel::filterT3() {
 	string f3 = "";
 	string f4 = "";
 
-	int n = eca->N;
+	int n = eca->getN();
 
 	for (int i = 0; i < n; i++) {
 		f1 = iterationGroup[0].at(i);
@@ -259,45 +311,93 @@ void SimulatorPanel::filterT3() {
 }
 
 void SimulatorPanel::paintIteration(wxDC& dc) {
-	double currentDegree = 0;
-	double newDegree = 0;
-	const double degreeIncrement = 360 / (double)(eca->N);
-	
-	for (int i = 0; i < eca->N; i++) {
-		if (filterGroup[0].at(i) == '1') {
-			dc.SetPen(cyclotronConfiguration->filterExteriorPenColor);
-		}
-		else if (filterGroup[0].at(i) == '2') {
-			dc.SetPen(cyclotronConfiguration->filterInteriorPenColor);
-		}
-		else if (iterationGroup[0].at(i) == '1') {
-			dc.SetPen(cyclotronConfiguration->aliveCellPenColor);
-		}
-		else {
-			dc.SetPen(cyclotronConfiguration->deadCellPenColor);
-		}
-		newDegree += degreeIncrement;
+	try {
+		wxMemoryDC filterAliveDc(filterAliveBitmap);
+		filterAliveDc.SetBackground(maskColour);
+		filterAliveDc.Clear();
+		filterAliveDc.SetBrush(*wxTRANSPARENT_BRUSH);
+		filterAliveDc.SetPen(cyclotronConfiguration->filterExteriorPenColor);
+		
+		wxMemoryDC filterDeadDc(filterDeadBitmap);
+		filterDeadDc.SetBackground(maskColour);
+		filterDeadDc.Clear();
+		filterDeadDc.SetBrush(*wxTRANSPARENT_BRUSH);
+		filterDeadDc.SetPen(cyclotronConfiguration->filterInteriorPenColor);
+
+		dc.SetPen(cyclotronConfiguration->deadCellPenColor);
 		dc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->ringRadius, ringCenter.y - cyclotronConfiguration->ringRadius,
-						   2 * cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius,
-						   currentDegree, newDegree);
-		currentDegree = newDegree;
+			2 * cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius,
+			0, 360);
+		
+		dc.SetPen(cyclotronConfiguration->aliveCellPenColor);
+
+		double currentDegree = 0;
+		double newDegree = 0;
+		const double degreeIncrement = 360 / (double)(eca->getN());
+
+		for (int i = 0; i < eca->getN(); i++) {
+			if (filterGroup[0].at(i) == '1') {
+				filterAliveDc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->ringRadius, ringCenter.y - cyclotronConfiguration->ringRadius,
+					2 * cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius,
+					(i - 1) * degreeIncrement, i * degreeIncrement);
+			}
+			else if (filterGroup[0].at(i) == '2') {
+				filterDeadDc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->ringRadius, ringCenter.y - cyclotronConfiguration->ringRadius,
+					2 * cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius,
+					(i - 1) * degreeIncrement, i * degreeIncrement);
+			}
+			else if (iterationGroup[0].at(i) == '1') {
+				dc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->ringRadius, ringCenter.y - cyclotronConfiguration->ringRadius,
+					2 * cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius,
+					(i - 1) * degreeIncrement, i * degreeIncrement);
+			}
+		}
+
+		filterAliveDc.SelectObject(wxNullBitmap);
+		filterAliveBitmap.SetMask(new wxMask(filterAliveBitmap, maskColour));
+		wxMemoryDC filterAliveMemDcc(filterAliveBitmap);
+		dc.Blit(0, 0,
+			panelSize, panelSize,
+			&filterAliveMemDcc,
+			0, 0, wxCOPY, true);
+		filterAliveBitmap.SetMask(NULL);
+
+		filterDeadDc.SelectObject(wxNullBitmap);
+		filterDeadBitmap.SetMask(new wxMask(filterDeadBitmap, maskColour));
+		wxMemoryDC filterDeadMemDcc(filterDeadBitmap);
+		dc.Blit(0, 0,
+			panelSize, panelSize,
+			&filterDeadMemDcc,
+			0, 0, wxCOPY, true);
+		filterDeadBitmap.SetMask(NULL);
+
+		iterationGroup[0] = iterationGroup[1];
+		iterationGroup[1] = iterationGroup[2];
+		iterationGroup[2] = iterationGroup[3];
+		string s = "";
+		for (const string& a : eca->getCurrentState()) {
+			s += a;
+		}
+		iterationGroup[3] = s;
+
+		filterGroup[0] = filterGroup[1];
+		filterGroup[1] = filterGroup[2];
+		filterGroup[2] = filterGroup[3];
+		filterGroup[3] = string(eca->getN(), '0');
 	}
-
-	iterationGroup[0] = iterationGroup[1];
-	iterationGroup[1] = iterationGroup[2];
-	iterationGroup[2] = iterationGroup[3];
-	iterationGroup[3] = eca->currentState;
-
-	filterGroup[0] = filterGroup[1];
-	filterGroup[1] = filterGroup[2];
-	filterGroup[2] = filterGroup[3];
-	filterGroup[3] = string(eca->N, '0');
+	catch(exception ex) {
+		int tr;
+	}
 }
 
 void SimulatorPanel::initializeFilterGroup() {
 	for (int i = 0; i < 4; i++) {
-		iterationGroup[i] = eca->currentState;
-		filterGroup[i] = string(eca->N, '0');
+		string s = "";
+		for (const string& a : eca->getCurrentState()) {
+			s += a;
+		}
+		iterationGroup[i] = s;
+		filterGroup[i] = string(eca->getN(), '0');
 		eca->applyRule();
 	}
 }
