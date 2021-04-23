@@ -63,14 +63,13 @@ void SimulatorPanel::render() {
 }
 
 void SimulatorPanel::createBitmap() {
-	wxMemoryDC helperMemDc(helperBitmap);
-	wxGCDC dc(helperMemDc);
-	helperMemDc.SetBrush(*wxBLACK_BRUSH);
-	helperMemDc.Clear();
+	wxMemoryDC dc(helperBitmap);
+	dc.SetBrush(*wxBLACK_BRUSH);
+	dc.Clear();
 	wxMemoryDC currentMemDc(currentBitmap);
 
 	if (enable3d) {
-		helperMemDc.Blit(0, 0,
+		dc.Blit(0, 0,
 						 panelSize - cyclotronConfiguration->ringOffset, panelSize - cyclotronConfiguration->ringOffset,
 						 &currentMemDc,
 						 cyclotronConfiguration->ringOffset, cyclotronConfiguration->ringOffset);
@@ -135,22 +134,21 @@ void SimulatorPanel::createBitmap() {
 
 	currentMemDc.Blit(0, 0,
 		 			  panelSize - cyclotronConfiguration->ringOffset, panelSize - cyclotronConfiguration->ringOffset,
-					  &helperMemDc,
+					  &dc,
 					  cyclotronConfiguration->ringOffset, cyclotronConfiguration->ringOffset);
 
-	helperMemDc.SelectObject(wxNullBitmap);
+	dc.SelectObject(wxNullBitmap);
 	currentMemDc.SelectObject(wxNullBitmap);
 }
 
 void SimulatorPanel::createBitmapWithT3Filter() {
-	wxMemoryDC helperMemDc(helperBitmap);
-	wxGCDC dc(helperMemDc);
+	wxMemoryDC dc(helperBitmap);
 	dc.SetBackground(*wxBLACK_BRUSH);
 	dc.Clear();
 	wxMemoryDC currentMemDc(currentBitmap);
 
 	if (enable3d) {
-		helperMemDc.Blit(0, 0,
+		dc.Blit(0, 0,
 						 panelSize - cyclotronConfiguration->ringOffset, panelSize - cyclotronConfiguration->ringOffset,
 						 &currentMemDc,
 					 	 cyclotronConfiguration->ringOffset, cyclotronConfiguration->ringOffset);
@@ -165,10 +163,10 @@ void SimulatorPanel::createBitmapWithT3Filter() {
 
 	currentMemDc.Blit(0, 0,
 					 panelSize - cyclotronConfiguration->ringOffset, panelSize - cyclotronConfiguration->ringOffset,
-					 &helperMemDc,
+					 &dc,
 					 cyclotronConfiguration->ringOffset, cyclotronConfiguration->ringOffset);
 
-	helperMemDc.SelectObject(wxNullBitmap);
+	dc.SelectObject(wxNullBitmap);
 	currentMemDc.SelectObject(wxNullBitmap);
 }
 
@@ -352,6 +350,11 @@ void SimulatorPanel::paintIteration(wxDC& dc) {
 					(i - 1) * degreeIncrement, i * degreeIncrement);
 			}
 		}
+
+
+		filterAliveBitmap.SaveFile("D:\\olbrl\\Downloads\\Gg\\img1.png", wxBITMAP_TYPE_PNG);
+		filterDeadBitmap.SaveFile("D:\\olbrl\\Downloads\\Gg\\img2.png", wxBITMAP_TYPE_PNG);
+		helperBitmap.SaveFile("D:\\olbrl\\Downloads\\Gg\\img3.png", wxBITMAP_TYPE_PNG);
 
 		filterAliveDc.SelectObject(wxNullBitmap);
 		filterAliveBitmap.SetMask(new wxMask(filterAliveBitmap, maskColour));
