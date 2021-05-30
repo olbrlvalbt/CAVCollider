@@ -150,4 +150,5 @@ void NaiveController::applyRule() {
 	}
 	
 	currentState = auxState;
+	currentIteration++;
 }
