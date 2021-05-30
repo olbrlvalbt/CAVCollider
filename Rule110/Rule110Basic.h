@@ -43,7 +43,7 @@ public:
 class ParseException : public TranslationException {
 public:
 	ParseException(const std::string& _errorSource) : TranslationException(_errorSource) {
-		errorMessage = "Parsing error: " + _errorSource;
+		errorMessage = "Parsing error at index " + _errorSource;
 	}
 };
 

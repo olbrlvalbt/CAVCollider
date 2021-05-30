@@ -39,7 +39,7 @@ string Rule110::Translate(string _s) {
 			it--;
 		}
 		else if (*it == '}') {
-			throw ParseException(_s.substr(0, it - _s.cbegin()));
+			throw ParseException(std::to_string((it - _s.begin())));
 		}
 		else {
 			temp += *it;
@@ -47,7 +47,7 @@ string Rule110::Translate(string _s) {
 	}
 
 	if (it != _s.cend()) {
-		throw ParseException(_s.substr(0, it - _s.cbegin()));
+		throw ParseException(std::to_string((it - _s.begin())));
 	}
 
 	return translatedExpression + GetExpression(temp);
@@ -118,7 +118,7 @@ string Rule110::translateNested(string& _s, string::const_iterator& it) {
 		}
 	}
 
-	throw ParseException(temp);
+	throw ParseException(std::to_string((it - _s.begin())));
 }
 
 string Rule110::getEther(string _expression) {
