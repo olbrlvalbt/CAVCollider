@@ -8,14 +8,13 @@
 #include <wx/dcgraph.h>
 
 
-#include "CyclotronConfiguration.h"
 #include "NaiveController.h"
 #include "CompressedController.h"
+#include "EcaRingConfiguration.h"
 
-class SimulatorPanel : public wxScrolledWindow {
+class RingPanel : public wxScrolledWindow {
 public:
-	EcaController* eca = nullptr;
-	CyclotronConfiguration* cyclotronConfiguration = nullptr;
+	EcaRingConfiguration* cyclotronConfiguration = nullptr;
 	wxBitmap currentBitmap;
 
 	int panelSize;
@@ -25,16 +24,27 @@ public:
 	bool enable3d = false;
 	int currentIteration = 0;
 
+	bool enableRule110T3Filter;
+
 	wxTimer paintTimer;
 
-	SimulatorPanel(wxWindow* parent, EcaController* ecaController, CyclotronConfiguration* config);
-	~SimulatorPanel();
+	RingPanel(wxWindow* parent, EcaRingConfiguration* config, bool _rule110T3filterEnabled);
+	~RingPanel();
 
+	void saveToImage();
+	void playPause();
+	void toggle3D();
+	void toggleFilter();
+	void restart();
+	void reset();
 	
 private:
 	wxBitmap helperBitmap;
 
 	wxBitmap baseBitmap;
+
+	wxBitmap aliveBitmap;
+	wxBitmap deadBitmap;
 
 	wxBitmap filterAliveBitmap;
 	wxBitmap filterDeadBitmap;
@@ -56,12 +66,13 @@ private:
 	void render();
 	void createBitmap();
 	void clearBitmap(wxBitmap& bitmap);
-	void saveToImage();
 
 	void createBitmapWithT3Filter();
 	void paintIterationWithT3Filter(wxDC& dc);
 	void filterT3();
 	void paintIteration(wxDC& dc);
+
+	void paintMask(wxMemoryDC& memDc, char flag);
 
 	void initializeFilterGroup();
 };

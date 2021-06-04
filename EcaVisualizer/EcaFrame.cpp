@@ -9,6 +9,19 @@ EcaFrame::EcaFrame(EcaLogic* ecaLogic, int numIterations, int cellSize = 1,
 				  wxDefaultPosition, wxDefaultSize) {
 	wxBoxSizer* frameSizer = new wxBoxSizer(wxHORIZONTAL);
 
+	wxImage::AddHandler(new wxPNGHandler);
+	
+	wxToolBar* toolbar = CreateToolBar(wxTB_TEXT);
+	wxToolBarToolBase* nextButton = toolbar->AddTool(wxID_ANY, wxT("Next space"), wxBitmap("..\\Icons\\nextIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* restartButton = toolbar->AddTool(wxID_ANY, wxT("Restart space"), wxBitmap("..\\Icons\\restartIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* resetButton = toolbar->AddTool(wxID_ANY, wxT("Reset space"), wxBitmap("..\\Icons\\resetIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* saveButton = toolbar->AddTool(wxID_ANY, wxT("Save space"), wxBitmap("..\\Icons\\saveIcon.png", wxBITMAP_TYPE_PNG));
+	toolbar->Realize();
+	Connect(nextButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(EcaFrame::NextSpace));
+	Connect(restartButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(EcaFrame::RestartSpace));
+	Connect(resetButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(EcaFrame::ResetSpace));
+	Connect(saveButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(EcaFrame::SaveSpace));
+	
 	drawPanel = new DrawPanel(this, ecaLogic, numIterations, cellSize,
 		deadCellColor, aliveCellColor,
 		filterExteriorColor, filterInteriorColor);
@@ -25,4 +38,20 @@ EcaFrame::EcaFrame(EcaLogic* ecaLogic, int numIterations, int cellSize = 1,
 	SetClientSize(frameSize);
 	SetMaxClientSize(panelSize);
 	Center();
+}
+
+void EcaFrame::NextSpace(wxCommandEvent& event) {
+	drawPanel->nextSpace();
+}
+
+void EcaFrame::RestartSpace(wxCommandEvent& event) {
+	drawPanel->restartSpace();
+}
+
+void EcaFrame::ResetSpace(wxCommandEvent& event) {
+	drawPanel->resetSpace();
+}
+
+void EcaFrame::SaveSpace(wxCommandEvent& event) {
+	drawPanel->saveToImage();
 }

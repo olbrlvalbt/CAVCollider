@@ -6,7 +6,8 @@ DrawPanel::DrawPanel(wxWindow * parent, EcaLogic * ecaLogic, int _numIterations,
 					 wxColour _aliveCellColor = wxColour(115, 35, 15),
 					 wxColour _filterExteriorColor = wxColour(15, 15, 95),
 					 wxColour _filterInteriorColor = wxColour(45, 45, 120))
-		 : wxScrolledWindow(parent) {
+		 : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition,
+							wxDefaultSize, wxBORDER_SIMPLE) {
 	eca = ecaLogic;
 	numIterations = _numIterations;
 	cellSize = _cellSize;
@@ -76,12 +77,6 @@ void DrawPanel::createBitmap() {
 	dc.SelectObject(wxNullBitmap);
 
 	progress->Update(100);
-
-	progress = new wxProgressDialog("Rendering", "Painting image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
-
-	bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
-
-	progress->Update(100);
 }
 
 void DrawPanel::createBitmapWithT3Filter() {
@@ -144,14 +139,6 @@ void DrawPanel::createBitmapWithT3Filter() {
 
 	baseDc.SelectObject(wxNullBitmap);
 	filterMemDc.SelectObject(wxNullBitmap);
-
-	progress->Update(100);
-
-	progress = new wxProgressDialog("Rendering", "Painting image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
-
-	bitmap->SaveFile("screenshot.png", wxBITMAP_TYPE_PNG);
-	progress->Update(50);
-	filterBitmap->SaveFile("screenshotFilter.png", wxBITMAP_TYPE_PNG);
 
 	progress->Update(100);
 }
@@ -223,24 +210,55 @@ void DrawPanel::filterT3(string(&iterationGroup)[4], wxGCDC&filterDc, int iterat
 	}
 }
 
-bool DrawPanel::saveToImage(wxBufferedDC& dc) {
-	wxBitmap *screenshot = new wxBitmap(eca->N * cellSize, numIterations * cellSize);
+bool DrawPanel::saveToImage() {
+	wxFileDialog saveFileDialog(this, _("Save file"), wxGetCwd(), "",
+		"PNG files (*.png)|*.png", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+		return false;
+	}
 
-	wxMemoryDC memDC;
+	wxProgressDialog* progress = new wxProgressDialog("Saving", "Saving image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
-	memDC.SelectObject(*screenshot);
-	memDC.Blit(0, //Copy to this X coordinate
-		0, //Copy to this Y coordinate
-		eca->N * cellSize, //Copy this width
-		numIterations * cellSize, //Copy this height
-		&dc, //From where do we copy?
-		0, //What's the X offset in the original DC?
-		0  //What's the Y offset in the original DC?
-	);
-	memDC.SelectObject(wxNullBitmap);
+	if (filterOn) {
+		wxBitmap* screenshot = new wxBitmap(eca->N * cellSize, numIterations * cellSize);
 
-	screenshot->SaveFile("screenshot.jpg", wxBITMAP_TYPE_JPEG);
-	delete screenshot;
+		wxMemoryDC memDC(*screenshot);
+
+		wxMemoryDC baseDc(*bitmap);
+		memDC.Blit(0, //Copy to this X coordinate
+			0, //Copy to this Y coordinate
+			eca->N * cellSize, //Copy this width
+			numIterations * cellSize, //Copy this height
+			&baseDc, //From where do we copy?
+			0, //What's the X offset in the original DC?
+			0  //What's the Y offset in the original DC?
+		);
+		baseDc.SelectObject(wxNullBitmap);
+		
+		progress->Update(50);
+
+		wxMemoryDC filterDc(*filterBitmap);
+		memDC.Blit(0, //Copy to this X coordinate
+			0, //Copy to this Y coordinate
+			eca->N * cellSize, //Copy this width
+			numIterations * cellSize, //Copy this height
+			&filterDc, //From where do we copy?
+			0, //What's the X offset in the original DC?
+			0  //What's the Y offset in the original DC?
+		);
+		filterDc.SelectObject(wxNullBitmap);
+		
+		memDC.SelectObject(wxNullBitmap);
+
+		screenshot->SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
+		delete screenshot;
+	}
+	else {
+		bitmap->SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
+	}
+
+	progress->Update(100);
+	
 	return true;
 }
 
@@ -248,25 +266,14 @@ void DrawPanel::OnKeyDown(wxKeyEvent& event) {
 	switch ((int)event.GetKeyCode()) {
 	case 'n':
 	case 'N':
-		if (wxMessageBox("Create new random initial condition?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
-			eca->initialCondition = eca->CreateRandomInitialCondition(eca->N);
-			eca->currentState = eca->initialCondition;
-			currentShowingIteration = 1;
-			createBitmapWithT3Filter();
-			Refresh();
-		}
+		resetSpace();
 		break;
 	case WXK_SPACE:
-		currentShowingIteration++;
-		createBitmapWithT3Filter();
-		Refresh();
+		nextSpace();
 		break;
 	case 'r':
 	case 'R':
-		eca->currentState = eca->initialCondition;
-		currentShowingIteration = 1;
-		createBitmapWithT3Filter();
-		Refresh();
+		restartSpace();
 		break;
 	case 'f':
 	case 'F':
@@ -275,8 +282,31 @@ void DrawPanel::OnKeyDown(wxKeyEvent& event) {
 		break;
 	case 's':
 	case 'S':
-		//saveToImage();
+		saveToImage();
 		break;
 	}
 	event.Skip();
+}
+
+void DrawPanel::nextSpace() {
+	currentShowingIteration++;
+	createBitmapWithT3Filter();
+	Refresh();
+}
+
+void DrawPanel::restartSpace() {
+	eca->currentState = eca->initialCondition;
+	currentShowingIteration = 1;
+	createBitmapWithT3Filter();
+	Refresh();
+}
+
+void DrawPanel::resetSpace() {
+	if (wxMessageBox("Create new random initial condition?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
+		eca->initialCondition = eca->CreateRandomInitialCondition(eca->N);
+		eca->currentState = eca->initialCondition;
+		currentShowingIteration = 1;
+		createBitmapWithT3Filter();
+		Refresh();
+	}
 }

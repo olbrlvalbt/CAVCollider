@@ -8,11 +8,14 @@
 #include "NaiveController.h"
 #include "CompressedController.h"
 #include "ChunkTranslator.h"
-#include "SimulatorFrame.h"
+#include "RingFrame.h"
+#include "EcaRingConfiguration.h"
 
 class SimulatorMenu : public wxFrame {
 public:
 	wxPanel* menuPanel;
+	
+	wxFlexGridSizer* fgs;
 	
 	wxStaticText* ruleText;
 	wxSpinCtrl* ruleCtrl;
@@ -28,6 +31,13 @@ public:
 
 	wxStaticText* numCellsText;
 	wxSpinCtrl* numCellsCtrl;
+
+
+	wxStaticText* numIterationsText;
+	wxSpinCtrl* numIterationsCtrl;
+
+	wxStaticText* cellSizeText;
+	wxSpinCtrl* cellSizeCtrl;
 	
 
 	wxStaticText* ringWidthText;
@@ -51,11 +61,14 @@ public:
 	wxStaticText* enableRule110T3FilterText;
 	wxCheckBox* enableRule110T3FilterBox;
 
-	wxStaticText* filterExteriorColorText;
+	/*wxStaticText* filterExteriorColorText;
 	wxColourPickerCtrl* filterExteriorColorCtrl;
 
 	wxStaticText* filterInteriorColorText;
-	wxColourPickerCtrl* filterInteriorColorCtrl;
+	wxColourPickerCtrl* filterInteriorColorCtrl;*/
+
+	wxStaticText* enableRingModeText;
+	wxCheckBox* enableRingModeBox;
 
 	wxButton* createEcaButton;
 	
@@ -67,5 +80,6 @@ public:
 	
 	void CreateEcaEvent(wxCommandEvent& event);
 	void ToggleFilterColorsEvent(wxCommandEvent& event);
+	void ToggleRingModeOptions(wxCommandEvent& event);
 };
 

@@ -1,6 +1,6 @@
 #include "EcaMenu.h"
 
-EcaMenu::EcaMenu() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition, wxSize(600, 750),
+EcaMenu::EcaMenu() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition, wxSize(600, 600),
 						 	 wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
 	mainPanel = new wxPanel(this, wxID_ANY);
 
@@ -33,7 +33,7 @@ EcaMenu::EcaMenu() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition,
 	fgs->Add(adjustNumCellsToInitialConditionBox);
 
 	numCellsText = new wxStaticText(mainPanel, wxID_ANY, wxT("N:"));
-	numCellsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("500"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 3, 100000);
+	numCellsCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("400"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 3, 100000);
 	Connect(numCellsCtrl->GetId(), wxEVT_TEXT, wxCommandEventHandler(EcaMenu::SetNewNumCellsAfterEtherEvent));
 	fgs->Add(numCellsText);
 	fgs->Add(numCellsCtrl);
@@ -45,29 +45,37 @@ EcaMenu::EcaMenu() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition,
 
 	setClosedBoundaryText = new wxStaticText(mainPanel, wxID_ANY, wxT("Set closed boundary condition:"));
 	setClosedBoundaryBox = new wxCheckBox(mainPanel, wxID_ANY, "");
-	fgs->Add(setClosedBoundaryText);
-	fgs->Add(setClosedBoundaryBox);
+	//fgs->Add(setClosedBoundaryText);
+	//fgs->Add(setClosedBoundaryBox);
+	setClosedBoundaryText->Hide();
+	setClosedBoundaryBox->Hide();
 
 	fillEdgesWithRule110EtherText = new wxStaticText(mainPanel, wxID_ANY, wxT("Fill edges with rule 110 ether:"));
 	fillEdgesWithRule110EtherBox = new wxCheckBox(mainPanel, wxID_ANY, "");
 	Connect(fillEdgesWithRule110EtherBox->GetId(), wxEVT_CHECKBOX, wxCommandEventHandler(EcaMenu::FillEdgesWithRule110EtherBoxEvent));
-	fgs->Add(fillEdgesWithRule110EtherText);
-	fgs->Add(fillEdgesWithRule110EtherBox);
+	//fgs->Add(fillEdgesWithRule110EtherText);
+	//fgs->Add(fillEdgesWithRule110EtherBox);
+	fillEdgesWithRule110EtherText->Hide();
+	fillEdgesWithRule110EtherBox->Hide();
 
 	numEtherRule110ForEdgesText = new wxStaticText(mainPanel, wxID_ANY, wxT("Number of ether:"));
 	numEtherRule110ForEdgesCtrl = new wxSpinCtrl(mainPanel, wxID_ANY, wxT("2"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 0, 10000);
 	numEtherRule110ForEdgesText->Enable(false);
 	numEtherRule110ForEdgesCtrl->Enable(false);
 	Connect(numEtherRule110ForEdgesCtrl->GetId(), wxEVT_TEXT, wxCommandEventHandler(EcaMenu::SetNewNumCellsAfterEtherEvent));
-	fgs->Add(numEtherRule110ForEdgesText);
-	fgs->Add(numEtherRule110ForEdgesCtrl);
+	//fgs->Add(numEtherRule110ForEdgesText);
+	//fgs->Add(numEtherRule110ForEdgesCtrl);
+	numEtherRule110ForEdgesText->Hide();
+	numEtherRule110ForEdgesCtrl->Hide();
 
 	newNumCellsAfterEtherText = new wxStaticText(mainPanel, wxID_ANY, wxT("New N after ether:"));
 	newNumCellsAfterEtherResult = new wxStaticText(mainPanel, wxID_ANY, wxT(""));
 	newNumCellsAfterEtherText->Enable(false);
 	newNumCellsAfterEtherResult->Enable(false);
-	fgs->Add(newNumCellsAfterEtherText);
-	fgs->Add(newNumCellsAfterEtherResult);
+	//fgs->Add(newNumCellsAfterEtherText);
+	//fgs->Add(newNumCellsAfterEtherResult);
+	newNumCellsAfterEtherText->Hide();
+	newNumCellsAfterEtherResult->Hide();
 
 	dummyText = new wxStaticText(mainPanel, wxID_ANY, wxT(" "));
 	dummyText->Enable(false);
@@ -91,13 +99,17 @@ EcaMenu::EcaMenu() : wxFrame(nullptr, wxID_ANY, wxT("ECA1D"), wxDefaultPosition,
 
 	filterExteriorColorText = new wxStaticText(mainPanel, wxID_ANY, wxT("Filter exterior color:"));
 	filterExteriorColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(15, 15, 95));
-	fgs->Add(filterExteriorColorText);
-	fgs->Add(filterExteriorColorCtrl);
+	//fgs->Add(filterExteriorColorText);
+	//fgs->Add(filterExteriorColorCtrl);
+	filterExteriorColorText->Hide();
+	filterExteriorColorCtrl->Hide();
 
 	filterInteriorColorText = new wxStaticText(mainPanel, wxID_ANY, wxT("Filter interior color:"));
 	filterInteriorColorCtrl = new wxColourPickerCtrl(mainPanel, wxID_ANY, wxColour(45, 45, 120));
-	fgs->Add(filterInteriorColorText);
-	fgs->Add(filterInteriorColorCtrl);
+	//fgs->Add(filterInteriorColorText);
+	//fgs->Add(filterInteriorColorCtrl);
+	filterInteriorColorText->Hide();
+	filterInteriorColorCtrl->Hide();
 
 	createEcaButton = new wxButton(mainPanel, wxID_ANY, wxT("Create ECA"));
 	Connect(createEcaButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(EcaMenu::CreateEcaEvent));

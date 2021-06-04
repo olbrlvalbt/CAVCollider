@@ -1,12 +1,15 @@
 #include "SimulatorMenu.h"
 
-SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Cyclotron"),
+#include "EcaMeshConfiguration.h"
+#include "MeshFrame.h"
+
+SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Eca Simulator"),
                                          wxDefaultPosition, wxSize(600, 750),
                                          wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
 	menuPanel = new wxPanel(this, wxID_ANY);
 	
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-	wxFlexGridSizer* fgs = new wxFlexGridSizer(20, 2, 10, 20);
+	fgs = new wxFlexGridSizer(22, 2, 10, 20);
 
 
 	ruleText = new wxStaticText(menuPanel, wxID_ANY, wxT("Rule:"));
@@ -42,6 +45,63 @@ SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Cyclotron"),
 	fgs->AddSpacer(0);
 	fgs->AddSpacer(0);
 
+	deadCellColorText = new wxStaticText(menuPanel, wxID_ANY, wxT("Dead cell (0) color:"));
+	deadCellColorCtrl = new wxColourPickerCtrl(menuPanel, wxID_ANY, wxColour(220, 170, 15));
+	fgs->Add(deadCellColorText);
+	fgs->Add(deadCellColorCtrl);
+
+	aliveCellColorText = new wxStaticText(menuPanel, wxID_ANY, wxT("Alive cell (1) color:"));
+	aliveCellColorCtrl = new wxColourPickerCtrl(menuPanel, wxID_ANY, wxColour(115, 35, 15));
+	fgs->Add(aliveCellColorText);
+	fgs->Add(aliveCellColorCtrl);
+
+	enableRule110T3FilterText = new wxStaticText(menuPanel, wxID_ANY, wxT("Filter rule 110 T3 tiles:"));
+	enableRule110T3FilterBox = new wxCheckBox(menuPanel, wxID_ANY, "");
+	enableRule110T3FilterBox->SetValue(true);
+	Connect(enableRule110T3FilterBox->GetId(), wxEVT_CHECKBOX, wxCommandEventHandler(SimulatorMenu::ToggleFilterColorsEvent));
+	fgs->Add(enableRule110T3FilterText);
+	fgs->Add(enableRule110T3FilterBox);
+
+	fgs->AddSpacer(0);
+	fgs->AddSpacer(0);
+
+	enableRingModeText = new wxStaticText(menuPanel, wxID_ANY, wxT("Enable ring mode:"));
+	enableRingModeBox = new wxCheckBox(menuPanel, wxID_ANY, "");
+	enableRingModeBox->SetValue(true);
+	Connect(enableRingModeBox->GetId(), wxEVT_CHECKBOX, wxCommandEventHandler(SimulatorMenu::ToggleRingModeOptions));
+	fgs->Add(enableRingModeText);
+	fgs->Add(enableRingModeBox);
+
+	/*filterExteriorColorText = new wxStaticText(menuPanel, wxID_ANY, wxT("Filter exterior color:"));
+	filterExteriorColorCtrl = new wxColourPickerCtrl(menuPanel, wxID_ANY, wxColour(15, 15, 95));
+	//fgs->Add(filterExteriorColorText);
+	//fgs->Add(filterExteriorColorCtrl);
+	filterExteriorColorText->Hide();
+	filterExteriorColorCtrl->Hide();
+
+	filterInteriorColorText = new wxStaticText(menuPanel, wxID_ANY, wxT("Filter interior color:"));
+	filterInteriorColorCtrl = new wxColourPickerCtrl(menuPanel, wxID_ANY, wxColour(45, 45, 120));
+	//fgs->Add(filterInteriorColorText);
+	//fgs->Add(filterInteriorColorCtrl);
+	filterInteriorColorText->Hide();
+	filterInteriorColorCtrl->Hide();*/
+	
+
+	numIterationsText = new wxStaticText(menuPanel, wxID_ANY, wxT("Iterations:"));
+	numIterationsCtrl = new wxSpinCtrl(menuPanel, wxID_ANY, wxT("200"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 100000);
+	fgs->Add(numIterationsText);
+	fgs->Add(numIterationsCtrl);
+	fgs->Show(numIterationsText, false);
+	fgs->Show(numIterationsCtrl, false);
+
+	cellSizeText = new wxStaticText(menuPanel, wxID_ANY, wxT("Cell size (px):"));
+	cellSizeCtrl = new wxSpinCtrl(menuPanel, wxID_ANY, wxT("3"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 500);
+	fgs->Add(cellSizeText);
+	fgs->Add(cellSizeCtrl);
+	fgs->Show(cellSizeText, false);
+	fgs->Show(cellSizeCtrl, false);
+	
+
 	ringWidthText = new wxStaticText(menuPanel, wxID_ANY, wxT("Ring width (px):"));
 	ringWidthCtrl = new wxSpinCtrl(menuPanel, wxID_ANY, wxT("2"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 50);
 	fgs->Add(ringWidthText);
@@ -61,33 +121,7 @@ SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Cyclotron"),
 	ringOffsetCtrl = new wxSpinCtrl(menuPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(60, -1), wxSP_ARROW_KEYS, 1, 100);
 	fgs->Add(ringOffsetText);
 	fgs->Add(ringOffsetCtrl);
-
-	deadCellColorText = new wxStaticText(menuPanel, wxID_ANY, wxT("Dead cell (0) color:"));
-	deadCellColorCtrl = new wxColourPickerCtrl(menuPanel, wxID_ANY, wxColour(220, 170, 15));
-	fgs->Add(deadCellColorText);
-	fgs->Add(deadCellColorCtrl);
-
-	aliveCellColorText = new wxStaticText(menuPanel, wxID_ANY, wxT("Alive cell (1) color:"));
-	aliveCellColorCtrl = new wxColourPickerCtrl(menuPanel, wxID_ANY, wxColour(115, 35, 15));
-	fgs->Add(aliveCellColorText);
-	fgs->Add(aliveCellColorCtrl);
-
-	enableRule110T3FilterText = new wxStaticText(menuPanel, wxID_ANY, wxT("Filter rule 110 T3 tiles:"));
-	enableRule110T3FilterBox = new wxCheckBox(menuPanel, wxID_ANY, "");
-	enableRule110T3FilterBox->SetValue(true);
-	Connect(enableRule110T3FilterBox->GetId(), wxEVT_CHECKBOX, wxCommandEventHandler(SimulatorMenu::ToggleFilterColorsEvent));
-	fgs->Add(enableRule110T3FilterText);
-	fgs->Add(enableRule110T3FilterBox);
-
-	filterExteriorColorText = new wxStaticText(menuPanel, wxID_ANY, wxT("Filter exterior color:"));
-	filterExteriorColorCtrl = new wxColourPickerCtrl(menuPanel, wxID_ANY, wxColour(15, 15, 95));
-	fgs->Add(filterExteriorColorText);
-	fgs->Add(filterExteriorColorCtrl);
-
-	filterInteriorColorText = new wxStaticText(menuPanel, wxID_ANY, wxT("Filter interior color:"));
-	filterInteriorColorCtrl = new wxColourPickerCtrl(menuPanel, wxID_ANY, wxColour(45, 45, 120));
-	fgs->Add(filterInteriorColorText);
-	fgs->Add(filterInteriorColorCtrl);
+	
 
 	createEcaButton = new wxButton(menuPanel, wxID_ANY, wxT("Create ECA"));
 	Connect(createEcaButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SimulatorMenu::CreateEcaEvent));
@@ -146,18 +180,11 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 
 	int rule = ruleCtrl->GetValue();
 
-	int ringWidth = ringWidthCtrl->GetValue();
-	int ringRadius = ringRadiusCtrl->GetValue();
-	int refreshRate = refreshRateCtrl->GetValue();
-	int ringOffset = ringOffsetCtrl->GetValue();
-
 	wxColour deadCellColor = deadCellColorCtrl->GetColour();
 	wxColour aliveCellColor = aliveCellColorCtrl->GetColour();
 	bool enableRule110T3Filter = enableRule110T3FilterBox->GetValue();
-	wxColour filterExteriorColor = filterExteriorColorCtrl->GetColour();
-	wxColour filterInteriorColor = filterInteriorColorCtrl->GetColour();
-	
-	CyclotronConfiguration* config;
+	/*wxColour filterExteriorColor = filterExteriorColorCtrl->GetColour();
+	wxColour filterInteriorColor = filterInteriorColorCtrl->GetColour();*/
 
 	int N;
 	string initialCondition;
@@ -188,22 +215,57 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 
 		eca = new NaiveController(N, rule, initialCondition);
 	}
-	
-	config = new CyclotronConfiguration(ringWidth, ringRadius, refreshRate, ringOffset, enableRule110T3Filter,
-										deadCellColor, aliveCellColor,
-										filterExteriorColor, filterInteriorColor);
 
-	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
+	if (enableRingModeBox->GetValue()) {
+		int ringWidth = ringWidthCtrl->GetValue();
+		int ringRadius = ringRadiusCtrl->GetValue();
+		int refreshRate = refreshRateCtrl->GetValue();
+		int ringOffset = ringOffsetCtrl->GetValue();
+		
+		EcaRingConfiguration* config = new EcaRingConfiguration(eca, deadCellColor, aliveCellColor, ringWidth, ringRadius, refreshRate, ringOffset);
 
-	SimulatorFrame* simFrame = new SimulatorFrame(eca, config);
+		RingFrame* simFrame = new RingFrame(config, enableRule110T3Filter);
 
-	simFrame->Show();
+		simFrame->Show();
+	}
+	else {
+		int numIterations = numIterationsCtrl->GetValue();
+		int cellSize = cellSizeCtrl->GetValue();
+		
+		EcaMeshConfiguration* config = new EcaMeshConfiguration(eca, numIterations, cellSize, deadCellColor, aliveCellColor);
+
+		MeshFrame* simFrame = new MeshFrame(config, enableRule110T3Filter);
+
+		simFrame->Show();
+	}
+
+	//wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
 }
 
 void SimulatorMenu::ToggleFilterColorsEvent(wxCommandEvent& event) {
 	bool filterChecked = event.IsChecked();
-	filterExteriorColorText->Enable(filterChecked);
+	/*filterExteriorColorText->Enable(filterChecked);
 	filterExteriorColorCtrl->Enable(filterChecked);
 	filterInteriorColorText->Enable(filterChecked);
-	filterInteriorColorCtrl->Enable(filterChecked);
+	filterInteriorColorCtrl->Enable(filterChecked);*/
+}
+
+void SimulatorMenu::ToggleRingModeOptions(wxCommandEvent& event) {
+	bool ringModeEnabled = event.IsChecked();
+	
+	fgs->Show(numIterationsText, !ringModeEnabled);
+	fgs->Show(numIterationsCtrl, !ringModeEnabled);
+	fgs->Show(cellSizeText, !ringModeEnabled);
+	fgs->Show(cellSizeCtrl, !ringModeEnabled);
+
+	fgs->Show(ringRadiusText, ringModeEnabled);
+	fgs->Show(ringRadiusCtrl, ringModeEnabled);
+	fgs->Show(ringWidthText, ringModeEnabled);
+	fgs->Show(ringWidthCtrl, ringModeEnabled);
+	fgs->Show(refreshRateText, ringModeEnabled);
+	fgs->Show(refreshRateCtrl, ringModeEnabled);
+	fgs->Show(ringOffsetText, ringModeEnabled);
+	fgs->Show(ringOffsetCtrl, ringModeEnabled);
+	
+	fgs->Layout();
 }
