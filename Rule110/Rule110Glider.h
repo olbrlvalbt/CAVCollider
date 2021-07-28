@@ -4,7 +4,7 @@
 #include <array>
 #include <vector>
 #include <map>
-
+/*
 #define Glider std::vector<std::array<std::string, 4>>
 
 class Rule110Glider {
@@ -46,4 +46,4 @@ public:
 
 
 	static const std::map<std::string, Glider> GLIDERMAP;
-};
+};*/

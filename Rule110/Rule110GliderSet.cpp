@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Rule110GliderSet.h"
-
+/*
 const GliderSet Rule110GliderSet::GLIDERSET_4_A4 = {
 	{
 			Rule110Glider::singleton().GLIDER_A4[0][0] + Rule110Basic::GetEther(27) +
@@ -180,4 +180,4 @@ const std::map<std::string, GliderSet> Rule110GliderSet::GLIDERSETMAP = {
    {"sepinit_ee_", Rule110GliderSet::singleton().GLIDERSET_SEPINIT_EE_},
    {"1add_e_", Rule110GliderSet::singleton().GLIDERSET_1ADD_E_},
    {"0add_e_", Rule110GliderSet::singleton().GLIDERSET_0ADD_E_}
-};
+};*/

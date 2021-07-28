@@ -147,16 +147,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Composite.h" />
+    <ClInclude Include="CompositeMap.h" />
+    <ClInclude Include="GliderMap.h" />
+    <ClInclude Include="GliderSetMap.h" />
+    <ClInclude Include="PhaseSet.h" />
     <ClInclude Include="Rule110.h" />
     <ClInclude Include="Rule110Basic.h" />
     <ClInclude Include="Rule110Composite.h" />
     <ClInclude Include="Rule110Constants.h" />
+    <ClInclude Include="Rule110DLL.h" />
     <ClInclude Include="Rule110Glider.h" />
     <ClInclude Include="Rule110GliderSet.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Composite.cpp" />
+    <ClCompile Include="CompositeMap.cpp" />
+    <ClCompile Include="GliderMap.cpp" />
+    <ClCompile Include="GliderSetMap.cpp" />
+    <ClCompile Include="PhaseSet.cpp" />
     <ClCompile Include="Rule110.cpp" />
     <ClCompile Include="Rule110Basic.cpp" />
     <ClCompile Include="Rule110Composite.cpp" />

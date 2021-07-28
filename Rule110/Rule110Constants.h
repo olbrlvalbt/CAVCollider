@@ -1,10 +1,12 @@
 #pragma once
 
+#include "Rule110DLL.h"
+
 #include <string>
 #include <regex>
 #include <map>
 
-class Rule110Constants {
+class RULE110_DLL Rule110Constants {
 private:
 	static const std::string STRING_MULTIPLE;
 	static const std::string STRING_BINARY;

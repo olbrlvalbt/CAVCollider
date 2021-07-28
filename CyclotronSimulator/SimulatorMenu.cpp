@@ -5,7 +5,8 @@
 
 SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Eca Simulator"),
                                          wxDefaultPosition, wxSize(600, 750),
-                                         wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER) {
+                                         wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER),
+								 rule110() {
 	menuPanel = new wxPanel(this, wxID_ANY);
 	
 	wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -196,7 +197,7 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 	}
 	else {
 		try {
-			initialCondition = Rule110::Translate(initialConditionCtrl->GetValue().ToStdString());
+			initialCondition = rule110.Translate(initialConditionCtrl->GetValue().ToStdString());
 		}
 		catch (TranslationException e) {
 			wxMessageDialog *errorDial = new wxMessageDialog(this,

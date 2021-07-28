@@ -11,6 +11,8 @@
 
 class EcaMenu : public wxFrame {
 public:
+	Rule110 rule110;
+	
 	wxPanel* mainPanel;
 
 	wxStaticText* ruleText;

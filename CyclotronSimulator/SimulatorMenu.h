@@ -13,6 +13,8 @@
 
 class SimulatorMenu : public wxFrame {
 public:
+	Rule110 rule110;
+	
 	wxPanel* menuPanel;
 	
 	wxFlexGridSizer* fgs;

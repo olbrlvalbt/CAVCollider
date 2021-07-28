@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Rule110DLL.h"
+
 #include <string>
 #include <regex>
 #include <exception>
@@ -8,7 +10,7 @@
 
 using namespace std;
 
-class Rule110Basic {
+class RULE110_DLL Rule110Basic {
 public:
 	static string GetEther(int _multiply);
 	static string GetMultiple(string _expression, int _multiple);

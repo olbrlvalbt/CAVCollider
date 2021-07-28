@@ -1,25 +1,27 @@
 #include "pch.h"
 
-#include "EcaLogic.h"
-#include "EcaController.h"
+#include "NaiveController.h"
+#include "CompressedController.h"
 
 #include <string>
+
 using namespace std;
-TEST(EcaLogicVsEcaControllerPerformance, EcaControllerIsMoreEfficient) {
+
+TEST(NaiveControllerVsCompressedControllerPerformance, CompressedControllerIsMoreEfficient) {
 	int n = 65534;
 	int iterations = 100;
 	int i = 0;
 
-	EcaLogic ecaLogic = EcaLogic(n, 110, ECABOUNDARY_PERIODIC);
+	NaiveController naiveController = NaiveController(n, 110);
 	for (i = 0; i < iterations; i++) {
-		ecaLogic.applyRule();
-		string result = ecaLogic.currentState;
+		naiveController.applyRule();
+		string result = naiveController.getCurrentState()[0];
 	}
 	
-	EcaController ecaController = EcaController(n, 110);
+	CompressedController compressedController = CompressedController(n, 110);
 	for (i = 0; i < iterations; i++) {
-		ecaController.applyRule();
-		const vector<string>& ref = ecaController.getCurrentState();
+		compressedController.applyRule();
+		const vector<string>& ref = compressedController.getCurrentState();
 	}
 
   EXPECT_EQ(1, 1);

@@ -2,7 +2,7 @@
 
 #include "Rule110Glider.h"
 #include "Rule110Basic.h"
-
+/*
 #define GliderSet std::vector<std::array<std::string, 4>>
 
 class Rule110GliderSet {
@@ -28,4 +28,4 @@ public:
 
 
 	static const std::map<std::string, GliderSet> GLIDERSETMAP;
-};
+};*/

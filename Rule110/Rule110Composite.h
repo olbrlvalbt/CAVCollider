@@ -1,24 +1,33 @@
 #pragma once
 
+#include "Rule110DLL.h"
+
 #include <regex>
 #include <map>
 
+#include "GliderMap.h"
+#include "GliderSetMap.h"
 #include "Rule110Glider.h"
 #include "Rule110GliderSet.h"
 
 using namespace std;
 
-class Rule110Composite {
+class RULE110_DLL Rule110Composite {
 public:
-	static string GetComposite(string _token);
-	static string GetGlider(int _multiple, string _gliderId, char _gliderPhase, size_t _gliderPhaseNum, size_t _etherPhase);
-	static string GetGliderSet(string _gliderSetId, char _gliderPhase, size_t _gliderPhaseNum, size_t _etherPhase);
+	Rule110Composite(GliderMap _gliderMap, GliderSetMap _gliderSetMap);
+	
+	string GetComposite(string _token);
+	string GetGlider(int _multiple, string _gliderId, string _gliderPhaseKey, size_t _phase);
+	string GetGliderSet(string _gliderSetId, string _gliderSetPhaseKey, size_t _phase);
 
-	static bool IsComposite(string& _s);
+	bool IsComposite(string& _s);
 
-	static bool IsGliderName(string _s);
+	bool IsGliderName(string _s);
 
 private:
-	static void processGlider(int& multiple, string& gliderId, string& _s);
-	static void processPhase(char& gliderPhase, size_t& gliderPhaseNum, size_t& etherPhase, string _s);
+	void processGlider(int& multiple, string& gliderId, string& _s);
+	void processPhase(char& gliderPhase, size_t& gliderPhaseNum, size_t& etherPhase, string _s);
+
+	GliderMap gliderMap;
+	GliderSetMap gliderSetMap;
 };

@@ -64,13 +64,20 @@ string Rule110::GetExpression(string _token) {
 		return getEther(_token);
 	}
 
-	if (Rule110Composite::IsComposite(_token)) {
-		return Rule110Composite::GetComposite(_token);
+	if (rule110Composite->IsComposite(_token)) {
+		return rule110Composite->GetComposite(_token);
 	}
 	if (_token.empty()) {
 		return "";
 	}
 	throw InvalidTokenException(_token);
+}
+
+Rule110::Rule110() {
+	gliderMap = new GliderMap();
+	gliderSetMap = new GliderSetMap(*gliderMap);
+
+	rule110Composite = new Rule110Composite(*gliderMap, *gliderSetMap);
 }
 
 string Rule110::translateNested(string& _s, string::const_iterator& it) {
