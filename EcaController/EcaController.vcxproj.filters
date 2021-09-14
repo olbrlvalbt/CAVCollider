@@ -68,6 +68,24 @@
     <ClInclude Include="NaiveController.h">
       <Filter>EcaController\NaiveController\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InteractionController.h">
+      <Filter>EcaController\NaiveController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractionPoint.h">
+      <Filter>EcaController\NaiveController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractionAgent.h">
+      <Filter>EcaController\NaiveController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IterationBuffer.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionSystem.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilteredCollisionSystem.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -99,6 +117,24 @@
     </ClCompile>
     <ClCompile Include="NaiveController.cpp">
       <Filter>EcaController\NaiveController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractionController.cpp">
+      <Filter>EcaController\NaiveController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractionPoint.cpp">
+      <Filter>EcaController\NaiveController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractionAgent.cpp">
+      <Filter>EcaController\NaiveController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IterationBuffer.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionSystem.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilteredCollisionSystem.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

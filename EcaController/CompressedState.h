@@ -57,4 +57,7 @@ public:
 	CHUNK at(int i);
 
 	const vector<string>& getRawState();
+	
+	char setAtPosition(int position, char newValue);
+	char getAtPosition(int position);
 };

@@ -30,5 +30,8 @@ public:
 	long getCurrentIteration();
 
 	const vector<string>& getCurrentState();
+
+	char setAtPosition(int position, char newValue);
+	char getAtPosition(int position);
 };
 

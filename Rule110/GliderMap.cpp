@@ -2,28 +2,28 @@
 #include "GliderMap.h"
 
 GliderMap::GliderMap() {
-	compositeMap["A"] = Composite("A", {
+	compositeMap["A"] = Composite("A", 2, 3, {
 		"111110",
 		"11111000111000100110",
 		"11111000100110100110",
 		"111110"
 		});
 
-	compositeMap["A4"] = Composite("A4", {
+	compositeMap["A4"] = Composite("A4", 2, 9, {
 		"1111101110",
 		"111110001110111000100110",
 		"111110001001101110100110",
 		"1111101110"
 		});
 
-	compositeMap["B"] = Composite("B", {
+	compositeMap["B"] = Composite("B", -2, 4, {
 		"11111010",
 		"11111000",
 		"1111100010011000100110",
 		"11100110"
 		});
 
-	compositeMap["Bbar"] = Composite("Bbar", {
+	compositeMap["Bbar"] = Composite("Bbar", -6, 12, {
 		"1111100010110111100110",
 		"111110001001111111001011111000100110",
 		"111110001001101100000101111000100110",
@@ -40,7 +40,7 @@ GliderMap::GliderMap() {
 		"1111100111011000111010"
 		});
 
-	compositeMap["Bcirc"] = Composite("Bcirc", {
+	compositeMap["Bcirc"] = Composite("Bcirc", -6, 12, {
 		"111110001011011110011001111111000100110",
 		"111110001001111111001011101100000100110",
 		"111110001001101100000101111011110000110",
@@ -57,7 +57,7 @@ GliderMap::GliderMap() {
 		"1111100111011000100011010"
 		});
 
-	compositeMap["C1"] = Composite("C1", {
+	compositeMap["C1"] = Composite("C1", 0, 7, {
 		"111110000",
 		"11111000100011000100110",
 		"11111000100110011100110",
@@ -69,7 +69,7 @@ GliderMap::GliderMap() {
 		"111110000"
 		});
 
-	compositeMap["C2"] = Composite("C2", {
+	compositeMap["C2"] = Composite("C2", 0, 7, {
 		"11111000000100110",
 		"11111000100000110",
 		"11111000100110000",
@@ -81,7 +81,7 @@ GliderMap::GliderMap() {
 		"11111000000100110"
 		});
 
-	compositeMap["C3"] = Composite("C3", {
+	compositeMap["C3"] = Composite("C3", 0, 7, {
 		"11111011010",
 		"1111100011111111000100110",
 		"1111100010011000000100110",
@@ -93,7 +93,7 @@ GliderMap::GliderMap() {
 		"11111011010"
 		});
 
-	compositeMap["D1"] = Composite("D1", {
+	compositeMap["D1"] = Composite("D1", 2, 10, {
 		"11111000010",
 		"1111100010001111000100110",
 		"1111100010011001100100110",
@@ -110,7 +110,7 @@ GliderMap::GliderMap() {
 		"11111000010"
 		});
 
-	compositeMap["D2"] = Composite("D2", {
+	compositeMap["D2"] = Composite("D2", 2, 10, {
 		"1111101011000100110",
 		"1111100011111100110",
 		"1111100010011000010",
@@ -127,7 +127,7 @@ GliderMap::GliderMap() {
 		"1111101011000100110"
 		});
 
-	compositeMap["E"] = Composite("E", {
+	compositeMap["E"] = Composite("E", -4, 15, {
 		"1111100000000100110",
 		"1111100010000000110",
 		"1111100010011000000",
@@ -149,7 +149,7 @@ GliderMap::GliderMap() {
 		"1111111111000100110"
 		});
 
-	compositeMap["E2"] = Composite("E2", {
+	compositeMap["E2"] = Composite("E2", -4, 15, {
 		"111110000000010011000100110",
 		"",
 		"",
@@ -171,7 +171,7 @@ GliderMap::GliderMap() {
 		""
 		});
 
-	compositeMap["E3"] = Composite("E3", {
+	compositeMap["E3"] = Composite("E3", -4, 15, {
 		"111110000000010011010",
 		"",
 		"",
@@ -193,7 +193,7 @@ GliderMap::GliderMap() {
 		""
 		});
 
-	compositeMap["E4"] = Composite("E4", {
+	compositeMap["E4"] = Composite("E4", -4, 15, {
 		"11111000000001001101011100110",
 		"",
 		"",
@@ -215,7 +215,7 @@ GliderMap::GliderMap() {
 		""
 		});
 
-	compositeMap["E5"] = Composite("E5", {
+	compositeMap["E5"] = Composite("E5", -4, 15, {
 		"1111100000000100110101110011000100110",
 		"",
 		"",
@@ -237,7 +237,7 @@ GliderMap::GliderMap() {
 		""
 		});
 
-	compositeMap["Ebar"] = Composite("Ebar", {
+	compositeMap["Ebar"] = Composite("Ebar", -8, 30, {
 		"111110000100011111010",
 		"111110001000110011000",
 		"11111000100110011101110011000100110",
@@ -279,7 +279,7 @@ GliderMap::GliderMap() {
 		"111111000011011100110"
 		});
 
-	compositeMap["F"] = Composite("F", {
+	compositeMap["F"] = Composite("F", -4, 36, {
 		"111110001011010",
 		"11111000100111111111000100110",
 		"11111000100110110000000100110",
@@ -331,7 +331,7 @@ GliderMap::GliderMap() {
 		"111110011100110"
 		});
 
-	compositeMap["G"] = Composite("G", {
+	compositeMap["G"] = Composite("G", -14, 42, {
 		"111110100111110011100110",
 		"111110001110110001011010",
 		"11111000100110111100111111111000100110",
@@ -388,7 +388,7 @@ GliderMap::GliderMap() {
 		"111110100111110011100110"
 		});
 
-	compositeMap["H"] = Composite("H", {
+	compositeMap["H"] = Composite("H", -18, 92, {
 		"11111000101100000000111110001001101001111111000100110",
 		"11111000100111110000000110001001101111101100000100110",
 		"11111000100110110001000000111001101111100011110000110",
@@ -515,7 +515,7 @@ GliderMap::GliderMap() {
 		"111110011111111110101111100011100010110"
 		});
 
-	compositeMap["GUN"] = Composite("GUN", {
+	compositeMap["GUN"] = Composite("GUN", -20, 77, {
 		"11111010110011101001100101111100000100110",
 		"11111000111111011011101110111100010000110",
 		"11111000100110000111111011101110010011000",

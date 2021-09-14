@@ -92,22 +92,26 @@ const vector<string>& NaiveController::getCurrentState() {
 	return stateVector;
 }
 
+void NaiveController::getNeighbors(int i, char& prev, char& cur, char& next) {
+	if (i == 0) {
+		prev = currentState.at(N - 1);
+	}
+	else {
+		prev = currentState.at(i - 1);
+	}
+	cur = currentState.at(i);
+	if (i == N - 1) {
+		next = currentState.at(0);
+	}
+	else {
+		next = currentState.at(i + 1);
+	}
+}
+
 void NaiveController::applyRule() {
 	char prev, cur, next;
 	for (int i = 0; i < N; i++) {
-		if (i == 0) {
-			prev = currentState.at(N - 1);
-		}
-		else {
-			prev = currentState.at(i - 1);
-		}
-		cur = currentState.at(i);
-		if (i == N - 1) {
-			next = currentState.at(0);
-		}
-		else {
-			next = currentState.at(i + 1);
-		}
+		getNeighbors(i, prev, cur, next);
 
 		if (prev == '1') {
 			if (cur == '1') {
@@ -151,4 +155,16 @@ void NaiveController::applyRule() {
 	
 	currentState = auxState;
 	currentIteration++;
+}
+
+char NaiveController::setAtPosition(int position, char newValue) {
+	char oldValue = getAtPosition(position);
+
+	currentState[position] = newValue;
+
+	return oldValue;
+}
+
+char NaiveController::getAtPosition(int position) {
+	return currentState[position];
 }

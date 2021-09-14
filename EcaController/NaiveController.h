@@ -4,9 +4,10 @@
 #include "EcaControllerCore.h"
 
 class ECACONTROLLER_DLL NaiveController : public EcaController {
-private:
+protected:
 	string currentState = "";
 	string auxState;
+	
 	long currentIteration;
 
 	string savedState;
@@ -32,4 +33,8 @@ public:
 	long getCurrentIteration();
 
 	const vector<string>& getCurrentState();
+	virtual void getNeighbors(int i, char& prev, char& cur, char& next);
+
+	char setAtPosition(int position, char newValue);
+	char getAtPosition(int position);
 };

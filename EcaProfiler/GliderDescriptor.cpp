@@ -67,6 +67,14 @@ void printGliderSet(string gliderSetName, string gliderSet) {
 	file.close();
 }
 
+TEST(GetA3Descriptor, Descriptor) {
+	string ga3 = "111110111000100110";
+
+	printGliderSet("A3", ga3);
+
+	EXPECT_EQ(1, 1);
+}
+
 TEST(Get1EleC2Descriptor, Descriptor) {	
 	string g1elec2 = "11111000000100110111110001001101111100010011011111000000100110";
 	g1elec2 += "1111100010011011111000100110111110000001001101111100010011011111000111011010";

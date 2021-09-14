@@ -56,3 +56,11 @@ long CompressedController::getCurrentIteration() {
 const vector<string>& CompressedController::getCurrentState() {
 	return compressedState->getRawState();
 }
+
+char CompressedController::setAtPosition(int position, char newValue) {
+	return compressedState->setAtPosition(position, newValue);
+}
+
+char CompressedController::getAtPosition(int position) {
+	return compressedState->getAtPosition(position);
+}

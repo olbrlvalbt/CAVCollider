@@ -3,7 +3,7 @@
 #include "Rule110Basic.h"
 
 GliderSetMap::GliderSetMap(GliderMap& gliderMap) {
-	compositeMap["4_A4"] = Composite("4_A4", {
+	compositeMap["4_A4"] = Composite("4_A4", 2, 9, {
 			gliderMap.get("A4", "A", 1) + Rule110Basic::GetEther(27) +
 			gliderMap.get("A4", "A", 2) + Rule110Basic::GetEther(23) +
 			gliderMap.get("A4", "A", 3) + Rule110Basic::GetEther(25) +
@@ -22,7 +22,7 @@ GliderSetMap::GliderSetMap(GliderMap& gliderMap) {
 			""
 		});
 
-	compositeMap["1ELE_C2"] = Composite("1ELE_C2", {
+	compositeMap["1ELE_C2"] = Composite("1ELE_C2", 0, 7, {
 			gliderMap.get("C2", "A", 1) + Rule110Basic::GetEther(2) +
 			gliderMap.get("C2", "A", 1) + Rule110Basic::GetEther(2) +
 			gliderMap.get("C2", "A", 1) + Rule110Basic::GetEther(1) +
@@ -35,7 +35,7 @@ GliderSetMap::GliderSetMap(GliderMap& gliderMap) {
 			""
 		});
 
-	compositeMap["0ELE_C2"] = Composite("0ELE_C2", {
+	compositeMap["0ELE_C2"] = Composite("0ELE_C2", 0, 7, {
 			gliderMap.get("C2", "A", 1) + Rule110Basic::GetEther(2) +
 			gliderMap.get("C2", "A", 1) + Rule110Basic::GetEther(1) +
 			gliderMap.get("C2", "A", 4) + Rule110Basic::GetEther(1) +
@@ -48,7 +48,7 @@ GliderSetMap::GliderSetMap(GliderMap& gliderMap) {
 			""
 		});
 
-	compositeMap["0BLO_E_"] = Composite("0BLO_E_", {
+	compositeMap["0BLO_E_"] = Composite("0BLO_E_", -8, 30, {
 			gliderMap.get("E_", "A", 1) + Rule110Basic::GetEther(2) +
 			gliderMap.get("E_", "D", 1) +
 			gliderMap.get("E_", "G", 2) +
@@ -69,7 +69,7 @@ GliderSetMap::GliderSetMap(GliderMap& gliderMap) {
 			""
 		});
 
-	compositeMap["1BLOP_E_"] = Composite("1BLOP_E_", {
+	compositeMap["1BLOP_E_"] = Composite("1BLOP_E_", -8, 30, {
 			gliderMap.get("E_", "A", 1) +
 			gliderMap.get("E_", "B", 3) + Rule110Basic::GetEther(1) +
 			gliderMap.get("E_", "B", 4) +
@@ -90,7 +90,7 @@ GliderSetMap::GliderSetMap(GliderMap& gliderMap) {
 			""
 		});
 
-	compositeMap["1BLOS_E_"] = Composite("1BLOS_E_", {
+	compositeMap["1BLOS_E_"] = Composite("1BLOS_E_", -8, 30, {
 			gliderMap.get("E_", "A", 1) + Rule110Basic::GetEther(2) +
 			gliderMap.get("E_", "D", 1) +
 			gliderMap.get("E_", "G", 2) +
@@ -111,7 +111,7 @@ GliderSetMap::GliderSetMap(GliderMap& gliderMap) {
 			""
 		});
 
-	compositeMap["SEPINIT_EE_"] = Composite("SEPINIT_EE_", {
+	compositeMap["SEPINIT_EE_"] = Composite("SEPINIT_EE_", -8, 30, {
 			gliderMap.get("E5", "A", 1) +
 			gliderMap.get("E2", "D", 2) + Rule110Basic::GetEther(3) +
 			gliderMap.get("E4", "A", 1) + Rule110Basic::GetEther(1) +
@@ -128,7 +128,7 @@ GliderSetMap::GliderSetMap(GliderMap& gliderMap) {
 			""
 		});
 
-	compositeMap["1ADD_E"] = Composite("1ADD_E", {
+	compositeMap["1ADD_E"] = Composite("1ADD_E", -8, 30, {
 			gliderMap.get("E_", "A", 1) + Rule110Basic::GetEther(7) +
 			gliderMap.get("E_", "B", 4) + Rule110Basic::GetEther(5) +
 			gliderMap.get("E_", "C", 1) + Rule110Basic::GetEther(7) +
@@ -141,7 +141,7 @@ GliderSetMap::GliderSetMap(GliderMap& gliderMap) {
 			""
 		});
 
-	compositeMap["0ADD_E"] = Composite("0ADD_E", {
+	compositeMap["0ADD_E"] = Composite("0ADD_E", -8, 30, {
 			gliderMap.get("E_", "A", 1) + Rule110Basic::GetEther(7) +
 			gliderMap.get("E_", "B", 4) + Rule110Basic::GetEther(6) +
 			gliderMap.get("E_", "D", 3) + Rule110Basic::GetEther(6) +

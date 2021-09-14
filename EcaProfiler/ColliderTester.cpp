@@ -7,6 +7,8 @@
 #include <wx/wx.h>
 #include <wx/dcgraph.h>
 
+#include "CollisionSystem.h"
+
 using namespace std;
 
 void filterT3(int cellsize, NaiveController* eca, wxGCDC& filterDc, string iterationGroup[4], int iteration) {
@@ -214,5 +216,11 @@ TEST(CreateCollisionsA_Eb, A_Eb) {
 		}
 	}
 	
+	EXPECT_EQ(1, 1);
+}
+TEST(efe, A_Ewwb) {
+	CollisionSystem system(14, "11111000100110", 14, "11111000100110", 28, "1111100010011011111000100110",
+		13, 27, 13, 13);
+
 	EXPECT_EQ(1, 1);
 }

@@ -233,3 +233,29 @@ const vector<string>& CompressedState::getRawState() {
 
 	return rawState;
 }
+
+char CompressedState::setAtPosition(int position, char newValue) {
+	throw exception("Not implemented");
+	
+	/*int oldValue = getAtPosition(position);
+	
+	int relativePos = position / CHUNK_BITSIZE;
+	int offsetPos = position % CHUNK_BITSIZE;
+
+	currentStateChunkArray[relativePos] |= 1 << offsetPos;
+
+	return oldValue;*/
+
+	return 0;
+}
+
+char CompressedState::getAtPosition(int position) {
+	throw exception("Not implemented");
+	
+	/*int relativePos = position / CHUNK_BITSIZE;
+	int offsetPos = position % CHUNK_BITSIZE;
+	
+	return (currentStateChunkArray[relativePos] >> offsetPos) & 1;*/
+
+	return 0;
+}

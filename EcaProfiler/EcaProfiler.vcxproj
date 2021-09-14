@@ -36,7 +36,8 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ColliderTester.cpp" />
+    <ClCompile Include="ContactPointInteractions.cpp" />
     <ClCompile Include="EcaProfiler.cpp" />
     <ClCompile Include="GliderDescriptor.cpp" />
     <ClCompile Include="pch.cpp">

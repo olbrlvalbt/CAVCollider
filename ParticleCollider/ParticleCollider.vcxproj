@@ -21,32 +21,32 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{1939b4ac-7e4d-43cc-8cb3-6b56779bf3f2}</ProjectGuid>
-    <RootNamespace>EcaController</RootNamespace>
+    <ProjectGuid>{911bd284-a0ee-4dd6-ad80-8ec8c624b417}</ProjectGuid>
+    <RootNamespace>ParticleCollider</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -86,15 +86,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;ECACONTROLLER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -103,32 +102,30 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;ECACONTROLLER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;ECACONTROLLER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -137,60 +134,39 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;ECACONTROLLER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ChunkTranslator.h" />
-    <ClInclude Include="CollisionSystem.h" />
-    <ClInclude Include="CompressedController.h" />
-    <ClInclude Include="FilteredCollisionSystem.h" />
-    <ClInclude Include="InteractionAgent.h" />
-    <ClInclude Include="InteractionController.h" />
-    <ClInclude Include="EcaController.h" />
-    <ClInclude Include="CompressedState.h" />
-    <ClInclude Include="ChunkLUT.h" />
-    <ClInclude Include="ChunkLUTAgent.h" />
-    <ClInclude Include="EcaControllerCore.h" />
-    <ClInclude Include="EcaControllerDLL.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="InteractionPoint.h" />
-    <ClInclude Include="NaiveController.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="IterationBuffer.h" />
+    <ClInclude Include="ColliderApp.h" />
+    <ClInclude Include="ColliderConfiguration.h" />
+    <ClInclude Include="ColliderFrame.h" />
+    <ClInclude Include="ColliderMenu.h" />
+    <ClInclude Include="ColliderView.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ChunkTranslator.cpp" />
-    <ClCompile Include="CollisionSystem.cpp" />
-    <ClCompile Include="CompressedController.cpp" />
-    <ClCompile Include="FilteredCollisionSystem.cpp" />
-    <ClCompile Include="InteractionAgent.cpp" />
-    <ClCompile Include="InteractionController.cpp" />
-    <ClCompile Include="EcaController.cpp" />
-    <ClCompile Include="CompressedState.cpp" />
-    <ClCompile Include="ChunkLUT.cpp" />
-    <ClCompile Include="ChunkLUTAgent.cpp" />
-    <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="EcaControllerCore.cpp" />
-    <ClCompile Include="InteractionPoint.cpp" />
-    <ClCompile Include="NaiveController.cpp" />
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="IterationBuffer.cpp" />
+    <ClCompile Include="ColliderApp.cpp" />
+    <ClCompile Include="ColliderConfiguration.cpp" />
+    <ClCompile Include="ColliderFrame.cpp" />
+    <ClCompile Include="ColliderMenu.cpp" />
+    <ClCompile Include="ColliderView.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EcaController\EcaController.vcxproj">
+      <Project>{1939b4ac-7e4d-43cc-8cb3-6b56779bf3f2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Rule110\Rule110.vcxproj">
+      <Project>{86c77faf-a311-44d4-9f34-0e8ede8ec618}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

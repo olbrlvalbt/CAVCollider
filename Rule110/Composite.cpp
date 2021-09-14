@@ -2,11 +2,11 @@
 #include "Composite.h"
 
 Composite::Composite()
-	: id(""), phaseSets({}){
+	: id(""), horizontalSpeed(0), verticalSpeed(0), phaseSets({}){
 }
 
-Composite::Composite(std::string _id, std::vector<std::string> _phases)
-	:id(_id) {
+Composite::Composite(std::string _id, int _horizontalSpeed, int _verticalSpeed, std::vector<std::string> _phases)
+	:id(_id), horizontalSpeed(_horizontalSpeed), verticalSpeed(_verticalSpeed) {
 	if (_phases.size() % 4 != 0) {
 		throw exception("PhaseSets must have 4 components");
 	}
@@ -18,8 +18,16 @@ Composite::Composite(std::string _id, std::vector<std::string> _phases)
 	}
 }
 
-std::string Composite::getId() {
+std::string Composite::getId() const {
 	return id;
+}
+
+int Composite::horizontalSpeed1() const {
+	return horizontalSpeed;
+}
+
+int Composite::verticalSpeed1() const {
+	return verticalSpeed;
 }
 
 int Composite::TranslatePhaseKey(std::string phaseKey) {

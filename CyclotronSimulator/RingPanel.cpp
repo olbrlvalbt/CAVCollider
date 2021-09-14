@@ -2,6 +2,7 @@
 #include <chrono>
 #include <sstream>
 #include <thread>
+#include <math.h>
 
 RingPanel::RingPanel(wxWindow* parent, EcaRingConfiguration* config, bool _rule110T3filterEnabled)
 	: wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition,
@@ -370,6 +371,15 @@ void RingPanel::paintMask(wxMemoryDC& memDc, char flag) {
 	double newDegree = 0;
 	const double degreeIncrement = 360 / (double)(cyclotronConfiguration->getEca()->getN());
 
+	/*const double radianIncrement = degreeIncrement * M_PI / 180;
+	
+	for (int i = 0; i < cyclotronConfiguration->getEca()->getN(); i++) {
+		if (filterGroup[0].at(i) == '0' && iterationGroup[0].at(i) == flag) {
+			double projX = cyclotronConfiguration->getRingRadius() * std::cos(i * radianIncrement);
+			double projY = cyclotronConfiguration->getRingRadius() * std::sin(i * radianIncrement);
+			memDc.DrawPoint(ringCenter.x + projX, ringCenter.y + projY);
+		}
+	}*/
 	int acc = 0;
 	
 	for (int i = 0; i < cyclotronConfiguration->getEca()->getN(); i++) {

@@ -35,4 +35,7 @@ public:
 	virtual long getCurrentIteration() = 0;
 
 	const virtual vector<string>& getCurrentState() = 0;
+
+	virtual char setAtPosition(int position, char newValue) = 0;
+	virtual char getAtPosition(int position) = 0;
 };
