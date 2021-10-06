@@ -13,10 +13,10 @@ public:
 
 	ColliderFrame(ColliderConfiguration* config, int refreshRate);
 
-	/*void closeEvent(wxCloseEvent& evt);
+	void closeEvent(wxCloseEvent& evt);
 
 	void PlayPause(wxCommandEvent& event);
-	void Toggle3D(wxCommandEvent& event);
-	void Restart(wxCommandEvent& event);*/
+	//void Restart(wxCommandEvent& event);
+	void Save(wxCommandEvent& event);
 };
 

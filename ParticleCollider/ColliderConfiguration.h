@@ -3,13 +3,14 @@
 #include <wx/wx.h>
 
 #include "CollisionSystem.h"
+#include "FilteredCollisionSystem.h"
 
 class ColliderConfiguration {
 protected:
-	CollisionSystem* collisionSystem;
+	FilteredCollisionSystem* collisionSystem;
 	
-	wxPen deadCellPen;
-	wxPen aliveCellPen;
+	wxColour deadCellColor;
+	wxColour aliveCellColor;
 
 	int centralRingRadius;
 	int leftRingRadius;
@@ -20,21 +21,27 @@ protected:
 	wxPoint relativeRightContactPos;
 	wxPoint relativeLeftRingCenter;
 	wxPoint relativeRightRingCenter;
+	
+	double centralAlphaRad;
+	double leftAlphaRad;
+	double rightAlphaRad;
 
-	const double centralAlphaRad;
-	const double leftAlphaRad;
-	const double rightAlphaRad;
+	double leftRingContactPointAngle;
+	double rightRingContactPointAngle;
+
+	double leftRingRotationOffsetAngle;
+	double rightRingRotationOffsetAngle;
 
 public:
-	ColliderConfiguration(CollisionSystem* collisionSystem, int centralRingRadius);
-	ColliderConfiguration(CollisionSystem* collisionSystem, int centralRingRadius,
+	ColliderConfiguration(FilteredCollisionSystem* collisionSystem, int centralRingRadius);
+	ColliderConfiguration(FilteredCollisionSystem* collisionSystem, int centralRingRadius,
 		wxColour deadColor, wxColour aliveColor);
 	~ColliderConfiguration();
 
-	CollisionSystem& getCollisionSystem() const;
+	FilteredCollisionSystem& getCollisionSystem() const;
 	
-	const wxPen& getDeadCellPen() const;
-	const wxPen& getAliveCellPen() const;
+	const wxColour& getDeadCellColor() const;
+	const wxColour& getAliveCellColor() const;
 	
 	int getCentralRingRadius() const;
 	int getLeftRingRadius() const;
@@ -49,5 +56,9 @@ public:
 	double getRightAlphaRad() const;
 
 	long getCurrentIteration();
+
+	double getCentralAngleForPos(int i);
+	double getLeftAngleForPos(int i);
+	double getRightAngleForPos(int i);
 };
 

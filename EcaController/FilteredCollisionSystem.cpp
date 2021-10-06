@@ -2,8 +2,10 @@
 
 #include "FilteredCollisionSystem.h"
 
+#include <thread>
+
 FilteredCollisionSystem::FilteredCollisionSystem(int leftN, string leftIC, int rightN, string rightIC, int centralN, string centralIC,
-	int leftToCentralIP, int centralToLeftIP, int rightToCentralIP, int centralToRightIP)
+                                                 int leftToCentralIP, int centralToLeftIP, int rightToCentralIP, int centralToRightIP)
 		: CollisionSystem(leftN, leftIC, rightN, rightIC, centralN, centralIC,
 			leftToCentralIP, centralToLeftIP, rightToCentralIP, centralToRightIP) {
 	resetAllBuffers();
@@ -205,7 +207,21 @@ void FilteredCollisionSystem::filter(IterationBuffer& buffer) {
 }
 
 void FilteredCollisionSystem::filterAll() {
-	filter(leftBuffer);
-	filter(rightBuffer);
-	filter(centralBuffer);
+	auto leftLambda = [&]() {
+		filter(leftBuffer);
+	};
+	auto rightLambda = [&]() {
+		filter(rightBuffer);
+	};
+	auto centralLambda = [&]() {
+		filter(centralBuffer);
+	};
+
+	std::thread leftThread(leftLambda);
+	std::thread rightThread(rightLambda);
+	std::thread centralThread(centralLambda);
+
+	leftThread.join();
+	rightThread.join();
+	centralThread.join();
 }

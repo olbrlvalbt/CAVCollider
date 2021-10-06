@@ -9,11 +9,12 @@ ColliderFrame::ColliderFrame(ColliderConfiguration* config, int refreshRate)
 
 	wxToolBar* toolbar = CreateToolBar(wxTB_TEXT);
 	wxToolBarToolBase* playPauseButton = toolbar->AddTool(wxID_ANY, wxT("Play/Pause (P)"), wxBitmap("..\\Icons\\playPauseIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* toggle3dButton = toolbar->AddTool(wxID_ANY, wxT("Toggle 3D (Space)"), wxBitmap("..\\Icons\\toggle3dIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* restartButton = toolbar->AddTool(wxID_ANY, wxT("Restart (R)"), wxBitmap("..\\Icons\\restartIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* resetButton = toolbar->AddTool(wxID_ANY, wxT("Random reset (N)"), wxBitmap("..\\Icons\\resetIcon.png", wxBITMAP_TYPE_PNG));
+	//wxToolBarToolBase* restartButton = toolbar->AddTool(wxID_ANY, wxT("Restart (R)"), wxBitmap("..\\Icons\\restartIcon.png", wxBITMAP_TYPE_PNG));
 	wxToolBarToolBase* saveButton = toolbar->AddTool(wxID_ANY, wxT("Save (S)"), wxBitmap("..\\Icons\\saveIcon.png", wxBITMAP_TYPE_PNG));
 	toolbar->Realize();
+	Connect(playPauseButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(ColliderFrame::PlayPause));
+	//Connect(restartButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(ColliderFrame::Restart));
+	Connect(saveButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(ColliderFrame::Save));
 	
 	drawPanel = new ColliderView(this, config, refreshRate);
 	frameSizer->Add(drawPanel, 1, wxALL | wxEXPAND);
@@ -31,4 +32,21 @@ ColliderFrame::ColliderFrame(ColliderConfiguration* config, int refreshRate)
 	SetMaxClientSize(panelSize);
 	
 	Center();
+}
+
+void ColliderFrame::closeEvent(wxCloseEvent& evt) {
+	drawPanel->Destroy();
+	evt.Skip();
+}
+
+void ColliderFrame::PlayPause(wxCommandEvent& event) {
+	drawPanel->playPause();
+}
+
+/*void ColliderFrame::Restart(wxCommandEvent& event) {
+	drawPanel->restart();
+}*/
+
+void ColliderFrame::Save(wxCommandEvent& event) {
+	drawPanel->saveToImage();
 }

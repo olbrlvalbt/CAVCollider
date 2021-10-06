@@ -17,14 +17,15 @@ private:
 	wxPoint rightContactPos;
 
 	bool toggleAnimation = true;
-	bool enable3d = false;
 
 	wxBitmap mainPanelBitmap;
-	wxBitmap centralBitmap;
+	/*wxBitmap centralBitmap;
 	wxBitmap leftBitmap;
-	wxBitmap rightBitmap;
+	wxBitmap rightBitmap;*/
 
 	wxTimer paintTimer;
+
+	int cellSize;
 
 public:
 	ColliderView(wxWindow* parent, ColliderConfiguration* colliderConfiguration, int refreshRate);
@@ -43,8 +44,8 @@ private:
 	void render(wxDC& dc);
 	void processCollider();
 
-	void paintCentralRing();
-	void paintLeftRing();
-	void paintRightRing();
+	void paintCentralRing(wxDC& dc);
+	void paintLeftRing(wxDC& dc);
+	void paintRightRing(wxDC& dc);
 };
 

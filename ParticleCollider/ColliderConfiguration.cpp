@@ -1,18 +1,16 @@
 #include "ColliderConfiguration.h"
 
-
-ColliderConfiguration::ColliderConfiguration(CollisionSystem* collisionSystem, int centralRingRadius)
+ColliderConfiguration::ColliderConfiguration(FilteredCollisionSystem* collisionSystem, int centralRingRadius)
 	: ColliderConfiguration(collisionSystem, centralRingRadius, 
 		wxColour(245, 245, 245),
 		wxColour(255, 255, 255)) {
 }
 
-
-ColliderConfiguration::ColliderConfiguration(CollisionSystem* collisionSystem, int centralRingRadius,
+ColliderConfiguration::ColliderConfiguration(FilteredCollisionSystem* collisionSystem, int centralRingRadius,
 	wxColour deadColor, wxColour aliveColor)
 	: collisionSystem(collisionSystem),
-	deadCellPen(wxPen(deadColor)),
-	aliveCellPen(wxPen(aliveColor)),
+	deadCellColor(deadColor),
+	aliveCellColor(aliveColor),
 	centralRingRadius(centralRingRadius),
 	centralAlphaRad((2 * M_PI) / (double)(collisionSystem->getCentralN())),
 	leftAlphaRad((2 * M_PI) / (double)(collisionSystem->getLeftN())),
@@ -30,22 +28,36 @@ ColliderConfiguration::ColliderConfiguration(CollisionSystem* collisionSystem, i
 		(centralRingRadius + leftRingRadius) * std::sin(collisionSystem->getCentralToLeftInteractionPos() * centralAlphaRad));
 	relativeRightRingCenter = wxPoint((centralRingRadius + rightRingRadius) * std::cos(collisionSystem->getCentralToRightInteractionPos() * centralAlphaRad),
 		(centralRingRadius + rightRingRadius) * std::sin(collisionSystem->getCentralToRightInteractionPos() * centralAlphaRad));
+
+	double prevLeftAngle = collisionSystem->getLeftToCentralInteractionPos() * leftAlphaRad;
+	leftRingContactPointAngle = (collisionSystem->getCentralToLeftInteractionPos() * centralAlphaRad) - M_PI;
+	while (leftRingContactPointAngle < 0) {
+		leftRingContactPointAngle += 2 * M_PI;
+	}
+	leftRingRotationOffsetAngle = leftRingContactPointAngle - prevLeftAngle;
+	
+	double prevRightAngle = collisionSystem->getRightToCentralInteractionPos() * rightAlphaRad;
+	rightRingContactPointAngle = (collisionSystem->getCentralToRightInteractionPos() * centralAlphaRad) - M_PI;
+	while (rightRingContactPointAngle < 0) {
+		rightRingContactPointAngle += 2 * M_PI;
+	}
+	rightRingRotationOffsetAngle = rightRingContactPointAngle - prevRightAngle;
 }
 
 ColliderConfiguration::~ColliderConfiguration() {
 	delete collisionSystem;
 }
 
-CollisionSystem& ColliderConfiguration::getCollisionSystem() const {
+FilteredCollisionSystem& ColliderConfiguration::getCollisionSystem() const {
 	return *collisionSystem;
 }
 
-const wxPen& ColliderConfiguration::getDeadCellPen() const {
-	return deadCellPen;
+const wxColour& ColliderConfiguration::getDeadCellColor() const {
+	return deadCellColor;
 }
 
-const wxPen& ColliderConfiguration::getAliveCellPen() const {
-	return aliveCellPen;
+const wxColour& ColliderConfiguration::getAliveCellColor() const {
+	return aliveCellColor;
 }
 
 int ColliderConfiguration::getCentralRingRadius() const {
@@ -90,4 +102,16 @@ double ColliderConfiguration::getRightAlphaRad() const {
 
 long ColliderConfiguration::getCurrentIteration() {
 	return collisionSystem->getCurrentIteration();
+}
+
+double ColliderConfiguration::getCentralAngleForPos(int i) {
+	return i * centralAlphaRad;
+}
+
+double ColliderConfiguration::getLeftAngleForPos(int i) {
+	return 2 * leftRingContactPointAngle - (i * leftAlphaRad + leftRingRotationOffsetAngle);
+}
+
+double ColliderConfiguration::getRightAngleForPos(int i) {
+	return 2 * rightRingContactPointAngle - (i * rightAlphaRad + rightRingRotationOffsetAngle);
 }

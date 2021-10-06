@@ -8,7 +8,8 @@ ColliderView::ColliderView(wxWindow* parent, ColliderConfiguration* colliderConf
 	: wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition,
 		wxDefaultSize, wxBORDER_SIMPLE),
 	colliderConfiguration(colliderConfiguration),
-	toggleAnimation(true) {
+	toggleAnimation(true),
+	cellSize(2){
 	/*panelSize = 2 * colliderConfiguration->getCentralRingRadius()
 		+ 2 * colliderConfiguration->getLeftRingRadius()
 		+ 2 * colliderConfiguration->getRightRingRadius();*/
@@ -23,21 +24,16 @@ ColliderView::ColliderView(wxWindow* parent, ColliderConfiguration* colliderConf
 
 	wxInitAllImageHandlers();
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
-	
+
 	mainPanelBitmap = wxBitmap(panelSize, panelSize);
 
-	centralBitmap = wxBitmap(panelSize, panelSize);
+	/*centralBitmap = wxBitmap(panelSize, panelSize);
 	leftBitmap = wxBitmap(panelSize, panelSize);
-	rightBitmap = wxBitmap(panelSize, panelSize);
-	/*centralBitmap = wxBitmap(colliderConfiguration->getCentralRingRadius() * 2,
-		colliderConfiguration->getCentralRingRadius() * 2);
-	leftBitmap = wxBitmap(colliderConfiguration->getLeftRingRadius() * 2,
-		colliderConfiguration->getLeftRingRadius() * 2);
-	rightBitmap = wxBitmap(colliderConfiguration->getRightRingRadius() * 2,
-		colliderConfiguration->getRightRingRadius() * 2);*/
+	rightBitmap = wxBitmap(panelSize, panelSize);*/
 
 	Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(ColliderView::paintEvent));
-
+	Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(ColliderView::OnKeyDown));
+	
 	SetClientSize(panelSize, panelSize);
 	SetScrollbars(1, 1, panelSize, panelSize, 0, 0);
 
@@ -68,7 +64,7 @@ void ColliderView::timerEvent(wxTimerEvent& evt) {
 	}
 }
 
-void ColliderView::render(wxDC& dc) {
+void ColliderView::render(wxDC& dc) {	
 	dc.DrawBitmap(mainPanelBitmap, 0, 0);
 	if (colliderConfiguration->getCollisionSystem().isLeftEnabled()) {
 		dc.SetBrush(*wxRED_BRUSH);
@@ -87,10 +83,6 @@ void ColliderView::render(wxDC& dc) {
 }
 
 void ColliderView::processCollider() {
-	wxMemoryDC dc(mainPanelBitmap);
-	dc.SetBackground(*wxBLACK_BRUSH);
-	dc.Clear();
-
 	colliderConfiguration->getCollisionSystem().execute();
 
 	/*auto leftLambda = [&]() {
@@ -111,11 +103,23 @@ void ColliderView::processCollider() {
 	rightThread.join();
 	centralThread.join();*/
 
-	paintCentralRing();
-	paintLeftRing();
-	paintRightRing();
+	wxMemoryDC dc(mainPanelBitmap);
+	dc.SetBackground(*wxBLACK_BRUSH);
+	dc.Clear();
 	
-	centralBitmap.SetMask(new wxMask(centralBitmap, *wxGREEN));
+	dc.SetBrush(*wxTRANSPARENT_BRUSH);
+	dc.SetPen(wxPen(wxColour(30, 115, 60)));
+	dc.DrawCircle(leftRingCenter, colliderConfiguration->getLeftRingRadius());
+	dc.SetPen(wxPen(wxColour(115, 30, 60)));
+	dc.DrawCircle(rightRingCenter, colliderConfiguration->getRightRingRadius());
+	dc.SetPen(wxPen(wxColour(30, 60, 115)));
+	dc.DrawCircle(centralRingCenter, colliderConfiguration->getCentralRingRadius());
+
+	paintCentralRing(dc);
+	paintLeftRing(dc);
+	paintRightRing(dc);
+
+	/*centralBitmap.SetMask(new wxMask(centralBitmap, *wxGREEN));
 	wxMemoryDC centralDc(centralBitmap);
 	dc.Blit(0, 0,
 		panelSize, panelSize,
@@ -137,85 +141,136 @@ void ColliderView::processCollider() {
 		panelSize, panelSize,
 		&rightDc,
 		0, 0, wxCOPY, true);
-	rightBitmap.SetMask(NULL);
-	
+	rightBitmap.SetMask(NULL);*/
+
 	dc.SelectObject(wxNullBitmap);
 }
 
-void ColliderView::paintCentralRing() {
-	wxMemoryDC dc(centralBitmap);
+void ColliderView::paintCentralRing(wxDC& dc) {
+	/*wxMemoryDC dc(centralBitmap);
 	dc.SetBackground(*wxGREEN);
-	dc.Clear();
+	dc.Clear();*/
 	
 	int centralN = colliderConfiguration->getCollisionSystem().getCentralN();
 	string centralState = colliderConfiguration->getCollisionSystem().getCentralState();
+	string centralFilter = colliderConfiguration->getCollisionSystem().getCentralFilter();
 
-	dc.SetPen(colliderConfiguration->getAliveCellPen());
+	dc.SetPen(colliderConfiguration->getAliveCellColor());
+	dc.SetBrush(colliderConfiguration->getAliveCellColor());
 	for (int i = 0; i < centralN; i++) {
-		if (centralState[i] == '1') {
-			double projX = colliderConfiguration->getCentralRingRadius() * std::cos(i * colliderConfiguration->getCentralAlphaRad());
-			double projY = colliderConfiguration->getCentralRingRadius() * std::sin(i * colliderConfiguration->getCentralAlphaRad());
-			dc.DrawPoint(centralRingCenter.x + projX, centralRingCenter.y + projY);
+		if (centralFilter[i] == '0' && centralState[i] == '1') {
+			double angle = colliderConfiguration->getCentralAngleForPos(i);
+			double projX = colliderConfiguration->getCentralRingRadius() * std::cos(angle);
+			double projY = colliderConfiguration->getCentralRingRadius() * std::sin(angle);
+			dc.DrawRectangle(centralRingCenter.x + projX, centralRingCenter.y + projY, cellSize, cellSize);
 		}
 	}
-	dc.SetPen(colliderConfiguration->getDeadCellPen());
+	dc.SetPen(colliderConfiguration->getDeadCellColor());
+	dc.SetBrush(colliderConfiguration->getDeadCellColor());
 	for (int i = 0; i < centralN; i++) {
-		if (centralState[i] == '0') {
-			double projX = colliderConfiguration->getCentralRingRadius() * std::cos(i * colliderConfiguration->getCentralAlphaRad());
-			double projY = colliderConfiguration->getCentralRingRadius() * std::sin(i * colliderConfiguration->getCentralAlphaRad());
-			dc.DrawPoint(centralRingCenter.x + projX, centralRingCenter.y + projY);
+		if (centralFilter[i] == '0' && centralState[i] == '0') {
+			double angle = colliderConfiguration->getCentralAngleForPos(i);
+			double projX = colliderConfiguration->getCentralRingRadius() * std::cos(angle);
+			double projY = colliderConfiguration->getCentralRingRadius() * std::sin(angle);
+			dc.DrawRectangle(centralRingCenter.x + projX, centralRingCenter.y + projY, cellSize, cellSize);
 		}
 	}
 }
 
-void ColliderView::paintLeftRing() {
-	wxMemoryDC dc(leftBitmap);
+void ColliderView::paintLeftRing(wxDC& dc) {
+	/*wxMemoryDC dc(leftBitmap);
 	dc.SetBackground(*wxGREEN);
-	dc.Clear();
+	dc.Clear();*/
 
 	int leftN = colliderConfiguration->getCollisionSystem().getLeftN();
 	string leftState = colliderConfiguration->getCollisionSystem().getLeftState();
+	string leftFilter = colliderConfiguration->getCollisionSystem().getLeftFilter();
 	
-	dc.SetPen(colliderConfiguration->getAliveCellPen());
+	dc.SetPen(colliderConfiguration->getAliveCellColor());
+	dc.SetBrush(colliderConfiguration->getAliveCellColor());
 	for (int i = 0; i < leftN; i++) {
-		if (leftState[i] == '1') {
-			double projX = colliderConfiguration->getLeftRingRadius() * std::cos(i * colliderConfiguration->getLeftAlphaRad());
-			double projY = colliderConfiguration->getLeftRingRadius() * std::sin(i * colliderConfiguration->getLeftAlphaRad());
-			dc.DrawPoint(leftRingCenter.x + projX, leftRingCenter.y + projY);
+		if (leftFilter[i] == '0' && leftState[i] == '1') {
+			double angle = colliderConfiguration->getLeftAngleForPos(i);
+			double projX = colliderConfiguration->getLeftRingRadius() * std::cos(angle);
+			double projY = colliderConfiguration->getLeftRingRadius() * std::sin(angle);
+			dc.DrawRectangle(leftRingCenter.x + projX, leftRingCenter.y + projY, cellSize, cellSize);
 		}
 	}
-	dc.SetPen(colliderConfiguration->getDeadCellPen());
+	dc.SetPen(colliderConfiguration->getDeadCellColor());
+	dc.SetBrush(colliderConfiguration->getDeadCellColor());
 	for (int i = 0; i < leftN; i++) {
-		if (leftState[i] == '0') {
-			double projX = colliderConfiguration->getLeftRingRadius() * std::cos(i * colliderConfiguration->getLeftAlphaRad());
-			double projY = colliderConfiguration->getLeftRingRadius() * std::sin(i * colliderConfiguration->getLeftAlphaRad());
-			dc.DrawPoint(leftRingCenter.x + projX, leftRingCenter.y + projY);
+		if (leftFilter[i] == '0' && leftState[i] == '0') {
+			double angle = colliderConfiguration->getLeftAngleForPos(i);
+			double projX = colliderConfiguration->getLeftRingRadius() * std::cos(angle);
+			double projY = colliderConfiguration->getLeftRingRadius() * std::sin(angle);
+			dc.DrawRectangle(leftRingCenter.x + projX, leftRingCenter.y + projY, cellSize, cellSize);
 		}
 	}
 }
 
-void ColliderView::paintRightRing() {
-	wxMemoryDC dc(rightBitmap);
+void ColliderView::paintRightRing(wxDC& dc) {
+	/*wxMemoryDC dc(rightBitmap);
 	dc.SetBackground(*wxGREEN);
-	dc.Clear();
+	dc.Clear();*/
 
 	int rightN = colliderConfiguration->getCollisionSystem().getRightN();
 	string rightState = colliderConfiguration->getCollisionSystem().getRightState();
+	string rightFilter = colliderConfiguration->getCollisionSystem().geRightFilter();
 	
-	dc.SetPen(colliderConfiguration->getAliveCellPen());
+	dc.SetPen(colliderConfiguration->getAliveCellColor());
+	dc.SetBrush(colliderConfiguration->getAliveCellColor());
 	for (int i = 0; i < rightN; i++) {
-		if (rightState[i] == '1') {
-			double projX = colliderConfiguration->getRightRingRadius() * std::cos(i * colliderConfiguration->getRightAlphaRad());
-			double projY = colliderConfiguration->getRightRingRadius() * std::sin(i * colliderConfiguration->getRightAlphaRad());
-			dc.DrawPoint(rightRingCenter.x + projX, rightRingCenter.y + projY);
+		if (rightFilter[i] == '0' && rightState[i] == '1') {
+			double angle = colliderConfiguration->getRightAngleForPos(i);
+			double projX = colliderConfiguration->getRightRingRadius() * std::cos(angle);
+			double projY = colliderConfiguration->getRightRingRadius() * std::sin(angle);
+			dc.DrawRectangle(rightRingCenter.x + projX, rightRingCenter.y + projY, cellSize, cellSize);
 		}
 	}
-	dc.SetPen(colliderConfiguration->getDeadCellPen());
+	dc.SetPen(colliderConfiguration->getDeadCellColor());
+	dc.SetBrush(colliderConfiguration->getDeadCellColor());
 	for (int i = 0; i < rightN; i++) {
-		if (rightState[i] == '0') {
-			double projX = colliderConfiguration->getRightRingRadius() * std::cos(i * colliderConfiguration->getRightAlphaRad());
-			double projY = colliderConfiguration->getRightRingRadius() * std::sin(i * colliderConfiguration->getRightAlphaRad());
-			dc.DrawPoint(rightRingCenter.x + projX, rightRingCenter.y + projY);
+		if (rightFilter[i] == '0' && rightState[i] == '0') {
+			double angle = colliderConfiguration->getRightAngleForPos(i);
+			double projX = colliderConfiguration->getRightRingRadius() * std::cos(angle);
+			double projY = colliderConfiguration->getRightRingRadius() * std::sin(angle);
+			dc.DrawRectangle(rightRingCenter.x + projX, rightRingCenter.y + projY, cellSize, cellSize);
 		}
 	}
+}
+
+void ColliderView::OnKeyDown(wxKeyEvent& evt) {
+	switch ((int)evt.GetKeyCode()) {
+	case 'p':
+	case 'P':
+		playPause();
+		break;
+	/*case 'r':
+	case 'R':
+		restart();
+		break;*/
+	case 's':
+	case 'S':
+		saveToImage();
+		break;
+	}
+	evt.Skip();
+}
+
+void ColliderView::playPause() {
+	toggleAnimation = !toggleAnimation;
+}
+
+void ColliderView::saveToImage() {
+	bool curPaintActive = toggleAnimation;
+	toggleAnimation = false;
+
+	wxFileDialog saveFileDialog(this, _("Save file"), wxGetCwd(), "",
+		"PNG files (*.png)|*.png", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+		return;
+	}
+	mainPanelBitmap.SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
+
+	toggleAnimation = curPaintActive;
 }
