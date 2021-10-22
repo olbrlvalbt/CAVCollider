@@ -35,7 +35,8 @@ ColliderView::ColliderView(wxWindow* parent, ColliderConfiguration* colliderConf
 	Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(ColliderView::OnKeyDown));
 	
 	SetClientSize(panelSize, panelSize);
-	SetScrollbars(1, 1, panelSize, panelSize, 0, 0);
+	SetScrollbars(10, 10, panelSize / 10, panelSize / 10);
+	Scroll(50, 200);
 
 	paintTimer.SetOwner(this);
 	paintTimer.Start(refreshRate);
@@ -64,20 +65,23 @@ void ColliderView::timerEvent(wxTimerEvent& evt) {
 	}
 }
 
-void ColliderView::render(wxDC& dc) {	
+void ColliderView::render(wxDC& dc) {
+	if (zoom != 1) {
+		dc.SetUserScale(2, 2);
+	}
 	dc.DrawBitmap(mainPanelBitmap, 0, 0);
-	if (colliderConfiguration->getCollisionSystem().isLeftEnabled()) {
+	if (colliderConfiguration->getCollisionSystem().isLeftContactEnabled()) {
 		dc.SetBrush(*wxRED_BRUSH);
 	}
 	else {
-		dc.SetBrush(*wxBLUE_BRUSH);
+		dc.SetBrush(wxBrush(wxColour(90, 90, 90)));
 	}
 	dc.DrawCircle(leftContactPos, 5);
-	if (colliderConfiguration->getCollisionSystem().isRightEnabled()) {
+	if (colliderConfiguration->getCollisionSystem().isRightContactEnabled()) {
 		dc.SetBrush(*wxRED_BRUSH);
 	}
 	else {
-		dc.SetBrush(*wxBLUE_BRUSH);
+		dc.SetBrush(wxBrush(wxColour(90, 90, 90)));
 	}
 	dc.DrawCircle(rightContactPos, 5);
 }
@@ -108,11 +112,29 @@ void ColliderView::processCollider() {
 	dc.Clear();
 	
 	dc.SetBrush(*wxTRANSPARENT_BRUSH);
-	dc.SetPen(wxPen(wxColour(30, 115, 60)));
+	
+	if (colliderConfiguration->getCollisionSystem().isLeftRingEnabled()) {
+		dc.SetPen(wxPen(wxColour(80, 165, 110)));
+	}
+	else {
+		dc.SetPen(wxPen(wxColour(90, 90, 90)));
+	}
 	dc.DrawCircle(leftRingCenter, colliderConfiguration->getLeftRingRadius());
-	dc.SetPen(wxPen(wxColour(115, 30, 60)));
+
+	if (colliderConfiguration->getCollisionSystem().isRightRingEnabled()) {
+		dc.SetPen(wxPen(wxColour(165, 80, 110)));
+	}
+	else {
+		dc.SetPen(wxPen(wxColour(90, 90, 90)));
+	}
 	dc.DrawCircle(rightRingCenter, colliderConfiguration->getRightRingRadius());
-	dc.SetPen(wxPen(wxColour(30, 60, 115)));
+
+	if (colliderConfiguration->getCollisionSystem().isCentralRingEnabled()) {
+		dc.SetPen(wxPen(wxColour(80, 110, 165)));
+	}
+	else {
+		dc.SetPen(wxPen(wxColour(90, 90, 90)));
+	}
 	dc.DrawCircle(centralRingCenter, colliderConfiguration->getCentralRingRadius());
 
 	paintCentralRing(dc);
@@ -215,7 +237,7 @@ void ColliderView::paintRightRing(wxDC& dc) {
 
 	int rightN = colliderConfiguration->getCollisionSystem().getRightN();
 	string rightState = colliderConfiguration->getCollisionSystem().getRightState();
-	string rightFilter = colliderConfiguration->getCollisionSystem().geRightFilter();
+	string rightFilter = colliderConfiguration->getCollisionSystem().getRightFilter();
 	
 	dc.SetPen(colliderConfiguration->getAliveCellColor());
 	dc.SetBrush(colliderConfiguration->getAliveCellColor());
@@ -252,6 +274,16 @@ void ColliderView::OnKeyDown(wxKeyEvent& evt) {
 	case 's':
 	case 'S':
 		saveToImage();
+		break;
+	case 'z':
+	case 'Z':
+		zoom = zoom == 1 ? 2 : 1;
+		if (zoom == 2) {
+			SetScrollbars(20, 20, panelSize / 20, panelSize / 20);
+		}
+		else {
+			SetScrollbars(10, 10, panelSize / 10, panelSize / 10);
+		}
 		break;
 	}
 	evt.Skip();

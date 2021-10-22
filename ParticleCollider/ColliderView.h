@@ -27,6 +27,8 @@ private:
 
 	int cellSize;
 
+	int zoom = 1;
+
 public:
 	ColliderView(wxWindow* parent, ColliderConfiguration* colliderConfiguration, int refreshRate);
 	~ColliderView();

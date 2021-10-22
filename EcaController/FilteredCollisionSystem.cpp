@@ -8,11 +8,18 @@ FilteredCollisionSystem::FilteredCollisionSystem(int leftN, string leftIC, int r
                                                  int leftToCentralIP, int centralToLeftIP, int rightToCentralIP, int centralToRightIP)
 		: CollisionSystem(leftN, leftIC, rightN, rightIC, centralN, centralIC,
 			leftToCentralIP, centralToLeftIP, rightToCentralIP, centralToRightIP) {
-	resetAllBuffers();
+	resetAllBuffers(true);
 }
 
-bool FilteredCollisionSystem::setLeftEnabled(bool enabled) {
-	bool previous = CollisionSystem::setLeftEnabled(enabled);
+FilteredCollisionSystem::FilteredCollisionSystem(string leftIC, string rightIC, string centralIC, int leftToCentralIP,
+	int centralToLeftIP, int rightToCentralIP, int centralToRightIP, string actionList)
+	: CollisionSystem(leftIC, rightIC, centralIC, leftToCentralIP,
+		centralToLeftIP, rightToCentralIP, centralToRightIP, actionList) {
+	resetAllBuffers(true);
+}
+
+bool FilteredCollisionSystem::setLeftContactEnabled(bool enabled) {
+	bool previous = CollisionSystem::setLeftContactEnabled(enabled);
 	
 	if (previous != enabled) {
 		resetLeftBuffers();
@@ -21,8 +28,8 @@ bool FilteredCollisionSystem::setLeftEnabled(bool enabled) {
 	return previous;
 }
 
-bool FilteredCollisionSystem::setRightEnabled(bool enabled) {
-	bool previous = CollisionSystem::setRightEnabled(enabled);
+bool FilteredCollisionSystem::setRightContactEnabled(bool enabled) {
+	bool previous = CollisionSystem::setRightContactEnabled(enabled);
 
 	if (previous != enabled) {
 		resetRightBuffers();
@@ -31,8 +38,8 @@ bool FilteredCollisionSystem::setRightEnabled(bool enabled) {
 	return previous;
 }
 
-void FilteredCollisionSystem::setAllEnabled(bool enabled) {
-	CollisionSystem::setAllEnabled(enabled);
+void FilteredCollisionSystem::setAllContactsEnabled(bool enabled) {
+	CollisionSystem::setAllContactsEnabled(enabled);
 	
 	resetAllBuffers();
 }
@@ -53,7 +60,7 @@ const string& FilteredCollisionSystem::getLeftFilter() {
 	return leftBuffer.filter[0];
 }
 
-const string& FilteredCollisionSystem::geRightFilter() {
+const string& FilteredCollisionSystem::getRightFilter() {
 	return rightBuffer.filter[0];
 }
 
@@ -65,22 +72,36 @@ void FilteredCollisionSystem::execute() {
 	CollisionSystem::execute();
 
 	for (int i = 0; i < 3; i++) {
-		leftBuffer.state[i] = leftBuffer.state[i + 1];
-		rightBuffer.state[i] = rightBuffer.state[i + 1];
-		centralBuffer.state[i] = centralBuffer.state[i + 1];
+		if (leftRingEnabled) {
+			leftBuffer.state[i] = leftBuffer.state[i + 1];
+			leftBuffer.filter[i] = leftBuffer.filter[i + 1];
+		}
 
-		leftBuffer.filter[i] = leftBuffer.filter[i + 1];
-		rightBuffer.filter[i] = rightBuffer.filter[i + 1];
-		centralBuffer.filter[i] = centralBuffer.filter[i + 1];
+		if (rightRingEnabled) {
+			rightBuffer.state[i] = rightBuffer.state[i + 1];
+			rightBuffer.filter[i] = rightBuffer.filter[i + 1];
+		}
+
+		if (centralRingEnabled) {
+			centralBuffer.state[i] = centralBuffer.state[i + 1];
+			centralBuffer.filter[i] = centralBuffer.filter[i + 1];
+		}
 	}
 
-	leftBuffer.state[3] = leftRing.getCurrentState()[0];
-	rightBuffer.state[3] = rightRing.getCurrentState()[0];
-	centralBuffer.state[3] = centralRing.getCurrentState()[0];
+	if (leftRingEnabled) {
+		leftBuffer.state[3] = leftRing.getCurrentState()[0];
+		leftBuffer.filter[3] = string(leftRing.getN(), '0');
+	}
 
-	leftBuffer.filter[3] = string(leftRing.getN(), '0');
-	rightBuffer.filter[3] = string(rightRing.getN(), '0');
-	centralBuffer.filter[3] = string(centralRing.getN(), '0');
+	if (rightRingEnabled) {
+		rightBuffer.state[3] = rightRing.getCurrentState()[0];
+		rightBuffer.filter[3] = string(rightRing.getN(), '0');
+	}
+
+	if (centralRingEnabled) {
+		centralBuffer.state[3] = centralRing.getCurrentState()[0];
+		centralBuffer.filter[3] = string(centralRing.getN(), '0');
+	}
 
 	filterAll();
 }
@@ -138,11 +159,17 @@ void FilteredCollisionSystem::resetRightBuffers() {
 }
 
 
-void FilteredCollisionSystem::resetAllBuffers() {
+void FilteredCollisionSystem::resetAllBuffers(bool firstRun) {
+	if (!firstRun) {
+		leftRing.hardReset(leftBuffer.state[0]);
+		rightRing.hardReset(rightBuffer.state[0]);
+		centralRing.hardReset(centralBuffer.state[0]);
+	}
+	
 	for (int i = 0; i < 4; i++) {
 		if (i != 0) {
 			executeAllInteractions();
-			applyAll();
+			applyAll(true);
 		}
 		
 		leftBuffer.state[i] = leftRing.getCurrentState()[0];

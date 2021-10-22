@@ -9,33 +9,83 @@ CollisionSystem::CollisionSystem(int leftN, string leftIC, int rightN, string ri
 		leftRing(leftN, rule, leftIC),
 		rightRing(rightN, rule, rightIC),
 		centralRing(centralN, rule, centralIC),
+		leftRingEnabled(true),
+		rightRingEnabled(true),
+		centralRingEnabled(true),
 		leftInteractionAgent(leftRing, leftToCentralIP, centralRing, centralToLeftIP),
-		rightInteractionAgent(rightRing, rightToCentralIP, centralRing, centralToRightIP) {
+		rightInteractionAgent(rightRing, rightToCentralIP, centralRing, centralToRightIP),
+		actionList(new ColliderActionList("")) {
+	
+}
+
+CollisionSystem::CollisionSystem(string leftIC, string rightIC, string centralIC, int leftToCentralIP,
+								 int centralToLeftIP, int rightToCentralIP, int centralToRightIP, string _actionList)
+		: currentIteration(0),
+		leftRing(leftIC.length(), rule, leftIC),
+		rightRing(rightIC.length(), rule, rightIC),
+		centralRing(centralIC.length(), rule, centralIC),
+		leftRingEnabled(true),
+		rightRingEnabled(true),
+		centralRingEnabled(true),
+		leftInteractionAgent(leftRing, leftToCentralIP, centralRing, centralToLeftIP),
+		rightInteractionAgent(rightRing, rightToCentralIP, centralRing, centralToRightIP),
+		actionList(new ColliderActionList(_actionList)) {
 
 }
 
-bool CollisionSystem::setLeftEnabled(bool enabled) {
+bool CollisionSystem::setLeftContactEnabled(bool enabled) {
 	return leftInteractionAgent.setEnabled(enabled);
 }
 
-bool CollisionSystem::setRightEnabled(bool enabled) {
+bool CollisionSystem::setRightContactEnabled(bool enabled) {
 	return rightInteractionAgent.setEnabled(enabled);
 }
 
-void CollisionSystem::setAllEnabled(bool enabled) {
+void CollisionSystem::setAllContactsEnabled(bool enabled) {
 	leftInteractionAgent.setEnabled(enabled);
 	rightInteractionAgent.setEnabled(enabled);
 }
 
-bool CollisionSystem::isLeftEnabled() const {
+bool CollisionSystem::isLeftContactEnabled() const {
 	return leftInteractionAgent.isEnabled();
 }
 
-bool CollisionSystem::isRightEnabled() const {
+bool CollisionSystem::isRightContactEnabled() const {
 	return rightInteractionAgent.isEnabled();
 }
 
+bool CollisionSystem::setLeftRingEnabled(bool enabled) {
+	bool prev = leftRingEnabled;
+	leftRingEnabled = enabled;
+	return prev;
+}
+
+bool CollisionSystem::setRightRingEnabled(bool enabled) {
+	bool prev = rightRingEnabled;
+	rightRingEnabled = enabled;
+	return prev;
+}
+
+bool CollisionSystem::setCentralRingEnabled(bool enabled) {
+	bool prev = centralRingEnabled;
+	centralRingEnabled = enabled;
+	return prev;
+}
+
+bool CollisionSystem::isLeftRingEnabled() const {
+	return leftRingEnabled;
+}
+
+bool CollisionSystem::isRightRingEnabled() const {
+	return rightRingEnabled;
+}
+
+bool CollisionSystem::isCentralRingEnabled() const {
+	return centralRingEnabled;
+}
+
 void CollisionSystem::execute() {
+	executeActions();
 	executeAllInteractions();
 	applyAll();
 }
@@ -44,6 +94,10 @@ void CollisionSystem::restart() {
 	leftRing.restart();
 	rightRing.restart();
 	centralRing.restart();
+
+	leftRingEnabled = true;
+	rightRingEnabled = true;
+	centralRingEnabled = true;
 	
 	currentIteration = 0;
 }
@@ -93,23 +147,26 @@ int CollisionSystem::getCentralToRightInteractionPos() const {
 }
 
 void CollisionSystem::executeAllInteractions() {
-	if (leftInteractionAgent.isEnabled()) {
+	if (leftRingEnabled && centralRingEnabled && leftInteractionAgent.isEnabled()) {
 		leftInteractionAgent.executePoint();
 	}
-	if (rightInteractionAgent.isEnabled()) {
+	if (rightRingEnabled && centralRingEnabled && rightInteractionAgent.isEnabled()) {
 		rightInteractionAgent.executePoint();
 	}
 }
 
-void CollisionSystem::applyAll() {
+void CollisionSystem::applyAll(bool cancelIterationIncrement) {
 	auto leftLambda = [&]() {
-		leftRing.applyRule();
+		if (leftRingEnabled)
+			leftRing.applyRule();
 	};
 	auto rightLambda = [&]() {
-		rightRing.applyRule();
+		if (rightRingEnabled)
+			rightRing.applyRule();
 	};
 	auto centralLambda = [&]() {
-		centralRing.applyRule();
+		if (centralRingEnabled)
+			centralRing.applyRule();
 	};
 
 	std::thread leftThread(leftLambda);
@@ -119,10 +176,48 @@ void CollisionSystem::applyAll() {
 	leftThread.join();
 	rightThread.join();
 	centralThread.join();
-	
-	/*leftRing.applyRule();
-	rightRing.applyRule();
-	centralRing.applyRule();*/
 
-	currentIteration++;
+	if(!cancelIterationIncrement) {
+		currentIteration++;
+	}
+}
+
+
+void CollisionSystem::executeActions() {
+	auto it = actionList->getActions().equal_range(currentIteration);
+
+	for (auto itr = it.first; itr != it.second; ++itr) {
+		switch (itr->second) {
+		case ColliderAction::CONTACT_DISABLE_LEFT:
+			setLeftContactEnabled(false);
+			break;
+		case ColliderAction::CONTACT_DISABLE_RIGHT:
+			setRightContactEnabled(false);
+			break;
+		case ColliderAction::CONTACT_ENABLE_LEFT:
+			setLeftContactEnabled(true);
+			break;
+		case ColliderAction::CONTACT_ENABLE_RIGHT:
+			setRightContactEnabled(true);
+			break;
+		case ColliderAction::RING_DISABLE_LEFT:
+			setLeftRingEnabled(false);
+			break;
+		case ColliderAction::RING_DISABLE_RIGHT:
+			setRightRingEnabled(false);
+			break;
+		case ColliderAction::RING_DISABLE_CENTRAL:
+			setCentralRingEnabled(false);
+			break;
+		case ColliderAction::RING_ENABLE_LEFT:
+			setLeftRingEnabled(true);
+			break;
+		case ColliderAction::RING_ENABLE_RIGHT:
+			setRightRingEnabled(true);
+			break;
+		case ColliderAction::RING_ENABLE_CENTRAL:
+			setCentralRingEnabled(true);
+			break;
+		}
+	}
 }

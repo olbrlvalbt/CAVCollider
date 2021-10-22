@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChunkTranslator.h" />
+    <ClInclude Include="ColliderActionList.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="CompressedController.h" />
     <ClInclude Include="FilteredCollisionSystem.h" />
@@ -171,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChunkTranslator.cpp" />
+    <ClCompile Include="ColliderActionList.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="CompressedController.cpp" />
     <ClCompile Include="FilteredCollisionSystem.cpp" />

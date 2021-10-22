@@ -9,16 +9,20 @@ public:
 	FilteredCollisionSystem(int leftN, string leftIC, int rightN, string rightIC, int centralN, string centralIC,
 		int leftToCentralIP, int centralToLeftIP, int rightToCentralIP, int centralToRightIP);
 	
-	bool setLeftEnabled(bool enabled);
-	bool setRightEnabled(bool enabled);
-	void setAllEnabled(bool enabled);
+	FilteredCollisionSystem(string leftIC, string rightIC, string centralIC,
+		int leftToCentralIP, int centralToLeftIP, int rightToCentralIP, int centralToRightIP,
+		string actionList);
+	
+	bool setLeftContactEnabled(bool enabled) override;
+	bool setRightContactEnabled(bool enabled) override;
+	void setAllContactsEnabled(bool enabled) override;
 
 	const string& getLeftState() override;
 	const string& getRightState() override;
 	const string& getCentralState() override;
 
 	const string& getLeftFilter();
-	const string& geRightFilter();
+	const string& getRightFilter();
 	const string& getCentralFilter();
 	
 	void execute() override;
@@ -31,7 +35,7 @@ private:
 
 	void resetLeftBuffers();
 	void resetRightBuffers();
-	void resetAllBuffers();
+	void resetAllBuffers(bool firstRun = false);
 
 	void filter(IterationBuffer& buffer);
 	void filterAll();

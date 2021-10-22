@@ -86,6 +86,9 @@
     <ClInclude Include="FilteredCollisionSystem.h">
       <Filter>EcaController\Base\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ColliderActionList.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -134,6 +137,9 @@
       <Filter>EcaController\Base\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FilteredCollisionSystem.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderActionList.cpp">
       <Filter>EcaController\Base\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
