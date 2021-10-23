@@ -70,14 +70,18 @@ void ColliderView::render(wxDC& dc) {
 		dc.SetUserScale(2, 2);
 	}
 	dc.DrawBitmap(mainPanelBitmap, 0, 0);
-	if (colliderConfiguration->getCollisionSystem().isLeftContactEnabled()) {
+	if (colliderConfiguration->getCollisionSystem().isLeftRingEnabled()
+		&& colliderConfiguration->getCollisionSystem().isCentralRingEnabled()
+		&& colliderConfiguration->getCollisionSystem().isLeftContactEnabled()) {
 		dc.SetBrush(*wxRED_BRUSH);
 	}
 	else {
 		dc.SetBrush(wxBrush(wxColour(90, 90, 90)));
 	}
 	dc.DrawCircle(leftContactPos, 5);
-	if (colliderConfiguration->getCollisionSystem().isRightContactEnabled()) {
+	if (colliderConfiguration->getCollisionSystem().isRightRingEnabled()
+		&& colliderConfiguration->getCollisionSystem().isCentralRingEnabled()
+		&& colliderConfiguration->getCollisionSystem().isRightContactEnabled()) {
 		dc.SetBrush(*wxRED_BRUSH);
 	}
 	else {
