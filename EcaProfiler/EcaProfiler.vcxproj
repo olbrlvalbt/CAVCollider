@@ -39,6 +39,7 @@
     <ClCompile Include="ColliderTester.cpp" />
     <ClCompile Include="ContactPointInteractions.cpp" />
     <ClCompile Include="EcaProfiler.cpp" />
+    <ClCompile Include="FilteredCollisions.cpp" />
     <ClCompile Include="GliderDescriptor.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -18,6 +18,13 @@ FilteredCollisionSystem::FilteredCollisionSystem(string leftIC, string rightIC, 
 	resetAllBuffers(true);
 }
 
+FilteredCollisionSystem::FilteredCollisionSystem(string leftIC, string rightIC, string centralIC, int leftToCentralIP,
+	int centralToLeftIP, int rightToCentralIP, int centralToRightIP, vector<string> actionList)
+	: CollisionSystem(leftIC, rightIC, centralIC, leftToCentralIP,
+		centralToLeftIP, rightToCentralIP, centralToRightIP, actionList) {
+	resetAllBuffers(true);
+}
+
 bool FilteredCollisionSystem::setLeftContactEnabled(bool enabled) {
 	bool previous = CollisionSystem::setLeftContactEnabled(enabled);
 	

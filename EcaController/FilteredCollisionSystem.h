@@ -8,10 +8,14 @@ class ECACONTROLLER_DLL FilteredCollisionSystem : public CollisionSystem {
 public:
 	FilteredCollisionSystem(int leftN, string leftIC, int rightN, string rightIC, int centralN, string centralIC,
 		int leftToCentralIP, int centralToLeftIP, int rightToCentralIP, int centralToRightIP);
-	
+
 	FilteredCollisionSystem(string leftIC, string rightIC, string centralIC,
 		int leftToCentralIP, int centralToLeftIP, int rightToCentralIP, int centralToRightIP,
 		string actionList);
+	
+	FilteredCollisionSystem(string leftIC, string rightIC, string centralIC,
+		int leftToCentralIP, int centralToLeftIP, int rightToCentralIP, int centralToRightIP,
+		vector<string> actionList);
 	
 	bool setLeftContactEnabled(bool enabled) override;
 	bool setRightContactEnabled(bool enabled) override;

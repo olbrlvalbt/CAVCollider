@@ -31,6 +31,10 @@ public:
 	CollisionSystem(string leftIC, string rightIC, string centralIC,
 		int leftToCentralIP, int centralToLeftIP, int rightToCentralIP, int centralToRightIP,
 		string actionList);
+	
+	CollisionSystem(string leftIC, string rightIC, string centralIC,
+		int leftToCentralIP, int centralToLeftIP, int rightToCentralIP, int centralToRightIP,
+		vector<string> actionList);
 
 	virtual bool setLeftContactEnabled(bool enabled);
 	virtual bool setRightContactEnabled(bool enabled);

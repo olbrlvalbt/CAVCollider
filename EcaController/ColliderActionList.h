@@ -26,5 +26,7 @@ private:
 	
 public:
 	ColliderActionList(std::string _actions);
+	ColliderActionList(std::vector<std::string> _actions);
 	const std::multimap<long, ColliderAction>& getActions();
+	static int validate(std::vector<std::string> _actions);
 };

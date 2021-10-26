@@ -44,20 +44,22 @@ ColliderApp::ColliderApp() {
 	string centralIc = "1111100010011011111000100110111110001001101111100010011011111000100110111110001001101111100010011011111000010001111101011111000100110";
 	string rightIc = "11111000100110111110001001101111100010011011111000100110";
 
-	string actions = "14-CONTACT_DISABLE_LEFT\n70-CONTACT_disable_right\n490-CONTACT_ENABLE_LEFT";
-
-	system = new FilteredCollisionSystem(leftIc, rightIc, centralIc,
+	string actions = "14-CONTACT_DISABLE_LEFT\n70-ring_disable_right\n2240-CONTACT_ENABLE_LEFT";
+	/*system = new FilteredCollisionSystem(leftIc, rightIc, centralIc,
 		13, centralIc.length() -1, 13, 4*14-1, actions);
 	system->setAllContactsEnabled(true);
 	config = new ColliderConfiguration(system, 100,
 		wxColour(245, 245, 245), wxColour(255, 255, 255));
 
-	mainFrame = new ColliderFrame(config, 20);
+	mainFrame = new ColliderFrame(config, 20);*/
 }
 
 bool ColliderApp::OnInit() {
-	mainFrame->SetAutoLayout(true);
-	mainFrame->Show();
+	/*mainFrame->SetAutoLayout(true);
+	mainFrame->Show();*/
+	ColliderMenu* m = new ColliderMenu();
+	//m->SetAutoLayout(true);
+	m->Show();
 
 	return true;
 }

@@ -33,6 +33,21 @@ CollisionSystem::CollisionSystem(string leftIC, string rightIC, string centralIC
 
 }
 
+CollisionSystem::CollisionSystem(string leftIC, string rightIC, string centralIC, int leftToCentralIP,
+	int centralToLeftIP, int rightToCentralIP, int centralToRightIP, vector<string> _actionList)
+	: currentIteration(0),
+	leftRing(leftIC.length(), rule, leftIC),
+	rightRing(rightIC.length(), rule, rightIC),
+	centralRing(centralIC.length(), rule, centralIC),
+	leftRingEnabled(true),
+	rightRingEnabled(true),
+	centralRingEnabled(true),
+	leftInteractionAgent(leftRing, leftToCentralIP, centralRing, centralToLeftIP),
+	rightInteractionAgent(rightRing, rightToCentralIP, centralRing, centralToRightIP),
+	actionList(new ColliderActionList(_actionList)) {
+
+}
+
 bool CollisionSystem::setLeftContactEnabled(bool enabled) {
 	return leftInteractionAgent.setEnabled(enabled);
 }

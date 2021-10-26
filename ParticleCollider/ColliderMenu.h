@@ -1,39 +1,35 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/clrpicker.h>
 #include <wx/spinctrl.h>
+#include <wx/propgrid/propgrid.h>
+
 
 #include "Rule110.h"
 
-/*class ColliderMenu : public wxFrame {
+class ColliderMenu : public wxFrame {
 public:
-	/*Rule110 rule110;
+	enum class SIDE{LEFT, RIGHT, CENTRAL};
+	
+	Rule110 rule110;
 
 	wxPanel* menuPanel;
 
-	wxFlexGridSizer* fgs;
-
-	wxTextCtrl* leftRingIC;
-	wxTextCtrl* rightRingIC;
-	wxTextCtrl* centralRingIC;
-
-	wxSpinCtrl* centralRingRadius;
-
-	wxSpinCtrl* refreshRate;
-
-	wxColourPickerCtrl* deadCellColor;
-	wxColourPickerCtrl* aliveCellColor;
+	wxPropertyGrid* pg;
 
 	wxButton* createButton;
+
+	string leftIc;
+	string rightIc;
+	string centralIc;
 
 
 	ColliderMenu();
 
-	void SetRandomInitialConditionBoxEvent(wxCommandEvent& event);
-	void AdjustNumCellsToInitialConditionBoxEvent(wxCommandEvent& event);
+	void OnChangedProperty(wxPropertyGridEvent& event);
+	void updateN(SIDE side);
+	void checkCP(wxUIntProperty& p, SIDE side);
+	void checkActions(const wxArrayStringProperty& p);
 
-	void CreateEcaEvent(wxCommandEvent& event);
-	void ToggleFilterColorsEvent(wxCommandEvent& event);
-	void ToggleRingModeOptions(wxCommandEvent& event);
-};*/
+	void OnCreate(wxCommandEvent& event);
+};
