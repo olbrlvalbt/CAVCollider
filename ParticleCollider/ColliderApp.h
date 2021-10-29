@@ -7,7 +7,8 @@
 
 class ColliderApp : public wxApp {
 public:
-	//ColliderMenu* mainFrame = nullptr;
+	ColliderMenu* m;
+	
 	ColliderFrame* mainFrame;
 	FilteredCollisionSystem* system;
 	ColliderConfiguration* config;

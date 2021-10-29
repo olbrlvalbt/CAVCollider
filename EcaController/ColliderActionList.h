@@ -23,10 +23,13 @@ private:
 	std::multimap<long, ColliderAction> actions;
 	
 	ColliderAction parseAction(std::string s);
+	std::map<std::string, ColliderAction> table;
 	
 public:
 	ColliderActionList(std::string _actions);
 	ColliderActionList(std::vector<std::string> _actions);
 	const std::multimap<long, ColliderAction>& getActions();
 	static int validate(std::vector<std::string> _actions);
+	static std::string getActionsRegexStr();
+	static std::map<std::string, ColliderAction> getActionTable();
 };

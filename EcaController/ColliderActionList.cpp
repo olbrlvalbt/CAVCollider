@@ -17,9 +17,7 @@ ColliderActionList::ColliderActionList(std::string _actions) {
 		elems.push_back(item);
 	}
 	std::string sNumRegex = "[0-9]+";
-	std::string sActionRegex = "(RING_DISABLE_LEFT|RING_DISABLE_RIGHT|RING_DISABLE_CENTRAL|";
-	sActionRegex += "RING_ENABLE_LEFT|RING_ENABLE_RIGHT|RING_ENABLE_CENTRAL|";
-	sActionRegex += "CONTACT_DISABLE_LEFT|CONTACT_DISABLE_RIGHT|CONTACT_ENABLE_LEFT|CONTACT_ENABLE_RIGHT)";
+	std::string sActionRegex = getActionsRegexStr();
 	std::string sFullRegex = sNumRegex + "-" + sActionRegex;
 
 	std::regex numRegex(sNumRegex);
@@ -53,9 +51,7 @@ ColliderActionList::ColliderActionList(std::string _actions) {
 
 ColliderActionList::ColliderActionList(std::vector<std::string> _actions) {
 	std::string sNumRegex = "[0-9]+";
-	std::string sActionRegex = "(RING_DISABLE_LEFT|RING_DISABLE_RIGHT|RING_DISABLE_CENTRAL|";
-	sActionRegex += "RING_ENABLE_LEFT|RING_ENABLE_RIGHT|RING_ENABLE_CENTRAL|";
-	sActionRegex += "CONTACT_DISABLE_LEFT|CONTACT_DISABLE_RIGHT|CONTACT_ENABLE_LEFT|CONTACT_ENABLE_RIGHT)";
+	std::string sActionRegex = getActionsRegexStr();
 	std::string sFullRegex = sNumRegex + "-" + sActionRegex;
 
 	std::regex numRegex(sNumRegex);
@@ -92,9 +88,7 @@ ColliderActionList::ColliderActionList(std::vector<std::string> _actions) {
 
 int ColliderActionList::validate(std::vector<std::string> _actions) {	
 	std::string sNumRegex = "[0-9]+";
-	std::string sActionRegex = "(RING_DISABLE_LEFT|RING_DISABLE_RIGHT|RING_DISABLE_CENTRAL|";
-	sActionRegex += "RING_ENABLE_LEFT|RING_ENABLE_RIGHT|RING_ENABLE_CENTRAL|";
-	sActionRegex += "CONTACT_DISABLE_LEFT|CONTACT_DISABLE_RIGHT|CONTACT_ENABLE_LEFT|CONTACT_ENABLE_RIGHT)";
+	std::string sActionRegex = getActionsRegexStr();
 	std::string sFullRegex = sNumRegex + "-" + sActionRegex;
 	
 	std::regex fullRegex(sFullRegex);
@@ -122,7 +116,12 @@ int ColliderActionList::validate(std::vector<std::string> _actions) {
 }
 
 ColliderAction ColliderActionList::parseAction(std::string s) {
-	static std::map<std::string, ColliderAction> const table = {
+	auto table = getActionTable();
+	return table.at(s);
+}
+
+std::map<std::string, ColliderAction> ColliderActionList::getActionTable() {
+	return {
 		{"RING_DISABLE_LEFT",ColliderAction::RING_DISABLE_LEFT},
 		{"RING_DISABLE_RIGHT",ColliderAction::RING_DISABLE_RIGHT},
 		{"RING_DISABLE_CENTRAL",ColliderAction::RING_DISABLE_CENTRAL},
@@ -132,10 +131,40 @@ ColliderAction ColliderActionList::parseAction(std::string s) {
 		{"CONTACT_DISABLE_LEFT",ColliderAction::CONTACT_DISABLE_LEFT},
 		{"CONTACT_DISABLE_RIGHT",ColliderAction::CONTACT_DISABLE_RIGHT},
 		{"CONTACT_ENABLE_LEFT",ColliderAction::CONTACT_ENABLE_LEFT},
-		{"CONTACT_ENABLE_RIGHT",ColliderAction::CONTACT_ENABLE_RIGHT}
-	};
+		{"CONTACT_ENABLE_RIGHT",ColliderAction::CONTACT_ENABLE_RIGHT},
 
-	return table.at(s);
+		{"DISABLE_LEFT_RING",ColliderAction::RING_DISABLE_LEFT},
+		{"DISABLE_RIGHT_RING",ColliderAction::RING_DISABLE_RIGHT},
+		{"DISABLE_CENTRAL_RING",ColliderAction::RING_DISABLE_CENTRAL},
+		{"ENABLE_LEFT_RING",ColliderAction::RING_ENABLE_LEFT},
+		{"ENABLE_RIGHT_RING",ColliderAction::RING_ENABLE_RIGHT},
+		{"ENABLE_CENTRAL_RING",ColliderAction::RING_ENABLE_CENTRAL},
+		{"DISABLE_LEFT_CONTACT",ColliderAction::CONTACT_DISABLE_LEFT},
+		{"DISABLE_RIGHT_CONTACT",ColliderAction::CONTACT_DISABLE_LEFT},
+		{"ENABLE_LEFT_CONTACT",ColliderAction::CONTACT_ENABLE_LEFT},
+		{"ENABLE_RIGHT_CONTACT",ColliderAction::CONTACT_ENABLE_LEFT},
+	};
+}
+
+std::string ColliderActionList::getActionsRegexStr() {
+	auto table = getActionTable();
+
+	std::string s = "";
+
+	for (std::map<std::string, ColliderAction>::iterator it = table.begin(); it != table.end(); ++it) {
+		if (it == table.begin()) {
+			s += "(";
+		}
+		else {
+			s += "|";
+		}
+		
+		s += it->first;
+	}
+
+	s += ")";
+
+	return s;
 }
 
 const std::multimap<long, ColliderAction>& ColliderActionList::getActions() {

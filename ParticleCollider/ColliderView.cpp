@@ -69,7 +69,9 @@ void ColliderView::render(wxDC& dc) {
 	if (zoom != 1) {
 		dc.SetUserScale(2, 2);
 	}
+	
 	dc.DrawBitmap(mainPanelBitmap, 0, 0);
+	
 	if (colliderConfiguration->getCollisionSystem().isLeftRingEnabled()
 		&& colliderConfiguration->getCollisionSystem().isCentralRingEnabled()
 		&& colliderConfiguration->getCollisionSystem().isLeftContactEnabled()) {
@@ -78,7 +80,7 @@ void ColliderView::render(wxDC& dc) {
 	else {
 		dc.SetBrush(wxBrush(wxColour(90, 90, 90)));
 	}
-	dc.DrawCircle(leftContactPos, 5);
+	dc.DrawCircle(leftContactPos.x, panelSize - leftContactPos.y, 5);
 	if (colliderConfiguration->getCollisionSystem().isRightRingEnabled()
 		&& colliderConfiguration->getCollisionSystem().isCentralRingEnabled()
 		&& colliderConfiguration->getCollisionSystem().isRightContactEnabled()) {
@@ -87,7 +89,7 @@ void ColliderView::render(wxDC& dc) {
 	else {
 		dc.SetBrush(wxBrush(wxColour(90, 90, 90)));
 	}
-	dc.DrawCircle(rightContactPos, 5);
+	dc.DrawCircle(rightContactPos.x, panelSize - rightContactPos.y, 5);
 }
 
 void ColliderView::processCollider() {
@@ -123,7 +125,7 @@ void ColliderView::processCollider() {
 	else {
 		dc.SetPen(wxPen(wxColour(90, 90, 90)));
 	}
-	dc.DrawCircle(leftRingCenter, colliderConfiguration->getLeftRingRadius());
+	dc.DrawCircle(leftRingCenter.x, panelSize - leftRingCenter.y, colliderConfiguration->getLeftRingRadius());
 
 	if (colliderConfiguration->getCollisionSystem().isRightRingEnabled()) {
 		dc.SetPen(wxPen(wxColour(165, 80, 110)));
@@ -131,7 +133,7 @@ void ColliderView::processCollider() {
 	else {
 		dc.SetPen(wxPen(wxColour(90, 90, 90)));
 	}
-	dc.DrawCircle(rightRingCenter, colliderConfiguration->getRightRingRadius());
+	dc.DrawCircle(rightRingCenter.x, panelSize - rightRingCenter.y, colliderConfiguration->getRightRingRadius());
 
 	if (colliderConfiguration->getCollisionSystem().isCentralRingEnabled()) {
 		dc.SetPen(wxPen(wxColour(80, 110, 165)));
@@ -139,7 +141,7 @@ void ColliderView::processCollider() {
 	else {
 		dc.SetPen(wxPen(wxColour(90, 90, 90)));
 	}
-	dc.DrawCircle(centralRingCenter, colliderConfiguration->getCentralRingRadius());
+	dc.DrawCircle(centralRingCenter.x, panelSize - centralRingCenter.y, colliderConfiguration->getCentralRingRadius());
 
 	paintCentralRing(dc);
 	paintLeftRing(dc);
@@ -188,7 +190,7 @@ void ColliderView::paintCentralRing(wxDC& dc) {
 			double angle = colliderConfiguration->getCentralAngleForPos(i);
 			double projX = colliderConfiguration->getCentralRingRadius() * std::cos(angle);
 			double projY = colliderConfiguration->getCentralRingRadius() * std::sin(angle);
-			dc.DrawRectangle(centralRingCenter.x + projX, centralRingCenter.y + projY, cellSize, cellSize);
+			dc.DrawRectangle(centralRingCenter.x + projX, panelSize - (centralRingCenter.y + projY), cellSize, cellSize);
 		}
 	}
 	dc.SetPen(colliderConfiguration->getDeadCellColor());
@@ -198,7 +200,7 @@ void ColliderView::paintCentralRing(wxDC& dc) {
 			double angle = colliderConfiguration->getCentralAngleForPos(i);
 			double projX = colliderConfiguration->getCentralRingRadius() * std::cos(angle);
 			double projY = colliderConfiguration->getCentralRingRadius() * std::sin(angle);
-			dc.DrawRectangle(centralRingCenter.x + projX, centralRingCenter.y + projY, cellSize, cellSize);
+			dc.DrawRectangle(centralRingCenter.x + projX, panelSize - (centralRingCenter.y + projY), cellSize, cellSize);
 		}
 	}
 }
@@ -219,7 +221,7 @@ void ColliderView::paintLeftRing(wxDC& dc) {
 			double angle = colliderConfiguration->getLeftAngleForPos(i);
 			double projX = colliderConfiguration->getLeftRingRadius() * std::cos(angle);
 			double projY = colliderConfiguration->getLeftRingRadius() * std::sin(angle);
-			dc.DrawRectangle(leftRingCenter.x + projX, leftRingCenter.y + projY, cellSize, cellSize);
+			dc.DrawRectangle(leftRingCenter.x + projX, panelSize - (leftRingCenter.y + projY), cellSize, cellSize);
 		}
 	}
 	dc.SetPen(colliderConfiguration->getDeadCellColor());
@@ -229,7 +231,7 @@ void ColliderView::paintLeftRing(wxDC& dc) {
 			double angle = colliderConfiguration->getLeftAngleForPos(i);
 			double projX = colliderConfiguration->getLeftRingRadius() * std::cos(angle);
 			double projY = colliderConfiguration->getLeftRingRadius() * std::sin(angle);
-			dc.DrawRectangle(leftRingCenter.x + projX, leftRingCenter.y + projY, cellSize, cellSize);
+			dc.DrawRectangle(leftRingCenter.x + projX, panelSize - (leftRingCenter.y + projY), cellSize, cellSize);
 		}
 	}
 }
@@ -250,7 +252,7 @@ void ColliderView::paintRightRing(wxDC& dc) {
 			double angle = colliderConfiguration->getRightAngleForPos(i);
 			double projX = colliderConfiguration->getRightRingRadius() * std::cos(angle);
 			double projY = colliderConfiguration->getRightRingRadius() * std::sin(angle);
-			dc.DrawRectangle(rightRingCenter.x + projX, rightRingCenter.y + projY, cellSize, cellSize);
+			dc.DrawRectangle(rightRingCenter.x + projX, panelSize - (rightRingCenter.y + projY), cellSize, cellSize);
 		}
 	}
 	dc.SetPen(colliderConfiguration->getDeadCellColor());
@@ -260,7 +262,7 @@ void ColliderView::paintRightRing(wxDC& dc) {
 			double angle = colliderConfiguration->getRightAngleForPos(i);
 			double projX = colliderConfiguration->getRightRingRadius() * std::cos(angle);
 			double projY = colliderConfiguration->getRightRingRadius() * std::sin(angle);
-			dc.DrawRectangle(rightRingCenter.x + projX, rightRingCenter.y + projY, cellSize, cellSize);
+			dc.DrawRectangle(rightRingCenter.x + projX, panelSize - (rightRingCenter.y + projY), cellSize, cellSize);
 		}
 	}
 }
