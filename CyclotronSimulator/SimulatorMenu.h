@@ -3,6 +3,8 @@
 #include <wx/wx.h>
 #include <wx/spinctrl.h>
 #include <wx/clrpicker.h>
+#include <wx/propgrid/propgrid.h>
+
 
 #include "Rule110.h"
 #include "NaiveController.h"
@@ -16,8 +18,10 @@ public:
 	Rule110 rule110;
 	
 	wxPanel* menuPanel;
+
+	wxPropertyGrid* pg;
 	
-	wxFlexGridSizer* fgs;
+	/*wxFlexGridSizer* fgs;
 	
 	wxStaticText* ruleText;
 	wxSpinCtrl* ruleCtrl;
@@ -63,25 +67,20 @@ public:
 	wxStaticText* enableRule110T3FilterText;
 	wxCheckBox* enableRule110T3FilterBox;
 
-	/*wxStaticText* filterExteriorColorText;
-	wxColourPickerCtrl* filterExteriorColorCtrl;
-
-	wxStaticText* filterInteriorColorText;
-	wxColourPickerCtrl* filterInteriorColorCtrl;*/
-
 	wxStaticText* enableRingModeText;
-	wxCheckBox* enableRingModeBox;
+	wxCheckBox* enableRingModeBox;*/
 
 	wxButton* createEcaButton;
 	
 
 	SimulatorMenu();
 
-	void SetRandomInitialConditionBoxEvent(wxCommandEvent& event);
-	void AdjustNumCellsToInitialConditionBoxEvent(wxCommandEvent& event);
+	void setRandomInitialConditionEvent();
+	void adjustNumCellsToInitialConditionEvent();
 	
 	void CreateEcaEvent(wxCommandEvent& event);
-	void ToggleFilterColorsEvent(wxCommandEvent& event);
-	void ToggleRingModeOptions(wxCommandEvent& event);
+	void toggleModeOptions();
+
+	void OnChangedProperty(wxPropertyGridEvent& event);
 };
 
