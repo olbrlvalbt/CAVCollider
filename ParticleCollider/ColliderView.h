@@ -29,6 +29,10 @@ private:
 
 	int zoom = 1;
 
+	bool isLeftVisible;
+	bool isCentralVisible;
+	bool isRightVisible;
+
 public:
 	ColliderView(wxWindow* parent, ColliderConfiguration* colliderConfiguration, int refreshRate);
 	~ColliderView();
@@ -37,6 +41,10 @@ public:
 	void playPause();
 	void toggle3D();
 	void restart();
+
+	void showLeft();
+	void showCentral();
+	void showRight();
 
 private:
 	void paintEvent(wxPaintEvent& evt);

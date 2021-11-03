@@ -115,8 +115,8 @@ void FilteredCollisionSystem::execute() {
 
 void FilteredCollisionSystem::restart() {
 	CollisionSystem::restart();
-	
-	resetAllBuffers();
+
+	resetAllBuffers(true);
 }
 
 void FilteredCollisionSystem::resetLeftBuffers() {

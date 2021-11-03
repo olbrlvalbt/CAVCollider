@@ -10,9 +10,7 @@ InteractionController::InteractionController(int _N, int _rule, string _initialC
 }
 
 void InteractionController::hardReset(const string& newIc) {
-	initialCondition = newIc;
-
-	currentState = initialCondition;
+	currentState = newIc;
 	auxState = currentState;
 
 	currentIteration = 0;

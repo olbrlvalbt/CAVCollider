@@ -16,7 +16,10 @@ public:
 	void closeEvent(wxCloseEvent& evt);
 
 	void PlayPause(wxCommandEvent& event);
-	//void Restart(wxCommandEvent& event);
+	void Restart(wxCommandEvent& event);
 	void Save(wxCommandEvent& event);
+	void ShowLeft(wxCommandEvent& event);
+	void ShowCentral(wxCommandEvent& event);
+	void ShowRight(wxCommandEvent& event);
 };
 

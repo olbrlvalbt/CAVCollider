@@ -9,7 +9,10 @@ ColliderView::ColliderView(wxWindow* parent, ColliderConfiguration* colliderConf
 		wxDefaultSize, wxBORDER_SIMPLE),
 	colliderConfiguration(colliderConfiguration),
 	toggleAnimation(true),
-	cellSize(2){
+	cellSize(2),
+	isLeftVisible(true),
+	isCentralVisible(true),
+	isRightVisible(true) {
 	/*panelSize = 2 * colliderConfiguration->getCentralRingRadius()
 		+ 2 * colliderConfiguration->getLeftRingRadius()
 		+ 2 * colliderConfiguration->getRightRingRadius();*/
@@ -48,6 +51,21 @@ ColliderView::~ColliderView() {
 	delete colliderConfiguration;
 }
 
+void ColliderView::restart() {
+	bool curPaintActive = toggleAnimation;
+	toggleAnimation = false;
+
+	if (wxMessageBox("Restart Collider?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
+		colliderConfiguration->getCollisionSystem().restart();
+		curPaintActive = true;
+		isCentralVisible = true;
+		isLeftVisible = true;
+		isRightVisible = true;
+	}
+
+	toggleAnimation = curPaintActive;
+}
+
 void ColliderView::paintEvent(wxPaintEvent& evt) {
 	wxBufferedPaintDC dc(this);
 	DoPrepareDC(dc);
@@ -81,6 +99,7 @@ void ColliderView::render(wxDC& dc) {
 		dc.SetBrush(wxBrush(wxColour(90, 90, 90)));
 	}
 	dc.DrawCircle(leftContactPos.x, panelSize - leftContactPos.y, 5);
+	
 	if (colliderConfiguration->getCollisionSystem().isRightRingEnabled()
 		&& colliderConfiguration->getCollisionSystem().isCentralRingEnabled()
 		&& colliderConfiguration->getCollisionSystem().isRightContactEnabled()) {
@@ -118,34 +137,43 @@ void ColliderView::processCollider() {
 	dc.Clear();
 	
 	dc.SetBrush(*wxTRANSPARENT_BRUSH);
-	
-	if (colliderConfiguration->getCollisionSystem().isLeftRingEnabled()) {
-		dc.SetPen(wxPen(wxColour(80, 165, 110)));
-	}
-	else {
-		dc.SetPen(wxPen(wxColour(90, 90, 90)));
-	}
-	dc.DrawCircle(leftRingCenter.x, panelSize - leftRingCenter.y, colliderConfiguration->getLeftRingRadius());
 
-	if (colliderConfiguration->getCollisionSystem().isRightRingEnabled()) {
-		dc.SetPen(wxPen(wxColour(165, 80, 110)));
+	if (isLeftVisible) {
+		if (colliderConfiguration->getCollisionSystem().isLeftRingEnabled()) {
+			dc.SetPen(wxPen(wxColour(80, 165, 110)));
+		}
+		else {
+			dc.SetPen(wxPen(wxColour(90, 90, 90)));
+		}
+		dc.DrawCircle(leftRingCenter.x, panelSize - leftRingCenter.y, colliderConfiguration->getLeftRingRadius());
 	}
-	else {
-		dc.SetPen(wxPen(wxColour(90, 90, 90)));
-	}
-	dc.DrawCircle(rightRingCenter.x, panelSize - rightRingCenter.y, colliderConfiguration->getRightRingRadius());
 
-	if (colliderConfiguration->getCollisionSystem().isCentralRingEnabled()) {
-		dc.SetPen(wxPen(wxColour(80, 110, 165)));
+	if (isRightVisible) {
+		if (colliderConfiguration->getCollisionSystem().isRightRingEnabled()) {
+			dc.SetPen(wxPen(wxColour(165, 80, 110)));
+		}
+		else {
+			dc.SetPen(wxPen(wxColour(90, 90, 90)));
+		}
+		dc.DrawCircle(rightRingCenter.x, panelSize - rightRingCenter.y, colliderConfiguration->getRightRingRadius());
 	}
-	else {
-		dc.SetPen(wxPen(wxColour(90, 90, 90)));
-	}
-	dc.DrawCircle(centralRingCenter.x, panelSize - centralRingCenter.y, colliderConfiguration->getCentralRingRadius());
 
-	paintCentralRing(dc);
-	paintLeftRing(dc);
-	paintRightRing(dc);
+	if (isCentralVisible) {
+		if (colliderConfiguration->getCollisionSystem().isCentralRingEnabled()) {
+			dc.SetPen(wxPen(wxColour(80, 110, 165)));
+		}
+		else {
+			dc.SetPen(wxPen(wxColour(90, 90, 90)));
+		}
+		dc.DrawCircle(centralRingCenter.x, panelSize - centralRingCenter.y, colliderConfiguration->getCentralRingRadius());
+	}
+
+	if (isCentralVisible)
+		paintCentralRing(dc);
+	if (isLeftVisible)
+		paintLeftRing(dc);
+	if (isRightVisible)
+		paintRightRing(dc);
 
 	/*centralBitmap.SetMask(new wxMask(centralBitmap, *wxGREEN));
 	wxMemoryDC centralDc(centralBitmap);
@@ -267,16 +295,40 @@ void ColliderView::paintRightRing(wxDC& dc) {
 	}
 }
 
+void ColliderView::showLeft() {
+	isLeftVisible = !isLeftVisible;
+	Refresh();
+}
+
+void ColliderView::showCentral() {
+	isCentralVisible = !isCentralVisible;
+	Refresh();
+}
+
+void ColliderView::showRight() {
+	isRightVisible = !isRightVisible;
+	Refresh();
+}
+
 void ColliderView::OnKeyDown(wxKeyEvent& evt) {
 	switch ((int)evt.GetKeyCode()) {
+	case '1':
+		showLeft();
+		break;
+	case '2':
+		showCentral();
+		break;
+	case '3':
+		showRight();
+		break;
 	case 'p':
 	case 'P':
 		playPause();
 		break;
-	/*case 'r':
+	case 'r':
 	case 'R':
 		restart();
-		break;*/
+		break;
 	case 's':
 	case 'S':
 		saveToImage();
