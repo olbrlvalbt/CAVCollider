@@ -119,6 +119,12 @@ void FilteredCollisionSystem::restart() {
 	resetAllBuffers(true);
 }
 
+void FilteredCollisionSystem::jumpToIteration(long it, function<void(int)>& lambda) {
+	CollisionSystem::jumpToIteration(it, lambda);
+
+	resetAllBuffers(true);
+}
+
 void FilteredCollisionSystem::resetLeftBuffers() {
 	leftRing.hardReset(leftBuffer.state[0]);
 	centralRing.hardReset(centralBuffer.state[0]);

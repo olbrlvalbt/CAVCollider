@@ -6,7 +6,7 @@
 #include <wx/propgrid/advprops.h>
 
 SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Eca Simulator"),
-                                         wxDefaultPosition, wxSize(600, 500),
+                                         wxDefaultPosition, wxSize(600, 550),
                                          wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER),
 								 rule110() {
 	menuPanel = new wxPanel(this, wxID_ANY);
@@ -24,6 +24,7 @@ SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("Eca Simulator")
 	pg->Append(new wxLongStringProperty("Initial Condition", "ic", ""));
 	pg->Append(new wxBoolProperty("Adjust Number of Cells to Initial Condition", "adjustN", false));
 	pg->Append(new wxUIntProperty("N", "n", 3));
+	pg->Append(new wxUIntProperty("Iteration Offset", "iterationOffset", 0));
 	
 	pg->Append(new wxPropertyCategory("Mode Settings"));
 
@@ -338,6 +339,26 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 		eca = new NaiveController(N, rule, initialCondition);
 	}
 
+
+	int iterationOffset = pg->GetPropertyByName("iterationOffset")->GetValue().GetLong();
+
+	if (iterationOffset > 0) {
+		wxProgressDialog* progress = new wxProgressDialog("Setting ECA offset", "Processing, please wait", 100, nullptr, wxPD_AUTO_HIDE);
+
+		int j = 0;
+		for (int i = 0; i < iterationOffset; i++) {
+			if ((i * 100) % iterationOffset == 0) {
+				progress->Update(j++);
+			}
+			eca->applyRule();
+		}
+		progress->Update(100);
+
+		string newIc = eca->getCurrentState()[0];
+		eca->reset(newIc);
+		((NaiveController*)eca)->setCurrentIteration(iterationOffset);
+	}
+
 	if (pg->GetPropertyByName("mode")->GetChoiceSelection() == 1) {
 		int ringWidth = pg->GetPropertyByName("ringWidth")->GetValue().GetLong();
 		int ringRadius = pg->GetPropertyByName("ringRadius")->GetValue().GetLong();
@@ -356,7 +377,7 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 		int cellSize = pg->GetPropertyByName("cellSize")->GetValue().GetLong();
 
 		EcaMeshConfiguration* config = new EcaMeshConfiguration(eca, numIterations, cellSize,
-			deadColor, aliveColor);
+			deadColor, aliveColor, iterationOffset);
 
 		MeshFrame* simFrame = new MeshFrame(config, enableRule110T3Filter);
 

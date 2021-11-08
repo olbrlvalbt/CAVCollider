@@ -117,7 +117,7 @@ void Rule110Composite::processPhase(char & gliderPhase, size_t & gliderPhaseNum,
 			}
 		}
 		else if (*it == ',') {
-			gliderPhase = 'a';
+			gliderPhaseNum = 1;
 
 			it++;
 

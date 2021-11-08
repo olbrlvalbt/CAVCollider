@@ -6,8 +6,11 @@
 #include <string>
 #include <wx/wx.h>
 #include <wx/dcgraph.h>
+#include <wx/progdlg.h>
+
 
 #include "CollisionSystem.h"
+#include "Rule110.h"
 
 using namespace std;
 
@@ -61,13 +64,17 @@ void filterT3(int cellsize, NaiveController* eca, wxGCDC& filterDc, string itera
 	}
 }
 
-void createCollision(string ic, int n = 1000, int cellsize = 5, string path = "") {
+void createCollision(string ic, int n = 1000, int cellsize = 5, string path = "", int offset = 0) {
 	wxInitAllImageHandlers();
 	
 	wxBrush deadCellBrush = wxBrush(wxColour(220, 170, 15));
 	wxBrush aliveCellBrush = wxBrush(wxColour(115, 35, 15));
 	
 	NaiveController* eca = new NaiveController(ic.length(), 110, ic);
+
+	for (int i = 0; i < offset; i++) {
+		eca->applyRule();
+	}
 
 	wxBitmap* bitmap = new wxBitmap(ic.length() * cellsize, n * cellsize);
 	wxMemoryDC baseDc(*bitmap);
@@ -218,9 +225,126 @@ TEST(CreateCollisionsA_Eb, A_Eb) {
 	
 	EXPECT_EQ(1, 1);
 }
-TEST(efe, A_Ewwb) {
-	CollisionSystem system(14, "11111000100110", 14, "11111000100110", 28, "1111100010011011111000100110",
-		13, 27, 13, 13);
+
+TEST(TestCTS10, Testing) {
+	int minEthers = 12;
+	int maxEthers = 100;
+
+	int offset = 0;
+	int numIterations = 3000;
+
+	Rule110 r;
+
+	string left = r.Translate("2e");
+
+	string right = r.Translate("1Ele_C2(A, f1_1) - A3(A, f1_1) - SepInit_EE_(C, f3_1) - 1BloP_E_(C, f4_1)");
+
+	vector<string> g0elec2 = {
+		"1111100000010011011111000100110111110001001101111100000010011011111000100110111000110001001101111100010011011111000100000110"
+		,
+			"1111100010000011011111000100110111110001001101111100010000011011111000100110111110100111001101111100010011011111000100110000"
+		,
+			"0001111100010011011111000100110111110001001100001111100010011011111000111011010111110001001101111100010011011100011000100110"
+		,
+			"1110001100010011011111000100110111110001001101110001100010011011111000100110111111110001001101111100010011011111010011100110"
+
+		,
+			"1111101001110011011111000100110111110001001101111101001110011011111000100110111110000001001101111100010011011111000111011010"
+		,
+			"1111100011101101011111000100110111110001001101111100011101101011111000100110111110001000001101111100010011011111000100110111"
+		,
+			"1111111100010011011111000100110111110001001101111111100010011011111000100110000111110001001101111100010011011111000000100110"
+	};
+	
+	string basePath = "D:/olbrl/Downloads/CollisionTest/";
+	
+	for (int i = minEthers; i < maxEthers; i++) {
+		for (int j = 0; j < g0elec2.size(); j++) {
+			cout << "Starting " + std::to_string(i) + "e_f" + std::to_string(j) << endl;
+			string cur = to_string(i) + "e";
+			string ic = left + g0elec2[j] + r.Translate(cur) + right;
+
+			createCollision(ic, numIterations, 1, 
+				basePath + "g_" + std::to_string(i) + "e_f" + std::to_string(j) + ".png",
+				500);
+		}
+	}
+
+	EXPECT_EQ(1, 1);
+}
+
+
+TEST(TestCTS10Dephased, Testing) {
+	int offset = 12;
+	int maxDephase = 200;
+	int numIterations = 3000;
+
+	int midEthers = 5;
+	
+
+	Rule110 r;
+
+	string left = r.Translate("2e");
+	
+	string mid = r.Translate(std::to_string(midEthers) + "e");
+
+	string right = r.Translate("e - 1Ele_C2(A, f1_1) - A3(A, f1_1) - SepInit_EE_(C, f3_1) - 1BloP_E_(C, f4_1)");
+
+	NaiveController* dephasedEca = new NaiveController(right.length(), 110, right);
+	for (int i = 0; i < offset; i++) {
+		dephasedEca->applyRule();
+	}
+
+	vector<string> g0elec2 = {
+		"1111100000010011011111000100110111110001001101111100000010011011111000100110111000110001001101111100010011011111000100000110"
+		,
+			"1111100010000011011111000100110111110001001101111100010000011011111000100110111110100111001101111100010011011111000100110000"
+		,
+			"0001111100010011011111000100110111110001001100001111100010011011111000111011010111110001001101111100010011011100011000100110"
+		,
+			"1110001100010011011111000100110111110001001101110001100010011011111000100110111111110001001101111100010011011111010011100110"
+
+		,
+			"1111101001110011011111000100110111110001001101111101001110011011111000100110111110000001001101111100010011011111000111011010"
+		,
+			"1111100011101101011111000100110111110001001101111100011101101011111000100110111110001000001101111100010011011111000100110111"
+		,
+			"1111111100010011011111000100110111110001001101111111100010011011111000100110000111110001001101111100010011011111000000100110"
+	};
+
+	vector<string> leftEthers = {
+		"",
+		"1111",
+		"11111000",
+		"111110001001",
+		"11",
+		"111110",
+		"1111100010"
+	};
+
+	vector<string> rightEthers = {
+		"",
+		"1000100110",
+		"100110",
+		"10",
+		"111000100110",
+		"00100110",
+		"0110"
+	};
+	
+	string basePath = "D:/olbrl/Downloads/CollisionDephased/";
+
+	for (int i = offset; i < maxDephase; i++) {
+		for (int j = 0; j < g0elec2.size(); j++) {
+			string ic = left + g0elec2[j] + mid + leftEthers[i % 7] + dephasedEca->getCurrentState()[0] + rightEthers[i % 7];
+
+			createCollision(ic, numIterations, 1,
+				basePath + "g_p" + std::to_string(i) + "_f" + std::to_string(j) + ".png",
+				0);
+		}
+
+		dephasedEca->applyRule();
+	}
 
 	EXPECT_EQ(1, 1);
 }

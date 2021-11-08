@@ -1,8 +1,9 @@
 #include "ColliderView.h"
 
-
 #include <thread>
 #include <wx/dcbuffer.h>
+#include <wx/numdlg.h>
+#include <wx/progdlg.h>
 
 ColliderView::ColliderView(wxWindow* parent, ColliderConfiguration* colliderConfiguration, int refreshRate)
 	: wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition,
@@ -325,6 +326,10 @@ void ColliderView::OnKeyDown(wxKeyEvent& evt) {
 	case 'P':
 		playPause();
 		break;
+	case 'j':
+	case 'J':
+		jumpTo();
+		break;
 	case 'r':
 	case 'R':
 		restart();
@@ -349,6 +354,32 @@ void ColliderView::OnKeyDown(wxKeyEvent& evt) {
 
 void ColliderView::playPause() {
 	toggleAnimation = !toggleAnimation;
+}
+
+void ColliderView::jumpTo() {
+	bool curPaintActive = toggleAnimation;
+	toggleAnimation = false;
+
+	int currentIteration = colliderConfiguration->getCurrentIteration();
+
+	long it = wxGetNumberFromUser("Jump To Iteration:",
+		"", "Jump To",
+		currentIteration, 0, 100000000, this);
+
+	if (it != -1) {
+		wxProgressDialog* progress = new wxProgressDialog("Processing", "Jumping to iteration", 
+			100, nullptr, wxPD_AUTO_HIDE);
+		int k = 0;
+		std::function<void(int)> lambda = [&](int newIt) {
+			if ((newIt * 100) % it == 0) {
+				progress->Update(k++);
+			}
+		};
+		colliderConfiguration->getCollisionSystem().jumpToIteration(it, lambda);
+		progress->Update(100);
+	}
+	
+	toggleAnimation = curPaintActive;
 }
 
 void ColliderView::saveToImage() {

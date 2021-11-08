@@ -39,6 +39,7 @@ public:
 
 	void saveToImage();
 	void playPause();
+	void jumpTo();
 	void toggle3D();
 	void restart();
 

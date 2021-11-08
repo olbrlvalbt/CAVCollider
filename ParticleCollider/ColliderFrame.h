@@ -16,6 +16,7 @@ public:
 	void closeEvent(wxCloseEvent& evt);
 
 	void PlayPause(wxCommandEvent& event);
+	void JumpTo(wxCommandEvent& event);
 	void Restart(wxCommandEvent& event);
 	void Save(wxCommandEvent& event);
 	void ShowLeft(wxCommandEvent& event);

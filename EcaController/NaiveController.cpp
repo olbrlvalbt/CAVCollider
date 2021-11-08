@@ -87,6 +87,10 @@ long NaiveController::getCurrentIteration() {
 	return currentIteration;
 }
 
+void NaiveController::setCurrentIteration(long newIt) {
+	currentIteration = newIt;
+}
+
 const vector<string>& NaiveController::getCurrentState() {
 	stateVector = { currentState };
 	return stateVector;

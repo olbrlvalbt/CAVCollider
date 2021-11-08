@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "ColliderActionList.h"
 #include "EcaControllerCore.h"
 #include "InteractionAgent.h"
@@ -71,4 +73,6 @@ public:
 	void executeActions();
 	void executeAllInteractions();
 	void applyAll(bool cancelIterationIncrement = false);
+
+	virtual void jumpToIteration(long it, function<void(int)>& lambda);
 };

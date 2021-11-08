@@ -9,6 +9,13 @@ GliderMap::GliderMap() {
 		"111110"
 		});
 
+	compositeMap["A3"] = Composite("A3", 2, 9, {
+		"11111000100110111110111000100110",
+		"",
+		"",
+		""
+		});
+
 	compositeMap["A4"] = Composite("A4", 2, 9, {
 		"1111101110",
 		"111110001110111000100110",
@@ -623,6 +630,7 @@ GliderMap::GliderMap() {
 		});
 
 	idMap["A"] = "A";
+	idMap["A3"] = "A3";
 	idMap["A4"] = "A4";
 	idMap["B"] = "B";
 	idMap["BBAR"] = "Bbar";

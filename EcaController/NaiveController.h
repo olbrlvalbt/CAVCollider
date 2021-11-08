@@ -31,6 +31,7 @@ public:
 	void applyRule();
 	size_t getChunkArrayLength();
 	long getCurrentIteration();
+	void setCurrentIteration(long newIt);
 
 	const vector<string>& getCurrentState();
 	virtual void getNeighbors(int i, char& prev, char& cur, char& next);

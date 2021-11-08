@@ -124,8 +124,8 @@ void MeshPanel::createBitmapWithT3Filter() {
 
 
 	GetParent()->SetLabel("ECA R" + to_string(meshConfig->getEca()->getRuleNumber()) + ", N: " + to_string(meshConfig->getEca()->getN())
-		+ ", Iterations " + to_string((currentSpace - 1) * meshConfig->getNumIterations())
-		+ "-" + to_string(currentSpace * meshConfig->getNumIterations() - 1)
+		+ ", Iterations " + to_string((currentSpace - 1) * meshConfig->getNumIterations() + meshConfig->getIterationOffset())
+		+ "-" + to_string(currentSpace * meshConfig->getNumIterations() - 1 + meshConfig->getIterationOffset())
 		+ " (" + to_string(currentSpace) + ")");
 
 	baseDc.SelectObject(wxNullBitmap);
@@ -135,8 +135,9 @@ void MeshPanel::createBitmapWithT3Filter() {
 }
 
 void MeshPanel::paintIteration(wxDC& dc, int iteration) {
+	const string state = meshConfig->getEca()->getCurrentState()[0];
 	for (int i = 0; i < meshConfig->getEca()->getN(); i++) {
-		if (meshConfig->getEca()->getCurrentState()[0].at(i) == '1') {
+		if (state.at(i) == '1') {
 			dc.SetBrush(meshConfig->getAliveCellBrush());
 		}
 		else {

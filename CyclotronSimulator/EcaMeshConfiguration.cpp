@@ -12,10 +12,12 @@ EcaMeshConfiguration::EcaMeshConfiguration(EcaController* _ecaController)
 
 EcaMeshConfiguration::EcaMeshConfiguration(EcaController* _ecaController,
 		int _numIterations, int _cellSize,
-		wxColour _deadCellColor, wxColour _aliveCellColor)
+		wxColour _deadCellColor, wxColour _aliveCellColor,
+		long _iterationOffset)
 		: EcaConfiguration(_ecaController) {
 	numIterations = _numIterations;
 	cellSize = _cellSize;
+	iterationOffset = _iterationOffset;
 
 	deadCellBrush = wxBrush(_deadCellColor);
 	aliveCellBrush = wxBrush(_aliveCellColor);
@@ -27,6 +29,10 @@ int EcaMeshConfiguration::getNumIterations() {
 
 int EcaMeshConfiguration::getCellSize() {
 	return cellSize;
+}
+
+long EcaMeshConfiguration::getIterationOffset() {
+	return iterationOffset;
 }
 
 wxBrush& EcaMeshConfiguration::getDeadCellBrush() {

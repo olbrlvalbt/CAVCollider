@@ -197,6 +197,17 @@ void CollisionSystem::applyAll(bool cancelIterationIncrement) {
 	}
 }
 
+void CollisionSystem::jumpToIteration(long it, function<void(int)>& lambda) {
+	if (it < currentIteration) {
+		restart();
+	}
+
+	while (currentIteration < it) {
+		execute();
+		lambda(currentIteration);
+	}
+}
+
 
 void CollisionSystem::executeActions() {
 	auto it = actionList->getActions().equal_range(currentIteration);

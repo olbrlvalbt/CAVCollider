@@ -32,6 +32,8 @@ public:
 	void execute() override;
 	void restart() override;
 
+	void jumpToIteration(long it, function<void(int)>& lambda) override;
+
 private:
 	IterationBuffer leftBuffer;
 	IterationBuffer rightBuffer;
