@@ -7,7 +7,7 @@
 
 class ColliderConfiguration {
 protected:
-	FilteredCollisionSystem* collisionSystem;
+	std::unique_ptr<FilteredCollisionSystem> collisionSystem;
 	
 	wxColour deadCellColor;
 	wxColour aliveCellColor;

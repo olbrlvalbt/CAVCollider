@@ -6,12 +6,12 @@
 
 class EcaConfiguration {
 protected:
-	EcaController* ecaController;
+	std::unique_ptr<EcaController> ecaController;
 
 public:
 	EcaConfiguration(EcaController* _ecaController);
 	~EcaConfiguration();
 
-	EcaController* getEca();
+	EcaController& getEca();
 };
 

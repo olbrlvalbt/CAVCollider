@@ -1,7 +1,7 @@
 #include "RingFrame.h"
 
 RingFrame::RingFrame(EcaRingConfiguration* config, bool rule110T3filterEnabled)
-	: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(config->getEca()->getRuleNumber()) + " - N: " + to_string(config->getEca()->getN())),
+	: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(config->getEca().getRuleNumber()) + " - N: " + to_string(config->getEca().getN())),
 			  wxDefaultPosition, wxDefaultSize) {
 	wxBoxSizer* frameSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -37,6 +37,10 @@ RingFrame::RingFrame(EcaRingConfiguration* config, bool rule110T3filterEnabled)
 	SetMaxClientSize(panelSize);
 	Center();
 	Connect(GetId(), wxEVT_CLOSE_WINDOW, wxCloseEventHandler(RingFrame::closeEvent));
+}
+
+RingFrame::~RingFrame() {
+	//delete drawPanel;
 }
 
 void RingFrame::closeEvent(wxCloseEvent& evt) {

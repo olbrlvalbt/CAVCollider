@@ -92,10 +92,10 @@ void RingPanel::createBitmap() {
 	
 	double currentDegree = 0;
 	double newDegree = 0;
-	const double degreeIncrement = 360 / (double)(cyclotronConfiguration->getEca()->getN());
+	const double degreeIncrement = 360 / (double)(cyclotronConfiguration->getEca().getN());
 	int counter = 0;
 	int i = 0;
-	for (const string& st : cyclotronConfiguration->getEca()->getCurrentState()) {
+	for (const string& st : cyclotronConfiguration->getEca().getCurrentState()) {
 		for (const char& c : st) {
 			if (c == '1') {
 				counter++;
@@ -136,7 +136,7 @@ void RingPanel::createBitmap() {
 	}*/
 	
 	
-	cyclotronConfiguration->getEca()->applyRule();
+	cyclotronConfiguration->getEca().applyRule();
 
 	currentMemDc.Blit(0, 0,
 		 			  panelSize - cyclotronConfiguration->getRingOffset(), panelSize - cyclotronConfiguration->getRingOffset(),
@@ -163,7 +163,7 @@ void RingPanel::createBitmapWithT3Filter() {
 	dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
 	paintIterationWithT3Filter(dc);
-	cyclotronConfiguration->getEca()->applyRule();
+	cyclotronConfiguration->getEca().applyRule();
 	currentIteration++;
 
 
@@ -193,9 +193,9 @@ void RingPanel::timerEvent(wxTimerEvent& evt) {
 		}
 
 		GetParent()->SetLabel(wxT(
-			"ECA R" + to_string(cyclotronConfiguration->getEca()->getRuleNumber()) +
-			" - N: " + to_string(cyclotronConfiguration->getEca()->getN())
-			+ " - " + to_string(cyclotronConfiguration->getEca()->getCurrentIteration())
+			"ECA R" + to_string(cyclotronConfiguration->getEca().getRuleNumber()) +
+			" - N: " + to_string(cyclotronConfiguration->getEca().getN())
+			+ " - " + to_string(cyclotronConfiguration->getEca().getCurrentIteration())
 		));
 		
 		Refresh();
@@ -258,7 +258,7 @@ void RingPanel::filterT3() {
 	string f3 = "";
 	string f4 = "";
 
-	int n = cyclotronConfiguration->getEca()->getN();
+	int n = cyclotronConfiguration->getEca().getN();
 
 	for (int i = 0; i < n; i++) {
 		f1 = iterationGroup[0].at(i);
@@ -351,7 +351,7 @@ void RingPanel::paintIteration(wxDC& dc) {
 		iterationGroup[1] = iterationGroup[2];
 		iterationGroup[2] = iterationGroup[3];
 		string s = "";
-		for (const string& a : cyclotronConfiguration->getEca()->getCurrentState()) {
+		for (const string& a : cyclotronConfiguration->getEca().getCurrentState()) {
 			s += a;
 		}
 		iterationGroup[3] = s;
@@ -359,7 +359,7 @@ void RingPanel::paintIteration(wxDC& dc) {
 		filterGroup[0] = filterGroup[1];
 		filterGroup[1] = filterGroup[2];
 		filterGroup[2] = filterGroup[3];
-		filterGroup[3] = string(cyclotronConfiguration->getEca()->getN(), '0');
+		filterGroup[3] = string(cyclotronConfiguration->getEca().getN(), '0');
 	}
 	catch(exception ex) {
 		int tr;
@@ -369,11 +369,11 @@ void RingPanel::paintIteration(wxDC& dc) {
 void RingPanel::paintMask(wxMemoryDC& memDc, char flag) {
 	double currentDegree = 0;
 	double newDegree = 0;
-	const double degreeIncrement = 360 / (double)(cyclotronConfiguration->getEca()->getN());
+	const double degreeIncrement = 360 / (double)(cyclotronConfiguration->getEca().getN());
 
 	/*const double radianIncrement = degreeIncrement * M_PI / 180;
 	
-	for (int i = 0; i < cyclotronConfiguration->getEca()->getN(); i++) {
+	for (int i = 0; i < cyclotronConfiguration->getEca().getN(); i++) {
 		if (filterGroup[0].at(i) == '0' && iterationGroup[0].at(i) == flag) {
 			double projX = cyclotronConfiguration->getRingRadius() * std::cos(i * radianIncrement);
 			double projY = cyclotronConfiguration->getRingRadius() * std::sin(i * radianIncrement);
@@ -382,7 +382,7 @@ void RingPanel::paintMask(wxMemoryDC& memDc, char flag) {
 	}*/
 	int acc = 0;
 	
-	for (int i = 0; i < cyclotronConfiguration->getEca()->getN(); i++) {
+	for (int i = 0; i < cyclotronConfiguration->getEca().getN(); i++) {
 		if (filterGroup[0].at(i) == '0') {
 			if (iterationGroup[0].at(i) == flag) {
 				acc++;
@@ -399,19 +399,19 @@ void RingPanel::paintMask(wxMemoryDC& memDc, char flag) {
 	if (acc > 0) {
 		memDc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->getRingRadius(), ringCenter.y - cyclotronConfiguration->getRingRadius(),
 			2 * cyclotronConfiguration->getRingRadius(), 2 * cyclotronConfiguration->getRingRadius(),
-			(cyclotronConfiguration->getEca()->getN() - acc) * degreeIncrement, cyclotronConfiguration->getEca()->getN() * degreeIncrement);
+			(cyclotronConfiguration->getEca().getN() - acc) * degreeIncrement, cyclotronConfiguration->getEca().getN() * degreeIncrement);
 	}
 }
 
 void RingPanel::initializeFilterGroup() {
 	for (int i = 0; i < 4; i++) {
 		string s = "";
-		for (const string& a : cyclotronConfiguration->getEca()->getCurrentState()) {
+		for (const string& a : cyclotronConfiguration->getEca().getCurrentState()) {
 			s += a;
 		}
 		iterationGroup[i] = s;
-		filterGroup[i] = string(cyclotronConfiguration->getEca()->getN(), '0');
-		cyclotronConfiguration->getEca()->applyRule();
+		filterGroup[i] = string(cyclotronConfiguration->getEca().getN(), '0');
+		cyclotronConfiguration->getEca().applyRule();
 	}
 }
 
@@ -433,7 +433,7 @@ void RingPanel::restart() {
 	toggleAnimation = false;
 	
 	if (wxMessageBox("Restart ECA?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
-		cyclotronConfiguration->getEca()->restart();
+		cyclotronConfiguration->getEca().restart();
 		if (enableRule110T3Filter) {
 			initializeFilterGroup();
 		}
@@ -451,7 +451,7 @@ void RingPanel::reset() {
 	toggleAnimation = false;
 	
 	if (wxMessageBox("Create new random initial condition?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
-		cyclotronConfiguration->getEca()->reset();
+		cyclotronConfiguration->getEca().reset();
 		if (enableRule110T3Filter) {
 			initializeFilterGroup();
 		}

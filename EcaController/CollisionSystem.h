@@ -1,6 +1,8 @@
 #pragma once
 
 #include <functional>
+#include <memory>
+
 
 #include "ColliderActionList.h"
 #include "EcaControllerCore.h"
@@ -24,7 +26,7 @@ protected:
 	bool rightRingEnabled;
 	bool centralRingEnabled;
 
-	ColliderActionList* actionList;
+	unique_ptr<ColliderActionList> actionList;
 
 public:
 	CollisionSystem(int leftN, string leftIC, int rightN, string rightIC, int centralN, string centralIC,

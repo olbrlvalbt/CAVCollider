@@ -367,13 +367,15 @@ void ColliderView::jumpTo() {
 		currentIteration, 0, 100000000, this);
 
 	if (it != -1) {
-		wxProgressDialog* progress = new wxProgressDialog("Processing", "Jumping to iteration", 
+		wxProgressDialog* progress = new wxProgressDialog("Processing",
+			"Jumping to new iteration, please wait.", 
 			100, nullptr, wxPD_AUTO_HIDE);
 		int k = 0;
 		std::function<void(int)> lambda = [&](int newIt) {
 			if ((newIt * 100) % it == 0) {
 				progress->Update(k++);
 			}
+			progress->SetTitle("Processing (" + std::to_string(newIt) + "/" + std::to_string(it));
 		};
 		colliderConfiguration->getCollisionSystem().jumpToIteration(it, lambda);
 		progress->Update(100);

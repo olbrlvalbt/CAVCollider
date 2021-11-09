@@ -12,7 +12,8 @@ public:
 	RingPanel* drawPanel = nullptr;
 
 	RingFrame(EcaRingConfiguration* config, bool rule110T3filterEnabled);
-
+	~RingFrame();
+	
 	void closeEvent(wxCloseEvent & evt);
 	
 	void PlayPause(wxCommandEvent& event);

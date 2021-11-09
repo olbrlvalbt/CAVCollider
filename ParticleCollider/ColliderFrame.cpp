@@ -40,6 +40,7 @@ ColliderFrame::ColliderFrame(ColliderConfiguration* config, int refreshRate)
 	SetMaxClientSize(panelSize);
 	
 	Center();
+	Connect(GetId(), wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ColliderFrame::closeEvent));
 }
 
 void ColliderFrame::closeEvent(wxCloseEvent& evt) {

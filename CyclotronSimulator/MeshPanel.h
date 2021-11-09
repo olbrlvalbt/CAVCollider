@@ -10,16 +10,16 @@
 
 class MeshPanel : public wxScrolledWindow {
 public:
-	EcaMeshConfiguration* meshConfig = nullptr;
-	wxBitmap* bitmap;
-	wxBitmap* filterBitmap;
+	std::unique_ptr<EcaMeshConfiguration> meshConfig;
+	std::unique_ptr<wxBitmap> bitmap;
+	std::unique_ptr<wxBitmap> filterBitmap;
 
 	bool rule110T3filterEnabled = false;
 	
 	int currentSpace = 1;
 
 	MeshPanel(wxWindow* parent, EcaMeshConfiguration* config, bool _rule110T3filterEnabled);
-
+	
 	void paintEvent(wxPaintEvent& evt);
 	void OnKeyDown(wxKeyEvent& event);
 

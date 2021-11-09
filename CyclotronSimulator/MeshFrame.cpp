@@ -1,7 +1,7 @@
 #include "MeshFrame.h"
 
 MeshFrame::MeshFrame(EcaMeshConfiguration* config, bool rule110T3filterEnabled)
-	: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(config->getEca()->getRuleNumber()) + " - N: " + to_string(config->getEca()->getN())),
+	: wxFrame(nullptr, wxID_ANY, wxT("ECA R" + to_string(config->getEca().getRuleNumber()) + " - N: " + to_string(config->getEca().getN())),
 		wxDefaultPosition, wxDefaultSize) {
 	wxBoxSizer* frameSizer = new wxBoxSizer(wxHORIZONTAL);
 

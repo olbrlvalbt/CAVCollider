@@ -45,7 +45,7 @@ ColliderConfiguration::ColliderConfiguration(FilteredCollisionSystem* collisionS
 }
 
 ColliderConfiguration::~ColliderConfiguration() {
-	delete collisionSystem;
+	//delete collisionSystem;
 }
 
 FilteredCollisionSystem& ColliderConfiguration::getCollisionSystem() const {

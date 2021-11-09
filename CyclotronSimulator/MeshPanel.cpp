@@ -2,8 +2,8 @@
 
 MeshPanel::MeshPanel(wxWindow* parent, EcaMeshConfiguration* config, bool _rule110T3filterEnabled)
 	: wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition,
-		wxDefaultSize, wxBORDER_SIMPLE) {
-	meshConfig = config;
+		wxDefaultSize, wxBORDER_SIMPLE),
+		meshConfig(config){
 	
 	rule110T3filterEnabled = _rule110T3filterEnabled;
 
@@ -15,8 +15,8 @@ MeshPanel::MeshPanel(wxWindow* parent, EcaMeshConfiguration* config, bool _rule1
 	Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(MeshPanel::OnKeyDown));
 
 
-	SetClientSize(meshConfig->getEca()->getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize());
-	SetScrollbars(1, 1, meshConfig->getEca()->getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize(), 0, 0);
+	SetClientSize(meshConfig->getEca().getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize());
+	SetScrollbars(1, 1, meshConfig->getEca().getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize(), 0, 0);
 }
 
 void MeshPanel::paintEvent(wxPaintEvent& evt) {
@@ -34,8 +34,8 @@ void MeshPanel::render() {
 
 void MeshPanel::createBitmap() {
 	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
-
-	bitmap = new wxBitmap(meshConfig->getEca()->getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize());
+	
+	bitmap.reset(new wxBitmap(meshConfig->getEca().getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize()));
 
 	wxMemoryDC dc(*bitmap);
 	int k = 0;
@@ -47,8 +47,8 @@ void MeshPanel::createBitmap() {
 			progress->Update(k++);
 		}
 
-		for (int i = 0; i < meshConfig->getEca()->getN(); i++) {
-			if (meshConfig->getEca()->getCurrentState()[0].at(i) == '1') {
+		for (int i = 0; i < meshConfig->getEca().getN(); i++) {
+			if (meshConfig->getEca().getCurrentState()[0].at(i) == '1') {
 				dc.SetBrush(meshConfig->getAliveCellBrush());
 			}
 			else {
@@ -57,10 +57,10 @@ void MeshPanel::createBitmap() {
 			dc.DrawRectangle(i * meshConfig->getCellSize(), j * meshConfig->getCellSize(), meshConfig->getCellSize(), meshConfig->getCellSize());
 		}
 
-		meshConfig->getEca()->applyRule();
+		meshConfig->getEca().applyRule();
 	}
 
-	GetParent()->SetLabel("ECA R" + to_string(meshConfig->getEca()->getRuleNumber()) + ", N: " + to_string(meshConfig->getEca()->getN())
+	GetParent()->SetLabel("ECA R" + to_string(meshConfig->getEca().getRuleNumber()) + ", N: " + to_string(meshConfig->getEca().getN())
 		+ ", Iterations " + to_string((currentSpace - 1) * meshConfig->getNumIterations())
 		+ "-" + to_string(currentSpace * meshConfig->getNumIterations() - 1)
 		+ " (" + to_string(currentSpace) + ")");
@@ -73,12 +73,11 @@ void MeshPanel::createBitmap() {
 void MeshPanel::createBitmapWithT3Filter() {
 	wxProgressDialog* progress = new wxProgressDialog("Rendering", "Processing image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
-	bitmap = new wxBitmap(meshConfig->getEca()->getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize());
+	bitmap.reset(new wxBitmap(meshConfig->getEca().getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize()));
 	wxMemoryDC baseDc(*bitmap);
 	baseDc.SetPen(wxPen(wxColor(0, 0, 0), 1, wxPENSTYLE_TRANSPARENT));
 
-
-	filterBitmap = new wxBitmap(meshConfig->getEca()->getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize(), 32);
+	filterBitmap.reset(new wxBitmap(meshConfig->getEca().getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize(), 32));
 	filterBitmap->UseAlpha();
 	wxMemoryDC filterMemDc(*filterBitmap);
 
@@ -100,8 +99,8 @@ void MeshPanel::createBitmapWithT3Filter() {
 
 		paintIteration(baseDc, j);
 
-		iterationGroup[j] = meshConfig->getEca()->getCurrentState()[0];
-		meshConfig->getEca()->applyRule();
+		iterationGroup[j] = meshConfig->getEca().getCurrentState()[0];
+		meshConfig->getEca().applyRule();
 	}
 
 	for (; j < meshConfig->getNumIterations(); j++) {
@@ -113,17 +112,17 @@ void MeshPanel::createBitmapWithT3Filter() {
 		iterationGroup[0] = iterationGroup[1];
 		iterationGroup[1] = iterationGroup[2];
 		iterationGroup[2] = iterationGroup[3];
-		iterationGroup[3] = meshConfig->getEca()->getCurrentState()[0];
+		iterationGroup[3] = meshConfig->getEca().getCurrentState()[0];
 
 		paintIteration(baseDc, j);
 
-		meshConfig->getEca()->applyRule();
+		meshConfig->getEca().applyRule();
 	}
 
 	filterT3(iterationGroup, filterDc, j - 4);
 
 
-	GetParent()->SetLabel("ECA R" + to_string(meshConfig->getEca()->getRuleNumber()) + ", N: " + to_string(meshConfig->getEca()->getN())
+	GetParent()->SetLabel("ECA R" + to_string(meshConfig->getEca().getRuleNumber()) + ", N: " + to_string(meshConfig->getEca().getN())
 		+ ", Iterations " + to_string((currentSpace - 1) * meshConfig->getNumIterations() + meshConfig->getIterationOffset())
 		+ "-" + to_string(currentSpace * meshConfig->getNumIterations() - 1 + meshConfig->getIterationOffset())
 		+ " (" + to_string(currentSpace) + ")");
@@ -135,8 +134,8 @@ void MeshPanel::createBitmapWithT3Filter() {
 }
 
 void MeshPanel::paintIteration(wxDC& dc, int iteration) {
-	const string state = meshConfig->getEca()->getCurrentState()[0];
-	for (int i = 0; i < meshConfig->getEca()->getN(); i++) {
+	const string state = meshConfig->getEca().getCurrentState()[0];
+	for (int i = 0; i < meshConfig->getEca().getN(); i++) {
 		if (state.at(i) == '1') {
 			dc.SetBrush(meshConfig->getAliveCellBrush());
 		}
@@ -153,7 +152,7 @@ void MeshPanel::filterT3(string(&iterationGroup)[4], wxGCDC& filterDc, int itera
 	string f3 = "";
 	string f4 = "";
 
-	int n = meshConfig->getEca()->getN();
+	int n = meshConfig->getEca().getN();
 
 	for (int i = 0; i < n; i++) {
 		f1 = iterationGroup[0].at(i);
@@ -207,14 +206,14 @@ bool MeshPanel::saveToImage() {
 	wxProgressDialog* progress = new wxProgressDialog("Saving", "Saving image, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
 	if (rule110T3filterEnabled) {
-		wxBitmap* screenshot = new wxBitmap(meshConfig->getEca()->getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize());
+		std::unique_ptr<wxBitmap> screenshot = std::make_unique<wxBitmap>(meshConfig->getEca().getN() * meshConfig->getCellSize(), meshConfig->getNumIterations() * meshConfig->getCellSize());
 
 		wxMemoryDC memDC(*screenshot);
 
 		wxMemoryDC baseDc(*bitmap);
 		memDC.Blit(0, //Copy to this X coordinate
 			0, //Copy to this Y coordinate
-			meshConfig->getEca()->getN() * meshConfig->getCellSize(), //Copy this width
+			meshConfig->getEca().getN() * meshConfig->getCellSize(), //Copy this width
 			meshConfig->getNumIterations() * meshConfig->getCellSize(), //Copy this height
 			&baseDc, //From where do we copy?
 			0, //What's the X offset in the original DC?
@@ -227,7 +226,7 @@ bool MeshPanel::saveToImage() {
 		wxMemoryDC filterDc(*filterBitmap);
 		memDC.Blit(0, //Copy to this X coordinate
 			0, //Copy to this Y coordinate
-			meshConfig->getEca()->getN() * meshConfig->getCellSize(), //Copy this width
+			meshConfig->getEca().getN() * meshConfig->getCellSize(), //Copy this width
 			meshConfig->getNumIterations() * meshConfig->getCellSize(), //Copy this height
 			&filterDc, //From where do we copy?
 			0, //What's the X offset in the original DC?
@@ -238,7 +237,6 @@ bool MeshPanel::saveToImage() {
 		memDC.SelectObject(wxNullBitmap);
 
 		screenshot->SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
-		delete screenshot;
 	}
 	else {
 		bitmap->SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
@@ -282,7 +280,7 @@ void MeshPanel::nextSpace() {
 }
 
 void MeshPanel::restartSpace() {
-	meshConfig->getEca()->restart();
+	meshConfig->getEca().restart();
 	currentSpace = 1;
 	createBitmapWithT3Filter();
 	Refresh();
@@ -290,7 +288,7 @@ void MeshPanel::restartSpace() {
 
 void MeshPanel::resetSpace() {
 	if (wxMessageBox("Create new random initial condition?", "Confirm", wxYES_NO | wxYES_DEFAULT, this) == wxYES) {
-		meshConfig->getEca()->reset();
+		meshConfig->getEca().reset();
 		currentSpace = 1;
 		createBitmapWithT3Filter();
 		Refresh();

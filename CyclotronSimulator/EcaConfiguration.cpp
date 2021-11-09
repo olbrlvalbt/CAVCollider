@@ -5,10 +5,9 @@ EcaConfiguration::EcaConfiguration(EcaController* _ecaController)
 }
 
 EcaConfiguration::~EcaConfiguration() {
-	delete ecaController;
+	//delete ecaController;
 }
 
-EcaController* EcaConfiguration::getEca()
-{
-	return ecaController;
+EcaController& EcaConfiguration::getEca() {
+	return *ecaController;
 }
