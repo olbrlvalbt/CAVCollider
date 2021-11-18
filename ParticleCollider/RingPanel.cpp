@@ -112,29 +112,6 @@ void RingPanel::createBitmap() {
 			i++;
 		}
 	}
-
-
-	/*int i = 0;
-	double currentDegree = 0;
-	double newDegree = 0;
-	const double degreeIncrement = 360 / (double)(eca->getN());
-
-	for (const string& st : eca->getCurrentState()) {
-		for (const char& c : st) {
-			if (c == '1') {
-				dc.SetPen(cyclotronConfiguration->aliveCellPenColor);
-			}
-			else {
-				dc.SetPen(cyclotronConfiguration->deadCellPenColor);
-			}
-			newDegree += degreeIncrement;
-			dc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->ringRadius, ringCenter.y - cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius, 2 * cyclotronConfiguration->ringRadius,
-				currentDegree, newDegree);
-			currentDegree = newDegree;
-			i++;
-		}
-	}*/
-	
 	
 	cyclotronConfiguration->getEca().applyRule();
 
@@ -219,11 +196,6 @@ void RingPanel::OnKeyDown(wxKeyEvent& evt) {
 	case 'r':
 	case 'R':
 		restart();
-		break;
-	case 'f':
-	case 'F':
-		/*filterOn = !filterOn;
-		Refresh();*/
 		break;
 	case 's':
 	case 'S':
@@ -320,12 +292,6 @@ void RingPanel::paintIteration(wxDC& dc) {
 			2 * cyclotronConfiguration->getRingRadius(), 2 * cyclotronConfiguration->getRingRadius(),
 			0, 360);
 
-		/*thread aliveThread(&RingPanel::paintMask, this, ref(aliveDc), '1');
-		thread deadThread(&RingPanel::paintMask, this, ref(deadDc), '0');
-
-		aliveThread.join();
-		deadThread.join();*/
-
 		paintMask(aliveDc, '1');
 		paintMask(deadDc, '0');
 
@@ -362,7 +328,6 @@ void RingPanel::paintIteration(wxDC& dc) {
 		filterGroup[3] = string(cyclotronConfiguration->getEca().getN(), '0');
 	}
 	catch(exception ex) {
-		int tr;
 	}
 }
 
@@ -370,16 +335,7 @@ void RingPanel::paintMask(wxMemoryDC& memDc, char flag) {
 	double currentDegree = 0;
 	double newDegree = 0;
 	const double degreeIncrement = 360 / (double)(cyclotronConfiguration->getEca().getN());
-
-	/*const double radianIncrement = degreeIncrement * M_PI / 180;
 	
-	for (int i = 0; i < cyclotronConfiguration->getEca().getN(); i++) {
-		if (filterGroup[0].at(i) == '0' && iterationGroup[0].at(i) == flag) {
-			double projX = cyclotronConfiguration->getRingRadius() * std::cos(i * radianIncrement);
-			double projY = cyclotronConfiguration->getRingRadius() * std::sin(i * radianIncrement);
-			memDc.DrawPoint(ringCenter.x + projX, ringCenter.y + projY);
-		}
-	}*/
 	int acc = 0;
 	
 	for (int i = 0; i < cyclotronConfiguration->getEca().getN(); i++) {
