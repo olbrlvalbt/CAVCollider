@@ -2,31 +2,31 @@
 
 #include "Rule110DLL.h"
 
-#include <string>
-#include <sstream>
-#include <regex>
-#include <exception>
-
 #include "GliderMap.h"
 #include "GliderSetMap.h"
-#include "Rule110Basic.h"
-#include "Rule110Composite.h"
+
+#include <string>
+#include <regex>
 
 using namespace std;
 
 class RULE110_DLL Rule110 {
 public:
-	string Translate(string _s);
-	string GetExpression(string _token);
+	string Translate(string s);
 
 	Rule110();
 
 private:
-	string translateNested(string& _s, string::const_iterator& it);
-	string getEther(string _expression);
+	GliderMap gliders;
+	GliderSetMap gliderSets;
 
-	GliderMap* gliderMap;
-	GliderSetMap* gliderSetMap;
+	char delimiter;
+	
+	regex rBin, rNum, rEther, rPhaseNum, rPhase, rPhaseParam,
+		rParams, rGliderName, rGliderSetName, rCompositeName,
+		rComposite, rExpression, rMultiple, rMultipleExpression;
 
-	Rule110Composite* rule110Composite;
+	string multiply(const string& s, int multiple);
+	string translate(const string& s);
+	void initRegexes();
 };

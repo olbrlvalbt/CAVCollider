@@ -55,9 +55,6 @@
     <ProjectReference Include="..\EcaController\EcaController.vcxproj">
       <Project>{1939b4ac-7e4d-43cc-8cb3-6b56779bf3f2}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\EcaLogic\EcaLogic.vcxproj">
-      <Project>{6ef4fe21-933e-4f44-a863-cdd6a0af04f0}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Rule110\Rule110.vcxproj">
       <Project>{86c77faf-a311-44d4-9f34-0e8ede8ec618}</Project>
     </ProjectReference>

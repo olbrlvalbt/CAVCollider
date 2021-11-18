@@ -8,5 +8,8 @@
 class RULE110_DLL GliderSetMap : public CompositeMap {
 public:
 	GliderSetMap(GliderMap& gliderMap);
+
+private:
+	std::string getEther(int multiple);
 };
 

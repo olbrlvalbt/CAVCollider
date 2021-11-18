@@ -153,12 +153,7 @@
     <ClInclude Include="GliderSetMap.h" />
     <ClInclude Include="PhaseSet.h" />
     <ClInclude Include="Rule110.h" />
-    <ClInclude Include="Rule110Basic.h" />
-    <ClInclude Include="Rule110Composite.h" />
-    <ClInclude Include="Rule110Constants.h" />
     <ClInclude Include="Rule110DLL.h" />
-    <ClInclude Include="Rule110Glider.h" />
-    <ClInclude Include="Rule110GliderSet.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -169,11 +164,6 @@
     <ClCompile Include="GliderSetMap.cpp" />
     <ClCompile Include="PhaseSet.cpp" />
     <ClCompile Include="Rule110.cpp" />
-    <ClCompile Include="Rule110Basic.cpp" />
-    <ClCompile Include="Rule110Composite.cpp" />
-    <ClCompile Include="Rule110Constants.cpp" />
-    <ClCompile Include="Rule110Glider.cpp" />
-    <ClCompile Include="Rule110GliderSet.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

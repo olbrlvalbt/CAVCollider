@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Composite.h"
 
+#include <exception>
+
 Composite::Composite()
 	: id(""), horizontalSpeed(0), verticalSpeed(0), phaseSets({}){
 }
@@ -57,7 +59,8 @@ int Composite::TranslatePhaseKey(std::string phaseKey) {
 PhaseSet Composite::getPhaseSet(std::string phaseKey) {
 	int phaseSetIdx = TranslatePhaseKey(phaseKey);
 	if (phaseSetIdx >= phaseSets.size()) {
-		throw PhaseNotFoundException(id);
+		string ex = "Phase " + phaseKey + " not found for composite " + id;
+		throw std::exception(ex.c_str());
 	}
 
 	return phaseSets[phaseSetIdx];
@@ -65,7 +68,8 @@ PhaseSet Composite::getPhaseSet(std::string phaseKey) {
 std::string Composite::getPhase(std::string phaseKey, int phase) {
 	int phaseSetIdx = TranslatePhaseKey(phaseKey);
 	if (phaseSetIdx >= phaseSets.size()) {
-		throw PhaseNotFoundException(id);
+		string ex = "Phase " + phaseKey + " not found for composite " + id;
+		throw std::exception(ex.c_str());
 	}
 
 	if (phase < 1 || phase > 4) {
@@ -74,7 +78,8 @@ std::string Composite::getPhase(std::string phaseKey, int phase) {
 
 	std::string phaseResult = phaseSets[phaseSetIdx].getPhase(phase);
 	if (phaseResult.length() == 0) {
-		throw PhaseNotFoundException(id);
+		string ex = "Phase " + phaseKey + ", " + std::to_string(phase) + " not found for composite " + id;
+		throw std::exception(ex.c_str());
 	}
 
 	return phaseResult;
@@ -82,7 +87,8 @@ std::string Composite::getPhase(std::string phaseKey, int phase) {
 
 std::string Composite::getByIndex(int phaseKeyIndex, int phaseIndex) {
 	if (phaseKeyIndex >= phaseSets.size()) {
-		throw PhaseNotFoundException(id);
+		string ex = "Phase " + std::to_string(phaseKeyIndex) + ", " + std::to_string(phaseIndex) + " not found for composite " + id;
+		throw std::exception(ex.c_str());
 	}
 
 	if (phaseIndex < 0 || phaseIndex > 3) {
@@ -91,7 +97,8 @@ std::string Composite::getByIndex(int phaseKeyIndex, int phaseIndex) {
 
 	std::string phaseResult = phaseSets[phaseKeyIndex].getPhase(phaseIndex + 1);
 	if (phaseResult.length() == 0) {
-		throw PhaseNotFoundException(id);
+		string ex = "Phase " + std::to_string(phaseKeyIndex) + ", " + std::to_string(phaseIndex) + " not found for composite " + id;
+		throw std::exception(ex.c_str());
 	}
 
 	return phaseResult;

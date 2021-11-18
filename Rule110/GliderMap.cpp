@@ -638,7 +638,6 @@ GliderMap::GliderMap() {
 	idMap["B_"] = "Bbar";
 	idMap["BCIRC"] = "Bcirc";
 	idMap["BC"] = "Bcirc";
-	idMap["B^"] = "Bcirc";
 	idMap["C1"] = "C1";
 	idMap["C2"] = "C2";
 	idMap["C3"] = "C3";

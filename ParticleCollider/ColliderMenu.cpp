@@ -8,10 +8,9 @@
 #include "SimulatorMenu.h"
 
 ColliderMenu::ColliderMenu() : wxFrame(nullptr, wxID_ANY, wxT("Rule 110 Particle Collider"),
-                                       wxDefaultPosition, wxSize(500, 500),
-                                       wxDEFAULT_FRAME_STYLE^ wxRESIZE_BORDER),
-                               rule110(),
-                               menuPanel(this, wxID_ANY) {
+		wxDefaultPosition, wxSize(500, 500),
+		wxDEFAULT_FRAME_STYLE^ wxRESIZE_BORDER),
+		menuPanel(this, wxID_ANY) {
 
     pg = std::make_unique<wxPropertyGrid>(
         &menuPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize,
@@ -100,7 +99,7 @@ void ColliderMenu::updateN(SIDE side) {
                 leftIc = rule110.Translate(s);
                 pg->GetPropertyByName("leftToCentral")->SetLabel("Contact Point (0-" + std::to_string(leftIc.length()) + ")");
 	    	}
-	    	catch (TranslationException& e) {
+	    	catch (exception& e) {
                 wxMessageDialog* errorDial = new wxMessageDialog(this,
                     e.what(), wxT("Initial condition invalid"), wxOK | wxICON_ERROR);
                 errorDial->ShowModal();
@@ -120,7 +119,7 @@ void ColliderMenu::updateN(SIDE side) {
                 rightIc = rule110.Translate(s);
                 pg->GetPropertyByName("rightToCentral")->SetLabel("Contact Point (0-" + std::to_string(rightIc.length()) + ")");
             }
-            catch (TranslationException& e) {
+            catch (exception& e) {
                 wxMessageDialog* errorDial = new wxMessageDialog(this,
                     e.what(), wxT("Initial condition invalid"), wxOK | wxICON_ERROR);
                 errorDial->ShowModal();
@@ -141,7 +140,7 @@ void ColliderMenu::updateN(SIDE side) {
                 pg->GetPropertyByName("centralToLeft")->SetLabel("Left Contact Point (0-" + std::to_string(centralIc.length()) + ")");
                 pg->GetPropertyByName("centralToRight")->SetLabel("Right Contact Point (0-" + std::to_string(centralIc.length()) + ")");
             }
-            catch (TranslationException& e) {
+            catch (exception& e) {
                 wxMessageDialog* errorDial = new wxMessageDialog(this,
                     e.what(), wxT("Initial condition invalid"), wxOK | wxICON_ERROR);
                 errorDial->ShowModal();
@@ -239,16 +238,25 @@ void ColliderMenu::OnCreate(wxCommandEvent& event) {
     int refreshRate = pg->GetPropertyByName("refreshRate")->GetValue().GetLong();
 	
 
-    FilteredCollisionSystem* system = new FilteredCollisionSystem(leftIc, rightIc, centralIc,
-        leftToCentral, centralToLeft, 
-        rightToCentral, centralToRight,
-        actions);
-    system->setAllContactsEnabled(true);
-    ColliderConfiguration* config = new ColliderConfiguration(system, centralRingRadius,
-        wxColour(245, 245, 245), wxColour(255, 255, 255));
+    try {
+        FilteredCollisionSystem* system = new FilteredCollisionSystem(leftIc, rightIc, centralIc,
+            leftToCentral, centralToLeft,
+            rightToCentral, centralToRight,
+            actions);
+        system->setAllContactsEnabled(true);
+        ColliderConfiguration* config = new ColliderConfiguration(system, centralRingRadius,
+            wxColour(245, 245, 245), wxColour(255, 255, 255));
 
-    ColliderFrame* mainFrame = new ColliderFrame(config, refreshRate);
-    mainFrame->Show();
+        ColliderFrame* mainFrame = new ColliderFrame(config, refreshRate);
+        mainFrame->Show();
+    }
+    catch (exception& e) {
+        wxMessageDialog* errorDial = new wxMessageDialog(this,
+            e.what(), wxT("Controller error"), wxOK | wxICON_ERROR);
+        errorDial->ShowModal();
+
+        return;
+    }
 }
 
 void ColliderMenu::GoTo(wxCommandEvent& event) {

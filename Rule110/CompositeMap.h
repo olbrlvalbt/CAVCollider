@@ -21,5 +21,7 @@ public:
 	std::string getByIndex(std::string id, int phaseKeyIndex, int phaseIndex);
 
 	std::string getId(std::string id);
+
+	std::vector<std::string> getIds();
 };
 

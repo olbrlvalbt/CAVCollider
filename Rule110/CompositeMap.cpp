@@ -8,10 +8,20 @@ std::string CompositeMap::getId(std::string id) {
 	for (auto& c : id) c = toupper(c);
 	
 	if (idMap.find(id) == idMap.end()) {
-		throw CompositeNotFoundException(id);
+		std::string ex = "Composite id not found: " + id;
+		throw exception(ex.c_str());
 	}
 	
 	return idMap[id];
+}
+
+std::vector<std::string> CompositeMap::getIds() {
+	std::vector<std::string> ids;
+
+	for (auto const& imap : idMap)
+		ids.push_back(imap.first);
+
+	return ids;
 }
 
 Composite CompositeMap::getComposite(std::string id) {

@@ -14,9 +14,7 @@ ColliderView::ColliderView(wxWindow* parent, ColliderConfiguration* colliderConf
 	isLeftVisible(true),
 	isCentralVisible(true),
 	isRightVisible(true) {
-	/*panelSize = 2 * colliderConfiguration->getCentralRingRadius()
-		+ 2 * colliderConfiguration->getLeftRingRadius()
-		+ 2 * colliderConfiguration->getRightRingRadius();*/
+
 	panelSize = 6 * colliderConfiguration->getCentralRingRadius();
 	
 	centralRingCenter = wxPoint(panelSize / 2, panelSize / 2);
@@ -30,10 +28,6 @@ ColliderView::ColliderView(wxWindow* parent, ColliderConfiguration* colliderConf
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 
 	mainPanelBitmap = wxBitmap(panelSize, panelSize);
-
-	/*centralBitmap = wxBitmap(panelSize, panelSize);
-	leftBitmap = wxBitmap(panelSize, panelSize);
-	rightBitmap = wxBitmap(panelSize, panelSize);*/
 
 	Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(ColliderView::paintEvent));
 	Connect(GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(ColliderView::OnKeyDown));
@@ -77,8 +71,8 @@ void ColliderView::timerEvent(wxTimerEvent& evt) {
 	if (toggleAnimation) {
 		processCollider();
 
-		/*GetParent()->SetLabel(wxT("Iteration - " + 
-			to_string(colliderConfiguration->getCurrentIteration())));*/
+		GetParent()->SetLabel(wxT("Collider - Iteration " + 
+			to_string(colliderConfiguration->getCurrentIteration())));
 
 		Refresh();
 	}
@@ -99,24 +93,6 @@ void ColliderView::render(wxDC& dc) {
 
 void ColliderView::processCollider() {
 	colliderConfiguration->getCollisionSystem().execute();
-
-	/*auto leftLambda = [&]() {
-		paintLeftRing();
-	};
-	auto rightLambda = [&]() {
-		paintRightRing();
-	};
-	auto centralLambda = [&]() {
-		paintCentralRing();
-	};
-
-	std::thread leftThread(leftLambda);
-	std::thread rightThread(rightLambda);
-	std::thread centralThread(centralLambda);
-
-	leftThread.join();
-	rightThread.join();
-	centralThread.join();*/
 
 	wxMemoryDC dc(mainPanelBitmap);
 	dc.SetBackground(*wxBLACK_BRUSH);
@@ -187,10 +163,6 @@ void ColliderView::processCollider() {
 }
 
 void ColliderView::paintCentralRing(wxDC& dc) {
-	/*wxMemoryDC dc(centralBitmap);
-	dc.SetBackground(*wxGREEN);
-	dc.Clear();*/
-	
 	int centralN = colliderConfiguration->getCollisionSystem().getCentralN();
 	string centralState = colliderConfiguration->getCollisionSystem().getCentralState();
 	string centralFilter = colliderConfiguration->getCollisionSystem().getCentralFilter();
@@ -218,10 +190,6 @@ void ColliderView::paintCentralRing(wxDC& dc) {
 }
 
 void ColliderView::paintLeftRing(wxDC& dc) {
-	/*wxMemoryDC dc(leftBitmap);
-	dc.SetBackground(*wxGREEN);
-	dc.Clear();*/
-
 	int leftN = colliderConfiguration->getCollisionSystem().getLeftN();
 	string leftState = colliderConfiguration->getCollisionSystem().getLeftState();
 	string leftFilter = colliderConfiguration->getCollisionSystem().getLeftFilter();
@@ -249,10 +217,6 @@ void ColliderView::paintLeftRing(wxDC& dc) {
 }
 
 void ColliderView::paintRightRing(wxDC& dc) {
-	/*wxMemoryDC dc(rightBitmap);
-	dc.SetBackground(*wxGREEN);
-	dc.Clear();*/
-
 	int rightN = colliderConfiguration->getCollisionSystem().getRightN();
 	string rightState = colliderConfiguration->getCollisionSystem().getRightState();
 	string rightFilter = colliderConfiguration->getCollisionSystem().getRightFilter();

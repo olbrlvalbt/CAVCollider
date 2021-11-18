@@ -3,15 +3,15 @@
 #include "EcaMeshConfiguration.h"
 #include "MeshFrame.h"
 
+#include <wx/propgrid/propgrid.h>
 #include <wx/propgrid/advprops.h>
 
 #include "ColliderMenu.h"
 
 SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("ECA Simulator"),
-	wxDefaultPosition, wxSize(600, 600),
-	wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER),
-	rule110(),
-	menuPanel(this, wxID_ANY) {
+		wxDefaultPosition, wxSize(600, 600),
+		wxDEFAULT_FRAME_STYLE ^ wxRESIZE_BORDER),
+		menuPanel(this, wxID_ANY) {
 	
 	pg = std::make_unique<wxPropertyGrid>(
 		&menuPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize,
@@ -158,7 +158,16 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 	if (pg->GetPropertyByName("setRandomIc")->GetValue().GetBool()) {
 		N = pg->GetPropertyByName("n")->GetValue().GetLong();
 
-		eca = new NaiveController(N, rule);
+		try {
+			eca = new NaiveController(N, rule);
+		}
+		catch (exception& e) {
+			wxMessageDialog* errorDial = new wxMessageDialog(this,
+				e.what(), wxT("ECA Controller error"), wxOK | wxICON_ERROR);
+			errorDial->ShowModal();
+
+			return;
+		}
 	}
 	else {
 		try {
@@ -166,7 +175,7 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 			s = std::regex_replace(s, std::regex("\\\\n"), "");
 			initialCondition = rule110.Translate(s);
 		}
-		catch (TranslationException e) {
+		catch (exception& e) {
 			wxMessageDialog* errorDial = new wxMessageDialog(this,
 				e.what(), wxT("Initial condition invalid"), wxOK | wxICON_ERROR);
 			errorDial->ShowModal();
@@ -181,7 +190,16 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 			N = pg->GetPropertyByName("n")->GetValue().GetLong();
 		}
 
-		eca = new NaiveController(N, rule, initialCondition);
+		try {
+			eca = new NaiveController(N, rule, initialCondition);
+		}
+		catch (exception& e) {
+			wxMessageDialog* errorDial = new wxMessageDialog(this,
+				e.what(), wxT("ECA Controller error"), wxOK | wxICON_ERROR);
+			errorDial->ShowModal();
+
+			return;
+		}
 	}
 
 

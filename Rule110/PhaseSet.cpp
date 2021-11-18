@@ -17,7 +17,8 @@ std::string PhaseSet::getPhase(int i) {
 
 	string phase = phases[i - 1];
 	if (phase.length() == 0) {
-		throw PhaseNotFoundException(std::to_string(i));
+		string ex = "Phase " + std::to_string(i) + " not found for the phase set";
+		throw std::exception(ex.c_str());
 	}
 	
 	return phase;

@@ -321,7 +321,7 @@ void SimulatorMenu::CreateEcaEvent(wxCommandEvent& event) {
 			s = std::regex_replace(s, std::regex("\\\\n"), "");
 			initialCondition = rule110.Translate(s);
 		}
-		catch (TranslationException e) {
+		catch (exception& e) {
 			wxMessageDialog* errorDial = new wxMessageDialog(this,
 				e.what(), wxT("Initial condition invalid"), wxOK | wxICON_ERROR);
 			errorDial->ShowModal();

@@ -5,7 +5,6 @@
 wxIMPLEMENT_APP(MainApp);
 
 MainApp::MainApp() {
-	
 }
 
 
