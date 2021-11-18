@@ -13,11 +13,12 @@ public:
 	
 	Rule110 rule110;
 
-	wxPanel* menuPanel;
+	wxPanel menuPanel;
 
-	wxPropertyGrid* pg;
+	std::unique_ptr<wxPropertyGrid> pg;
 
-	wxButton* createButton;
+	std::unique_ptr<wxButton> createButton;
+	std::unique_ptr<wxButton> goToButton;
 
 	string leftIc;
 	string rightIc;
@@ -32,4 +33,7 @@ public:
 	void checkActions(const wxArrayStringProperty& p);
 
 	void OnCreate(wxCommandEvent& event);
+	void GoTo(wxCommandEvent& event);
+
+	void closeEvent(wxCloseEvent& evt);
 };

@@ -1,51 +1,120 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Collider">
+      <UniqueIdentifier>{d2957f85-dc51-4cbb-8faf-6f3d432a9161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collider\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Collider\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Simulator">
+      <UniqueIdentifier>{22e406ba-9fef-4239-bd3e-5123065b4d3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator\Header Files">
+      <UniqueIdentifier>{688e8207-c7ac-4979-8edb-9343eb6912a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Simulator\Source Files">
+      <UniqueIdentifier>{f0d4c8d4-2f82-4625-8ecc-79c80ca63f5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{b61efab1-6872-46d9-b5f6-f2d1dc9e1b9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Header Files">
+      <UniqueIdentifier>{2cc80cb6-e28f-4365-b27d-eee135b36e67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Source Files">
+      <UniqueIdentifier>{c431e71d-fb54-48a2-bce4-7ec14d1d3c0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColliderMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ColliderApp.h">
-      <Filter>Header Files</Filter>
+      <Filter>Collider\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColliderFrame.h">
-      <Filter>Header Files</Filter>
+      <Filter>Collider\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColliderConfiguration.h">
-      <Filter>Header Files</Filter>
+      <Filter>Collider\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColliderView.h">
-      <Filter>Header Files</Filter>
+      <Filter>Collider\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainApp.h">
+      <Filter>Main\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EcaConfiguration.h">
+      <Filter>Simulator\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EcaMeshConfiguration.h">
+      <Filter>Simulator\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EcaRingConfiguration.h">
+      <Filter>Simulator\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshFrame.h">
+      <Filter>Simulator\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshPanel.h">
+      <Filter>Simulator\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RingFrame.h">
+      <Filter>Simulator\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RingPanel.h">
+      <Filter>Simulator\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulatorMenu.h">
+      <Filter>Simulator\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ColliderMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ColliderApp.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Collider\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ColliderFrame.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Collider\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ColliderConfiguration.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Collider\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ColliderView.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Collider\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainApp.cpp">
+      <Filter>Main\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EcaConfiguration.cpp">
+      <Filter>Simulator\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EcaMeshConfiguration.cpp">
+      <Filter>Simulator\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EcaRingConfiguration.cpp">
+      <Filter>Simulator\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshFrame.cpp">
+      <Filter>Simulator\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshPanel.cpp">
+      <Filter>Simulator\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RingFrame.cpp">
+      <Filter>Simulator\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RingPanel.cpp">
+      <Filter>Simulator\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulatorMenu.cpp">
+      <Filter>Simulator\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

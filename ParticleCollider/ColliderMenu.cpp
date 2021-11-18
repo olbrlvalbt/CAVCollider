@@ -5,14 +5,16 @@
 #include "ColliderFrame.h"
 #include "FilteredCollisionSystem.h"
 
-ColliderMenu::ColliderMenu() : wxFrame(nullptr, wxID_ANY, wxT("Particle Collider"),
-                                       wxDefaultPosition, wxSize(500, 450),
-                                       wxDEFAULT_FRAME_STYLE^ wxRESIZE_BORDER),
-                               rule110() {
-	menuPanel = new wxPanel(this, wxID_ANY);
+#include "SimulatorMenu.h"
 
-    pg = new wxPropertyGrid(
-        menuPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+ColliderMenu::ColliderMenu() : wxFrame(nullptr, wxID_ANY, wxT("Rule 110 Particle Collider"),
+                                       wxDefaultPosition, wxSize(500, 500),
+                                       wxDEFAULT_FRAME_STYLE^ wxRESIZE_BORDER),
+                               rule110(),
+                               menuPanel(this, wxID_ANY) {
+
+    pg = std::make_unique<wxPropertyGrid>(
+        &menuPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize,
         wxPG_SPLITTER_AUTO_CENTER | wxPG_DEFAULT_STYLE);
     pg->SetExtraStyle(wxPG_EX_HELP_AS_TOOLTIPS);
 
@@ -37,21 +39,28 @@ ColliderMenu::ColliderMenu() : wxFrame(nullptr, wxID_ANY, wxT("Particle Collider
     Connect(pg->GetId(), wxEVT_PG_CHANGED, wxPropertyGridEventHandler(ColliderMenu::OnChangedProperty));
 
 
-    createButton = new wxButton(menuPanel, wxID_ANY, wxT("Create Collider"));
+    createButton = std::make_unique<wxButton>(&menuPanel, wxID_ANY, wxT("Create Collider"));
 	Connect(createButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ColliderMenu::OnCreate));
 
+    goToButton = std::make_unique<wxButton>(&menuPanel, wxID_ANY, wxT("Go To Simulator"));
+    Connect(goToButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ColliderMenu::GoTo));
 
     wxBoxSizer* vbox = new wxBoxSizer(wxVERTICAL);
-    vbox->Add(pg, 1, wxALL | wxEXPAND, 15);
-    vbox->Add(createButton, 0 , wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 30);
-	
-    menuPanel->SetSizer(vbox);
-    Centre();
+    vbox->Add(&*pg, 1, wxALL | wxEXPAND, 15);
+    vbox->Add(&*createButton, 0 , wxALIGN_RIGHT | wxRIGHT | wxBOTTOM, 30);
+    vbox->Add(&*goToButton, 0, wxALIGN_LEFT | wxLEFT | wxBOTTOM, 30);
 
+    menuPanel.SetSizer(vbox);
+    Centre();
+    Connect(GetId(), wxEVT_CLOSE_WINDOW, wxCloseEventHandler(ColliderMenu::closeEvent));
 
     leftIc = "";
     rightIc = "";
     centralIc = "";
+}
+
+void ColliderMenu::closeEvent(wxCloseEvent& evt) {
+    Destroy();
 }
 
 void ColliderMenu::OnChangedProperty(wxPropertyGridEvent& event) {
@@ -240,4 +249,10 @@ void ColliderMenu::OnCreate(wxCommandEvent& event) {
 
     ColliderFrame* mainFrame = new ColliderFrame(config, refreshRate);
     mainFrame->Show();
+}
+
+void ColliderMenu::GoTo(wxCommandEvent& event) {
+    SimulatorMenu* menu = new SimulatorMenu();
+    menu->Show();
+    Close(true);
 }

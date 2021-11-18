@@ -147,18 +147,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ColliderApp.h" />
     <ClInclude Include="ColliderConfiguration.h" />
     <ClInclude Include="ColliderFrame.h" />
     <ClInclude Include="ColliderMenu.h" />
     <ClInclude Include="ColliderView.h" />
+    <ClInclude Include="EcaConfiguration.h" />
+    <ClInclude Include="EcaMeshConfiguration.h" />
+    <ClInclude Include="EcaRingConfiguration.h" />
+    <ClInclude Include="MainApp.h" />
+    <ClInclude Include="MeshFrame.h" />
+    <ClInclude Include="MeshPanel.h" />
+    <ClInclude Include="RingFrame.h" />
+    <ClInclude Include="RingPanel.h" />
+    <ClInclude Include="SimulatorMenu.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ColliderApp.cpp" />
     <ClCompile Include="ColliderConfiguration.cpp" />
     <ClCompile Include="ColliderFrame.cpp" />
     <ClCompile Include="ColliderMenu.cpp" />
     <ClCompile Include="ColliderView.cpp" />
+    <ClCompile Include="EcaConfiguration.cpp" />
+    <ClCompile Include="EcaMeshConfiguration.cpp" />
+    <ClCompile Include="EcaRingConfiguration.cpp" />
+    <ClCompile Include="MainApp.cpp" />
+    <ClCompile Include="MeshFrame.cpp" />
+    <ClCompile Include="MeshPanel.cpp" />
+    <ClCompile Include="RingFrame.cpp" />
+    <ClCompile Include="RingPanel.cpp" />
+    <ClCompile Include="SimulatorMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EcaController\EcaController.vcxproj">
