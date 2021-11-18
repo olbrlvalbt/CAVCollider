@@ -77,8 +77,8 @@ void ColliderView::timerEvent(wxTimerEvent& evt) {
 	if (toggleAnimation) {
 		processCollider();
 
-		GetParent()->SetLabel(wxT("Iteration - " + 
-			to_string(colliderConfiguration->getCurrentIteration())));
+		/*GetParent()->SetLabel(wxT("Iteration - " + 
+			to_string(colliderConfiguration->getCurrentIteration())));*/
 
 		Refresh();
 	}
@@ -90,26 +90,11 @@ void ColliderView::render(wxDC& dc) {
 	}
 	
 	dc.DrawBitmap(mainPanelBitmap, 0, 0);
-	
-	if (colliderConfiguration->getCollisionSystem().isLeftRingEnabled()
-		&& colliderConfiguration->getCollisionSystem().isCentralRingEnabled()
-		&& colliderConfiguration->getCollisionSystem().isLeftContactEnabled()) {
-		dc.SetBrush(*wxRED_BRUSH);
-	}
-	else {
-		dc.SetBrush(wxBrush(wxColour(90, 90, 90)));
-	}
-	dc.DrawCircle(leftContactPos.x, panelSize - leftContactPos.y, 5);
-	
-	if (colliderConfiguration->getCollisionSystem().isRightRingEnabled()
-		&& colliderConfiguration->getCollisionSystem().isCentralRingEnabled()
-		&& colliderConfiguration->getCollisionSystem().isRightContactEnabled()) {
-		dc.SetBrush(*wxRED_BRUSH);
-	}
-	else {
-		dc.SetBrush(wxBrush(wxColour(90, 90, 90)));
-	}
-	dc.DrawCircle(rightContactPos.x, panelSize - rightContactPos.y, 5);
+
+	dc.SetTextBackground(wxTRANSPARENT);
+	dc.SetTextForeground(*wxWHITE);
+	dc.DrawText("Iteration " + std::to_string(colliderConfiguration->getCurrentIteration()),
+		10, 10);
 }
 
 void ColliderView::processCollider() {
@@ -176,29 +161,27 @@ void ColliderView::processCollider() {
 	if (isRightVisible)
 		paintRightRing(dc);
 
-	/*centralBitmap.SetMask(new wxMask(centralBitmap, *wxGREEN));
-	wxMemoryDC centralDc(centralBitmap);
-	dc.Blit(0, 0,
-		panelSize, panelSize,
-		&centralDc,
-		0, 0, wxCOPY, true);
-	centralBitmap.SetMask(NULL);
+	dc.SetPen(*wxTRANSPARENT_PEN);
+	
+	if (colliderConfiguration->getCollisionSystem().isLeftRingEnabled()
+		&& colliderConfiguration->getCollisionSystem().isCentralRingEnabled()
+		&& colliderConfiguration->getCollisionSystem().isLeftContactEnabled()) {
+		dc.SetBrush(*wxRED_BRUSH);
+	}
+	else {
+		dc.SetBrush(wxBrush(wxColour(90, 90, 90)));
+	}
+	dc.DrawCircle(leftContactPos.x, panelSize - leftContactPos.y, 5);
 
-	leftBitmap.SetMask(new wxMask(leftBitmap, *wxGREEN));
-	wxMemoryDC leftDc(leftBitmap);
-	dc.Blit(0, 0,
-		panelSize, panelSize,
-		&leftDc,
-		0, 0, wxCOPY, true);
-	leftBitmap.SetMask(NULL);
-
-	rightBitmap.SetMask(new wxMask(rightBitmap, *wxGREEN));
-	wxMemoryDC rightDc(rightBitmap);
-	dc.Blit(0, 0,
-		panelSize, panelSize,
-		&rightDc,
-		0, 0, wxCOPY, true);
-	rightBitmap.SetMask(NULL);*/
+	if (colliderConfiguration->getCollisionSystem().isRightRingEnabled()
+		&& colliderConfiguration->getCollisionSystem().isCentralRingEnabled()
+		&& colliderConfiguration->getCollisionSystem().isRightContactEnabled()) {
+		dc.SetBrush(*wxRED_BRUSH);
+	}
+	else {
+		dc.SetBrush(wxBrush(wxColour(90, 90, 90)));
+	}
+	dc.DrawCircle(rightContactPos.x, panelSize - rightContactPos.y, 5);
 
 	dc.SelectObject(wxNullBitmap);
 }
@@ -393,7 +376,16 @@ void ColliderView::saveToImage() {
 	if (saveFileDialog.ShowModal() == wxID_CANCEL) {
 		return;
 	}
+
+	wxProgressDialog progress("Processing",
+		"Saving image, please wait.",
+		100, nullptr, wxPD_AUTO_HIDE);
+
+	progress.Update(50);
+	
 	mainPanelBitmap.SaveFile(saveFileDialog.GetPath(), wxBITMAP_TYPE_PNG);
+	
+	progress.Update(100);
 
 	toggleAnimation = curPaintActive;
 }

@@ -1,21 +1,21 @@
-#include "ColliderApp.h"
 
-#include <wx/progdlg.h>
+#include "pch.h"
 
-
-
-#include "ColliderConfiguration.h"
-#include "ColliderFrame.h"
-#include "CollisionSystem.h"
+#include "ColliderConfig.h"
 #include "FilteredCollisionSystem.h"
 
-wxIMPLEMENT_APP(ColliderApp);
+#include <wx/wx.h>
+#include <wx/dcgraph.h>
+#include <wx/progdlg.h>
+
+#include "Rule110.h"
 
 
-ColliderApp::ColliderApp() {
-}
+using namespace std;
 
-void paintCentralRing(wxDC& dc, ColliderConfiguration* ColliderConfig, int cellSize, wxPoint centralRingCenter, int panelSize) {
+
+
+void paintCentralRing(wxDC& dc, ColliderConfig* ColliderConfig, int cellSize, wxPoint centralRingCenter, int panelSize) {
 	int centralN = ColliderConfig->getCollisionSystem().getCentralN();
 	string centralState = ColliderConfig->getCollisionSystem().getCentralState();
 	string centralFilter = ColliderConfig->getCollisionSystem().getCentralFilter();
@@ -42,7 +42,7 @@ void paintCentralRing(wxDC& dc, ColliderConfiguration* ColliderConfig, int cellS
 	}
 }
 
-void paintLeftRing(wxDC& dc, ColliderConfiguration* ColliderConfig, int cellSize, wxPoint leftRingCenter, int panelSize) {
+void paintLeftRing(wxDC& dc, ColliderConfig* ColliderConfig, int cellSize, wxPoint leftRingCenter, int panelSize) {
 	int leftN = ColliderConfig->getCollisionSystem().getLeftN();
 	string leftState = ColliderConfig->getCollisionSystem().getLeftState();
 	string leftFilter = ColliderConfig->getCollisionSystem().getLeftFilter();
@@ -69,7 +69,7 @@ void paintLeftRing(wxDC& dc, ColliderConfiguration* ColliderConfig, int cellSize
 	}
 }
 
-void paintRightRing(wxDC& dc, ColliderConfiguration* ColliderConfig, int cellSize, wxPoint rightRingCenter, int panelSize) {
+void paintRightRing(wxDC& dc, ColliderConfig* ColliderConfig, int cellSize, wxPoint rightRingCenter, int panelSize) {
 	int rightN = ColliderConfig->getCollisionSystem().getRightN();
 	string rightState = ColliderConfig->getCollisionSystem().getRightState();
 	string rightFilter = ColliderConfig->getCollisionSystem().getRightFilter();
@@ -99,7 +99,7 @@ void paintRightRing(wxDC& dc, ColliderConfiguration* ColliderConfig, int cellSiz
 void processAfterExecute(wxBitmap& mainPanelBitmap, int panelSize, wxPoint leftRingCenter,
 	wxPoint rightRingCenter, wxPoint centralRingCenter,
 	wxPoint leftContactPos, wxPoint rightContactPos, int cellSize,
-	ColliderConfiguration* ColliderConfig) {
+	ColliderConfig* ColliderConfig) {
 
 	wxMemoryDC dc(mainPanelBitmap);
 	dc.SetBackground(*wxBLACK_BRUSH);
@@ -146,7 +146,7 @@ void paint(int ssInterval, int ssEnd, int ssOffset, string leftIc, string rightI
 	system.setAllContactsEnabled(true);
 
 	if (ssOffset > 0) {
-		wxProgressDialog progress("Setting ECA offset", "Processing, please wait", 100, nullptr, wxPD_AUTO_HIDE);
+		//wxProgressDialog progress("Setting ECA offset", "Processing, please wait", 100, nullptr, wxPD_AUTO_HIDE);
 
 		int j = 0;
 		for (int i = 0; i < ssOffset; i++) {
@@ -158,7 +158,7 @@ void paint(int ssInterval, int ssEnd, int ssOffset, string leftIc, string rightI
 		//progress.Update(100);
 	}
 
-	ColliderConfiguration config(&system, centralRingRadius,
+	ColliderConfig config(&system, centralRingRadius,
 		wxColour(245, 245, 245), wxColour(255, 255, 255));
 
 	wxPoint centralRingCenter;
@@ -185,9 +185,9 @@ void paint(int ssInterval, int ssEnd, int ssOffset, string leftIc, string rightI
 	wxBitmap mainPanelBitmap(panelSize, panelSize);
 	wxProgressDialog progress1("Setting ECA offset", "Processing, please wait", 100, NULL, wxPD_AUTO_HIDE);
 	progress1.Update(50);
-	for (int i = ssOffset, j = 0; i < ssEnd; i++, j++) {
+	for (int i = ssOffset; i < ssEnd; i++) {
 		progress1.SetTitle("Iteration " + std::to_string(i) + "/" + std::to_string(ssEnd));
-		if (j % ssInterval == 0) {
+		if (i % ssInterval == 0) {
 			progress1.SetTitle("Iteration " + std::to_string(i) + "/" + std::to_string(ssEnd) + " (printing)");
 
 			processAfterExecute(mainPanelBitmap, panelSize, leftRingCenter,
@@ -204,7 +204,7 @@ void paint(int ssInterval, int ssEnd, int ssOffset, string leftIc, string rightI
 void paint() {
 	int ssInterval = 100;
 	int ssEnd = 42000;
-	int ssOffset = 50;
+	int ssOffset = 0;
 
 	Rule110 r;
 
@@ -232,10 +232,35 @@ void paint() {
 
 }
 
-bool ColliderApp::OnInit() {
-	m = new ColliderMenu();
-	m->Show();
-	//paint();
+TEST(GetColliderSS, Descriptor) {
+	int ssInterval = 100;
+	int ssEnd = 42000;
+	int ssOffset = 0;
 
-	return true;
+	Rule110 r;
+
+	string leftIc = r.Translate("4_A4(F2)-87e-4_A4(F1)-87e-4_A4(F3)-87e-4_A4(F2)-87e-4_A4(F1)-87e-4_A4(F3)-86e");
+	string centralIc = r.Translate("1000e-1050e-1Ele_C2(A,f1_1)-420e");
+	string rightIc = r.Translate("A3(A,f1_1)-SepInit_EE_(C,f3_1)-1BloP_E_(C,f4_1)-SepInit_EE_(C,f3_1)-1BloP_E_(C,f4_1)-0Blo_E_(C,f4_1)-1BloS_E_(A,f4_1)-SepInit_EE_(A,f2_1)-1BloP_E_(F,f1_1)-SepInit_EE_(A,f2_1)-1BloP_E_(F,f1_1)-0Blo_E_(E,f4_1)-1BloS_E_(C,f4_1)-SepInit_EE_(B,f1_1)-1BloP_E_(F,f3_1)-SepInit_EE_(B,f1_1)");
+
+	int leftToCentral = 0;
+	int centralToLeft = 14000;
+	int rightToCentral = 0;
+	int centralToRight = 0;
+
+	leftToCentral = (leftToCentral - 1 + leftIc.length()) % leftIc.length();
+	rightToCentral = (rightToCentral - 1 + rightIc.length()) % rightIc.length();
+	centralToLeft = (centralToLeft - 1 + centralIc.length()) % centralIc.length();
+	centralToRight = (centralToRight - 1 + centralIc.length()) % centralIc.length();
+
+	string actions = "";
+	int centralRingRadius = 2000;
+	
+	string path = "D:/olbrl/Downloads/ColliderScreenshots/ss";
+
+	paint(ssInterval, ssEnd, ssOffset, leftIc, rightIc, centralIc,
+		leftToCentral, centralToLeft, rightToCentral, centralToRight,
+		actions, centralRingRadius, path);
+
+	EXPECT_EQ(1, 1);
 }
