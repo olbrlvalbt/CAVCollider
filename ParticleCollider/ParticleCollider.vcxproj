@@ -24,6 +24,7 @@
     <ProjectGuid>{911bd284-a0ee-4dd6-ad80-8ec8c624b417}</ProjectGuid>
     <RootNamespace>ParticleCollider</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>ECA Simulator Collider</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
