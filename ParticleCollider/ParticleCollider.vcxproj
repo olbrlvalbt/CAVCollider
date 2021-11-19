@@ -157,6 +157,9 @@
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="MeshFrame.h" />
     <ClInclude Include="MeshPanel.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="resource2.h" />
     <ClInclude Include="RingFrame.h" />
     <ClInclude Include="RingPanel.h" />
     <ClInclude Include="SimulatorMenu.h" />
@@ -183,6 +186,12 @@
     <ProjectReference Include="..\Rule110\Rule110.vcxproj">
       <Project>{86c77faf-a311-44d4-9f34-0e8ede8ec618}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ParticleCollider.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Icons\logo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
