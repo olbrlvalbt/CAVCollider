@@ -32,7 +32,7 @@ ColliderMenu::ColliderMenu() : wxFrame(nullptr, wxID_ANY, wxT("Rule 110 Particle
 
     pg->Append(new wxPropertyCategory("Other"));
     pg->Append(new wxArrayStringProperty("Collider Actions", "actions"));
-    pg->Append(new wxUIntProperty("Central Ring Radius", "centralRingRadius", 100));
+    pg->Append(new wxUIntProperty("Central Ring Radius", "centralRingRadius", 150));
     pg->Append(new wxUIntProperty("Refresh Rate", "refreshRate", 20));
 	
     Connect(pg->GetId(), wxEVT_PG_CHANGED, wxPropertyGridEventHandler(ColliderMenu::OnChangedProperty));

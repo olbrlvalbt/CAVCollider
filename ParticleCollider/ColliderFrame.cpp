@@ -8,13 +8,13 @@ ColliderFrame::ColliderFrame(ColliderConfiguration* config, int refreshRate)
 	wxImage::AddHandler(new wxPNGHandler);
 
 	wxToolBar* toolbar = CreateToolBar(wxTB_TEXT);
-	wxToolBarToolBase* playPauseButton = toolbar->AddTool(wxID_ANY, wxT("Play/Pause (P)"), wxBitmap("..\\Icons\\playPauseIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* jumpToButton = toolbar->AddTool(wxID_ANY, wxT("Jump To (J)"), wxBitmap("..\\Icons\\nextIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* showLeftIcon = toolbar->AddTool(wxID_ANY, wxT("Show Left (1)"), wxBitmap("..\\Icons\\showLeftIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* showCentralIcon = toolbar->AddTool(wxID_ANY, wxT("Show Central (2)"), wxBitmap("..\\Icons\\showCentralIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* showRightIcon = toolbar->AddTool(wxID_ANY, wxT("Show Right (3)"), wxBitmap("..\\Icons\\showRightIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* saveButton = toolbar->AddTool(wxID_ANY, wxT("Save (S)"), wxBitmap("..\\Icons\\saveIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* restartButton = toolbar->AddTool(wxID_ANY, wxT("Restart (R)"), wxBitmap("..\\Icons\\restartIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* playPauseButton = toolbar->AddTool(wxID_ANY, wxT("Play/Pause (P)"), wxBitmap("Icons\\playPauseIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* jumpToButton = toolbar->AddTool(wxID_ANY, wxT("Jump To (J)"), wxBitmap("Icons\\nextIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* showLeftIcon = toolbar->AddTool(wxID_ANY, wxT("Show Left (1)"), wxBitmap("Icons\\showLeftIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* showCentralIcon = toolbar->AddTool(wxID_ANY, wxT("Show Central (2)"), wxBitmap("Icons\\showCentralIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* showRightIcon = toolbar->AddTool(wxID_ANY, wxT("Show Right (3)"), wxBitmap("Icons\\showRightIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* saveButton = toolbar->AddTool(wxID_ANY, wxT("Save (S)"), wxBitmap("Icons\\saveIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* restartButton = toolbar->AddTool(wxID_ANY, wxT("Restart (R)"), wxBitmap("Icons\\restartIcon.png", wxBITMAP_TYPE_PNG));
 	toolbar->Realize();
 	Connect(playPauseButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(ColliderFrame::PlayPause));
 	Connect(jumpToButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(ColliderFrame::JumpTo));

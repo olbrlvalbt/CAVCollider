@@ -8,16 +8,14 @@ RingFrame::RingFrame(EcaRingConfiguration* config, bool rule110T3filterEnabled)
 	wxImage::AddHandler(new wxPNGHandler);
 
 	wxToolBar* toolbar = CreateToolBar(wxTB_TEXT);
-	wxToolBarToolBase* playPauseButton = toolbar->AddTool(wxID_ANY, wxT("Play/Pause (P)"), wxBitmap("..\\Icons\\playPauseIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* toggle3dButton = toolbar->AddTool(wxID_ANY, wxT("Toggle 3D (Space)"), wxBitmap("..\\Icons\\toggle3dIcon.png", wxBITMAP_TYPE_PNG));
-	//wxToolBarToolBase* filterButton = toolbar->AddTool(wxID_ANY, wxT("Toggle filter (F)"), wxBitmap("..\\Icons\\filterIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* restartButton = toolbar->AddTool(wxID_ANY, wxT("Restart (R)"), wxBitmap("..\\Icons\\restartIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* resetButton = toolbar->AddTool(wxID_ANY, wxT("Random reset (N)"), wxBitmap("..\\Icons\\resetIcon.png", wxBITMAP_TYPE_PNG));
-	wxToolBarToolBase* saveButton = toolbar->AddTool(wxID_ANY, wxT("Save (S)"), wxBitmap("..\\Icons\\saveIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* playPauseButton = toolbar->AddTool(wxID_ANY, wxT("Play/Pause (P)"), wxBitmap("Icons\\playPauseIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* toggle3dButton = toolbar->AddTool(wxID_ANY, wxT("Toggle 3D (Space)"), wxBitmap("Icons\\toggle3dIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* restartButton = toolbar->AddTool(wxID_ANY, wxT("Restart (R)"), wxBitmap("Icons\\restartIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* resetButton = toolbar->AddTool(wxID_ANY, wxT("Random reset (N)"), wxBitmap("Icons\\resetIcon.png", wxBITMAP_TYPE_PNG));
+	wxToolBarToolBase* saveButton = toolbar->AddTool(wxID_ANY, wxT("Save (S)"), wxBitmap("Icons\\saveIcon.png", wxBITMAP_TYPE_PNG));
 	toolbar->Realize();
 	Connect(playPauseButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(RingFrame::PlayPause));
 	Connect(toggle3dButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(RingFrame::Toggle3D));
-	//Connect(filterButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(RingFrame::ToggleFilter));
 	Connect(restartButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(RingFrame::Restart));
 	Connect(resetButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(RingFrame::Reset));
 	Connect(saveButton->GetId(), wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(RingFrame::Save));
