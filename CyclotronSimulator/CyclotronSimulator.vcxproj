@@ -91,12 +91,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110;../EcaController</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wxWidgets-3.1.5\include;..\wxWidgets-3.1.5\include\msvc;../EcaLogic;../Rule110;../EcaController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\wxWidgets-3.1.5\lib\vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -108,12 +108,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wxWidgets-3.1.5\include;..\wxWidgets-3.1.5\include\msvc;../EcaLogic;../Rule110;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\wxWidgets-3.1.5\lib\vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -127,14 +127,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wxWidgets-3.1.5\include;..\wxWidgets-3.1.5\include\msvc;../EcaLogic;../Rule110;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\wxWidgets-3.1.5\lib\vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -148,14 +148,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WXWIN)/include;$(WXWIN)/include/msvc;../EcaLogic;../Rule110</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\wxWidgets-3.1.5\include;..\wxWidgets-3.1.5\include\msvc;../EcaLogic;../Rule110;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\wxWidgets-3.1.5\lib\vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
