@@ -29,10 +29,6 @@ string Rule110::Translate(string s) {
 		string e = elems[i];
 
 		if (e.length() != 0) {
-			transform(e.begin(), e.end(), e.begin(), [](unsigned char c) {
-				return toupper(c);
-				});
-			
 			if (regex_match(e, rMultipleExpression)) {
 				translated += translate(e);
 			}
@@ -91,17 +87,26 @@ string Rule110::translate(const string& s) {
 		}
 		regex_search(trimmed, match, rNum);
 		int phaseNum = stoi(match[0]);
-
-		if (isSet) {
-			translated = gliderSets.get(compositeName, phase, phaseNum);
+		
+		try {
+			if (isSet) {
+				translated = gliderSets.get(compositeName, phase, phaseNum);
+			}
+			else {
+				translated = gliders.get(compositeName, phase, phaseNum);
+			}
 		}
-		else {
-			translated = gliders.get(compositeName, phase, phaseNum);
+		catch(exception& e) {
+			string ex = " Expression " + s + " - " + e.what();
+			throw exception(ex.c_str());
 		}
 	}
 	else if (regex_search(trimmed, rEther)) {
-		regex_search(trimmed, match, rNum);
-		int etherMult = stoi(match[match.size() - 1]);
+		int etherMult = 1;
+		if (regex_search(trimmed, rNum)) {
+			regex_search(trimmed, match, rNum);
+			etherMult = stoi(match[match.size() - 1]);
+		}
 		translated = multiply("11111000100110", etherMult);
 	}
 	else {
@@ -127,7 +132,7 @@ string Rule110::multiply(const string& s, int multiple) {
 void Rule110::initRegexes() {
 	string sBin = "[01]+";
 	string sNum = "[1-9][0-9]*";
-	string sEther = sNum + "E";
+	string sEther = "(" + sNum + ")?E";
 
 	string sPhaseNum = "(F_?)?[1-4](_1)?";
 	string sPhase = "[A-H](" + sNum + ")?";
@@ -159,18 +164,18 @@ void Rule110::initRegexes() {
 	string sMultiple = sNum + "\\*";
 	string sMultipleExpression = "(" + sMultiple + ")?(" + sExpression + ")";
 
-	rBin = regex(sBin);
-	rNum = regex(sNum);
-	rEther = regex(sEther);
-	rPhaseNum = regex(sPhaseNum);
-	rPhase = regex(sPhase);
-	rPhaseParam = regex(sPhaseParam);
-	rParams = regex(sParams);
-	rGliderName = regex(sGliderName);
-	rGliderSetName = regex(sGliderSetName);
-	rCompositeName = regex(sCompositeName);
-	rComposite = regex(sComposite);
-	rExpression = regex(sExpression);
-	rMultiple = regex(sMultiple);
-	rMultipleExpression = regex(sMultipleExpression);
+	rBin = regex(sBin, regex_constants::icase);
+	rNum = regex(sNum, regex_constants::icase);
+	rEther = regex(sEther, regex_constants::icase);
+	rPhaseNum = regex(sPhaseNum, regex_constants::icase);
+	rPhase = regex(sPhase, regex_constants::icase);
+	rPhaseParam = regex(sPhaseParam, regex_constants::icase);
+	rParams = regex(sParams, regex_constants::icase);
+	rGliderName = regex(sGliderName, regex_constants::icase);
+	rGliderSetName = regex(sGliderSetName, regex_constants::icase);
+	rCompositeName = regex(sCompositeName, regex_constants::icase);
+	rComposite = regex(sComposite, regex_constants::icase);
+	rExpression = regex(sExpression, regex_constants::icase);
+	rMultiple = regex(sMultiple, regex_constants::icase);
+	rMultipleExpression = regex(sMultipleExpression, regex_constants::icase);
 }

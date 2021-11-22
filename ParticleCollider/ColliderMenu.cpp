@@ -156,6 +156,7 @@ void ColliderMenu::updateN(SIDE side) {
 	        break;
 	    }
     }
+    Refresh();
 }
 
 void ColliderMenu::checkCP(wxUIntProperty& p, SIDE side) {
