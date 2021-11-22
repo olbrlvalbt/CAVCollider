@@ -132,7 +132,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Icons\logo.png">
+    <Image Include="Icons\logo.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
