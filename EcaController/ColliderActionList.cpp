@@ -140,9 +140,9 @@ std::map<std::string, ColliderAction> ColliderActionList::getActionTable() {
 		{"ENABLE_RIGHT_RING",ColliderAction::RING_ENABLE_RIGHT},
 		{"ENABLE_CENTRAL_RING",ColliderAction::RING_ENABLE_CENTRAL},
 		{"DISABLE_LEFT_CONTACT",ColliderAction::CONTACT_DISABLE_LEFT},
-		{"DISABLE_RIGHT_CONTACT",ColliderAction::CONTACT_DISABLE_RIGHT},
+		{"DISABLE_RIGHT_CONTACT",ColliderAction::CONTACT_DISABLE_LEFT},
 		{"ENABLE_LEFT_CONTACT",ColliderAction::CONTACT_ENABLE_LEFT},
-		{"ENABLE_RIGHT_CONTACT",ColliderAction::CONTACT_ENABLE_RIGHT},
+		{"ENABLE_RIGHT_CONTACT",ColliderAction::CONTACT_ENABLE_LEFT},
 	};
 }
 
