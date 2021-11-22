@@ -23,8 +23,9 @@ SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("ECA Simulator")
 	pg->Append(new wxUIntProperty("Rule", "rule", 110));
 	pg->Append(new wxBoolProperty("Set Random Initial Condition", "setRandomIc", false));
 	pg->Append(new wxLongStringProperty("Initial Condition", "ic", ""));
-	pg->Append(new wxBoolProperty("Adjust Number of Cells to Initial Condition", "adjustN", false));
+	pg->Append(new wxBoolProperty("Adjust Number of Cells to Initial Condition", "adjustN", true));
 	pg->Append(new wxUIntProperty("N", "n", 3));
+	pg->GetPropertyByName("n")->Enable(false);
 	pg->Append(new wxUIntProperty("Iteration Offset", "iterationOffset", 0));
 	
 	pg->Append(new wxPropertyCategory("Mode Settings"));
@@ -89,8 +90,11 @@ void SimulatorMenu::setRandomInitialConditionEvent() {
 	}
 	else {
 		pg->GetPropertyByName("ic")->Enable(true);
-
+		
 		pg->GetPropertyByName("adjustN")->Enable(true);
+		pg->GetPropertyByName("adjustN")->SetValue(true);
+
+		pg->GetPropertyByName("n")->Enable(false);
 	}
 }
 
