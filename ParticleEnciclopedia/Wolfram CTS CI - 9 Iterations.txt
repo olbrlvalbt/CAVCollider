@@ -49,6 +49,7 @@ SepInit_EE_(A,f2_1)-
 0Blo_E_(E,f4_1)-
 1BloS_E_(C,f4_1)-
 SepInit_EE_(B,f1_1)-
+
 1BloP_E_(F,f3_1)-
 SepInit_EE_(B,f1_1)-
 1BloP_E_(F,f3_1)-
@@ -75,3 +76,40 @@ Central section: 138 + 62048 = 62186 cells
 
 Left IP
 25200 (1800e)
+
+
+
+
+
+
+
+
+Renamed left section:
+
+A3(A,f1_1)-
+SepInit_EE_(C,f3_1)-
+1BloP_E_(C,f4_1)-
+SepInit_EE_(C,f3_1)-
+1BloP_E_(C,f4_1)-
+0Blo_E_(C,f4_1)-
+1BloS_E_(A,f4_1)-
+SepInit_EE_(E,f3_1)-
+1BloP_E_(F,f1_1)-
+SepInit_EE_(E,f3_1)-
+1BloP_E_(F,f1_1)-
+0Blo_E_(F,f1_1)-
+1BloS_E_(C,f4_1)-
+SepInit_EE_(F,f1_1)-
+1BloP_E_(F,f3_1)-
+SepInit_EE_(F,f1_1)-
+1BloP_E_(F,f3_1)-
+0Blo_E_(F,f3_1)-
+1BloS_E_(D,f2_1)-
+SepInit_EE_(H,f2_1)-
+1BloP_E_(E,f2_1)-
+SepInit_EE_(E,f1_1)-
+1BloP_E_(E,f2_1)-
+0Blo_E_(E,f2_1)-
+1BloS_E_(C,f2_1)-
+SepInit_EE_(G,f2_1)-
+1BloP_E_(A,f3_1)-
