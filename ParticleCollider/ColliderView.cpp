@@ -86,7 +86,7 @@ void ColliderView::render(wxDC& dc) {
 	dc.DrawBitmap(mainPanelBitmap, 0, 0);
 
 	dc.SetTextBackground(wxTRANSPARENT);
-	dc.SetTextForeground(*wxWHITE);
+	dc.SetTextForeground(*wxBLACK);
 	dc.DrawText("Iteration " + std::to_string(colliderConfiguration->getCurrentIteration()),
 		10, 10);
 }
@@ -95,7 +95,8 @@ void ColliderView::processCollider() {
 	colliderConfiguration->getCollisionSystem().execute();
 
 	wxMemoryDC dc(mainPanelBitmap);
-	dc.SetBackground(*wxBLACK_BRUSH);
+	//dc.SetBackground(*wxBLACK_BRUSH);
+	dc.SetBackground(wxBrush(wxColour(230, 230, 230)));
 	dc.Clear();
 	
 	dc.SetBrush(*wxTRANSPARENT_BRUSH);

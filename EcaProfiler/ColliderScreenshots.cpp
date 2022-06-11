@@ -256,7 +256,7 @@ TEST(GetColliderSS, Descriptor) {
 	string actions = "";
 	int centralRingRadius = 2000;
 	
-	string path = "D:/olbrl/Downloads/ColliderScreenshots/ss";
+	string path = "D:\olbrl\Downloads\WolframCollider7\Ring";
 
 	paint(ssInterval, ssEnd, ssOffset, leftIc, rightIc, centralIc,
 		leftToCentral, centralToLeft, rightToCentral, centralToRight,

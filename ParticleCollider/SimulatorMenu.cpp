@@ -49,8 +49,10 @@ SimulatorMenu::SimulatorMenu() : wxFrame(nullptr, wxID_ANY, wxT("ECA Simulator")
 
 	pg->Append(new wxPropertyCategory("Visual Settings"));
 
-	pg->Append(new wxColourProperty("Dead Cell Color", "deadColor", wxColour(220, 170, 15)));
-	pg->Append(new wxColourProperty("Alive Cell Color", "aliveColor", wxColour(115, 35, 15)));
+	/*pg->Append(new wxColourProperty("Dead Cell Color", "deadColor", wxColour(220, 170, 15)));
+	pg->Append(new wxColourProperty("Alive Cell Color", "aliveColor", wxColour(115, 35, 15)));*/
+	pg->Append(new wxColourProperty("Dead Cell Color", "deadColor", wxColour(144, 144, 144)));
+	pg->Append(new wxColourProperty("Alive Cell Color", "aliveColor", wxColour(0, 0, 0)));
 
 	pg->Append(new wxBoolProperty("Enable Rule 110 T3 Filter", "filter", true));
 

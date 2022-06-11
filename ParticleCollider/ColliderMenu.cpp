@@ -246,7 +246,8 @@ void ColliderMenu::OnCreate(wxCommandEvent& event) {
             actions);
         system->setAllContactsEnabled(true);
         ColliderConfiguration* config = new ColliderConfiguration(system, centralRingRadius,
-            wxColour(245, 245, 245), wxColour(255, 255, 255));
+            //wxColour(245, 245, 245), wxColour(255, 255, 255));
+			wxColour(5, 5, 5), wxColour(0, 0, 0));
 
         ColliderFrame* mainFrame = new ColliderFrame(config, refreshRate);
         mainFrame->Show();

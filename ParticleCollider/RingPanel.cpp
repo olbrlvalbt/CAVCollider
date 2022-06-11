@@ -70,7 +70,8 @@ void RingPanel::render() {
 
 void RingPanel::createBitmap() {
 	wxMemoryDC dc(helperBitmap);
-	dc.SetBrush(*wxBLACK_BRUSH);
+	//dc.SetBrush(*wxBLACK_BRUSH);
+	dc.SetBrush(wxBrush(wxColour(230, 230, 230)));
 	dc.Clear();
 	wxMemoryDC currentMemDc(currentBitmap);
 
@@ -126,7 +127,8 @@ void RingPanel::createBitmap() {
 
 void RingPanel::createBitmapWithT3Filter() {
 	wxMemoryDC dc(helperBitmap);
-	dc.SetBackground(*wxBLACK_BRUSH);
+	//dc.SetBackground(*wxBLACK_BRUSH);
+	dc.SetBackground(wxBrush(wxColour(230, 230, 230)));
 	dc.Clear();
 	wxMemoryDC currentMemDc(currentBitmap);
 
@@ -155,7 +157,8 @@ void RingPanel::createBitmapWithT3Filter() {
 
 void RingPanel::clearBitmap(wxBitmap& bitmap) {
 	wxMemoryDC memDc(bitmap);
-	memDc.SetBrush(*wxBLACK_BRUSH);
+	//memDc.SetBrush(*wxBLACK_BRUSH);
+	memDc.SetBrush(wxBrush(wxColour(230, 230, 230)));
 	memDc.Clear();
 	memDc.SelectObject(wxNullBitmap);
 }
@@ -287,7 +290,8 @@ void RingPanel::paintIteration(wxDC& dc) {
 		deadDc.SetBrush(*wxTRANSPARENT_BRUSH);
 		deadDc.SetPen(cyclotronConfiguration->getDeadCellPen());
 
-		dc.SetPen(*wxBLACK_PEN);
+		//dc.SetPen(*wxBLACK_PEN);
+		dc.SetPen(wxPen(wxColour(230, 230, 230)));
 		dc.DrawEllipticArc(ringCenter.x - cyclotronConfiguration->getRingRadius(), ringCenter.y - cyclotronConfiguration->getRingRadius(),
 			2 * cyclotronConfiguration->getRingRadius(), 2 * cyclotronConfiguration->getRingRadius(),
 			0, 360);

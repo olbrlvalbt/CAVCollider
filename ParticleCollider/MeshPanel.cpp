@@ -174,7 +174,8 @@ void MeshPanel::filterT3(string(&iterationGroup)[4], wxGCDC& filterDc, int itera
 		f4 += iterationGroup[3].at((i + 1) % n);
 
 		if (f1.compare("1111") == 0 && f2.compare("1000") == 0 && f3.compare("1001") == 0 && f4.compare("10") == 0) {
-			filterDc.SetBrush(*wxBLACK_BRUSH);
+			//filterDc.SetBrush(*wxBLACK_BRUSH);
+			filterDc.SetBrush(wxBrush(wxColour(230, 230, 230)));
 			filterDc.DrawRectangle(i * meshConfig->getCellSize(), iteration * meshConfig->getCellSize(), meshConfig->getCellSize(), meshConfig->getCellSize());
 			filterDc.DrawRectangle(((i + 1) % n) * meshConfig->getCellSize(), iteration * meshConfig->getCellSize(), meshConfig->getCellSize(), meshConfig->getCellSize());
 			filterDc.DrawRectangle(((i + 2) % n) * meshConfig->getCellSize(), iteration * meshConfig->getCellSize(), meshConfig->getCellSize(), meshConfig->getCellSize());
