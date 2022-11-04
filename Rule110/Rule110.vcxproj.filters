@@ -21,19 +21,22 @@
     <ClInclude Include="Rule110.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rule110Basic.h">
+    <ClInclude Include="PhaseSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rule110Composite.h">
+    <ClInclude Include="Composite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rule110Constants.h">
+    <ClInclude Include="CompositeMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rule110Glider.h">
+    <ClInclude Include="GliderMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rule110GliderSet.h">
+    <ClInclude Include="GliderSetMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rule110DLL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,19 +50,19 @@
     <ClCompile Include="Rule110.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rule110Basic.cpp">
+    <ClCompile Include="PhaseSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rule110Composite.cpp">
+    <ClCompile Include="Composite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rule110Constants.cpp">
+    <ClCompile Include="CompositeMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rule110Glider.cpp">
+    <ClCompile Include="GliderMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rule110GliderSet.cpp">
+    <ClCompile Include="GliderSetMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="EcaController">
+      <UniqueIdentifier>{cda2929c-a8c1-4a13-bcbe-292827c85a51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EcaController\CompressedController">
+      <UniqueIdentifier>{f7ec4432-6b62-486c-a791-c733cc770358}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EcaController\CompressedController\Header Files">
+      <UniqueIdentifier>{12fbf2a6-0d64-4500-b6ec-3da813b7f794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EcaController\CompressedController\Source Files">
+      <UniqueIdentifier>{79617206-187f-47e3-8e22-81fe1b6c5c77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EcaController\NaiveController">
+      <UniqueIdentifier>{9a184d9f-e436-4fae-a14d-370fa1817c9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EcaController\Base">
+      <UniqueIdentifier>{4746e69d-629b-4912-a077-e0e57ada2266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EcaController\Base\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="EcaController\Base\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="EcaController\NaiveController\Header Files">
+      <UniqueIdentifier>{13e79f25-1476-4ea0-a5a4-31e3b14c9ed7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EcaController\NaiveController\Source Files">
+      <UniqueIdentifier>{3b8c45d7-d9dd-4450-a817-0d847126d284}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EcaControllerDLL.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EcaControllerCore.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EcaController.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkLUT.h">
+      <Filter>EcaController\CompressedController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkLUTAgent.h">
+      <Filter>EcaController\CompressedController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkTranslator.h">
+      <Filter>EcaController\CompressedController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CompressedController.h">
+      <Filter>EcaController\CompressedController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CompressedState.h">
+      <Filter>EcaController\CompressedController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NaiveController.h">
+      <Filter>EcaController\NaiveController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractionController.h">
+      <Filter>EcaController\NaiveController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractionPoint.h">
+      <Filter>EcaController\NaiveController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractionAgent.h">
+      <Filter>EcaController\NaiveController\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IterationBuffer.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionSystem.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilteredCollisionSystem.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderActionList.h">
+      <Filter>EcaController\Base\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EcaControllerCore.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EcaController.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChunkLUT.cpp">
+      <Filter>EcaController\CompressedController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChunkLUTAgent.cpp">
+      <Filter>EcaController\CompressedController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChunkTranslator.cpp">
+      <Filter>EcaController\CompressedController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompressedController.cpp">
+      <Filter>EcaController\CompressedController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompressedState.cpp">
+      <Filter>EcaController\CompressedController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NaiveController.cpp">
+      <Filter>EcaController\NaiveController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractionController.cpp">
+      <Filter>EcaController\NaiveController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractionPoint.cpp">
+      <Filter>EcaController\NaiveController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractionAgent.cpp">
+      <Filter>EcaController\NaiveController\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IterationBuffer.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionSystem.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilteredCollisionSystem.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderActionList.cpp">
+      <Filter>EcaController\Base\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

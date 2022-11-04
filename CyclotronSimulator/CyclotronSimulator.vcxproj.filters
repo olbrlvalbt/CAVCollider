@@ -21,13 +21,25 @@
     <ClInclude Include="SimulatorApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SimulatorFrame.h">
+    <ClInclude Include="EcaConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SimulatorPanel.h">
+    <ClInclude Include="EcaRingConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CyclotronConfiguration.h">
+    <ClInclude Include="RingFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RingPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EcaMeshConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,13 +50,25 @@
     <ClCompile Include="SimulatorApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimulatorFrame.cpp">
+    <ClCompile Include="EcaConfiguration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimulatorPanel.cpp">
+    <ClCompile Include="EcaRingConfiguration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CyclotronConfiguration.cpp">
+    <ClCompile Include="RingFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RingPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EcaMeshConfiguration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
