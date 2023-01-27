@@ -30,26 +30,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -91,13 +91,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\wxWidgets-3.1.5\include;..\wxWidgets-3.1.5\include\msvc;../EcaLogic;../Rule110;../EcaController</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../wxWidgets-3.2.1/include;../wxWidgets-3.2.1/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\wxWidgets-3.1.5\lib\vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../wxWidgets-3.2.1/lib/vc143_x64_dll;../$(IntDir);../EcaController;../Rule110</AdditionalLibraryDirectories>
+      <AdditionalDependencies>../$(IntDir)EcaController.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -106,15 +106,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;WXUSINGDLL;wxMSVC_VERSION_AUTO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\wxWidgets-3.1.5\include;..\wxWidgets-3.1.5\include\msvc;../EcaLogic;../Rule110;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../wxWidgets-3.2.1/include;../wxWidgets-3.2.1/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\wxWidgets-3.1.5\lib\vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../wxWidgets-3.2.1/lib/vc143_x64_dll;../$(IntDir);../EcaController;../Rule110</AdditionalLibraryDirectories>
+      <AdditionalDependencies>../$(IntDir)EcaController.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -127,15 +127,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\wxWidgets-3.1.5\include;..\wxWidgets-3.1.5\include\msvc;../EcaLogic;../Rule110;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../wxWidgets-3.2.1/include;../wxWidgets-3.2.1/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\wxWidgets-3.1.5\lib\vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../wxWidgets-3.2.1/lib/vc143_x64_dll;../$(IntDir);../EcaController;../Rule110</AdditionalLibraryDirectories>
+      <AdditionalDependencies>../$(IntDir)EcaController.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,15 +148,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\wxWidgets-3.1.5\include;..\wxWidgets-3.1.5\include\msvc;../EcaLogic;../Rule110;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../wxWidgets-3.2.1/include;../wxWidgets-3.2.1/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\wxWidgets-3.1.5\lib\vc_lib;../$(IntDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>../$(IntDir)EcaLogic.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../wxWidgets-3.2.1/lib/vc143_x64_dll;../$(IntDir);../EcaController;../Rule110</AdditionalLibraryDirectories>
+      <AdditionalDependencies>../$(IntDir)EcaController.lib;../$(IntDir)Rule110.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

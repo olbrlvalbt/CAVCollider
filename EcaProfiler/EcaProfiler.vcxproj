@@ -21,9 +21,9 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{a367f945-1ee2-4281-a233-0bd4815b8d24}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -76,12 +76,12 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>../EcaLogic;../EcaController;$(WXWIN)/include;$(WXWIN)/include/msvc;../Rule110;%(AdditionalIncludeDirectories);$(WXWIN)/include;$(WXWIN)/include/msvc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../wxWidgets-3.2.1/include;../wxWidgets-3.2.1/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>$(WXWIN)/lib/vc_lib;;$(WXWIN)/lib/vc_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../wxWidgets-3.2.1/lib/vc143_x64_dll;../$(IntDir);../EcaController;../Rule110</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -89,16 +89,16 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>X64;_DEBUG;_CONSOLE;WXUSINGDLL;wxMSVC_VERSION_AUTO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories);$(WXWIN)/include;$(WXWIN)/include/msvc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../wxWidgets-3.2.1/include;../wxWidgets-3.2.1/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>;$(WXWIN)/lib/vc_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../wxWidgets-3.2.1/lib/vc143_x64_dll;../$(IntDir);../EcaController;../Rule110</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,14 +109,14 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories);$(WXWIN)/include;$(WXWIN)/include/msvc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../wxWidgets-3.2.1/include;../wxWidgets-3.2.1/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <AdditionalLibraryDirectories>;$(WXWIN)/lib/vc_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../wxWidgets-3.2.1/lib/vc143_x64_dll;../$(IntDir);../EcaController;../Rule110</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,14 +127,14 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories);$(WXWIN)/include;$(WXWIN)/include/msvc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../wxWidgets-3.2.1/include;../wxWidgets-3.2.1/include/msvc;../EcaController;../Rule110</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <AdditionalLibraryDirectories>;$(WXWIN)/lib/vc_lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../wxWidgets-3.2.1/lib/vc143_x64_dll;../$(IntDir);../EcaController;../Rule110</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
